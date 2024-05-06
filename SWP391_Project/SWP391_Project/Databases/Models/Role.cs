@@ -3,9 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SWP391_Project.Databases.Models
 {
+    [Table("Role")]
     public class Role
     {
-        [Column(TypeName = "char(2)")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         [Required]
         [StringLength(30)]
