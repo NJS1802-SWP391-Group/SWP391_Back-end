@@ -8,7 +8,7 @@ namespace SWP391_Project.Databases.Models
         [Column(TypeName = "char(2)")]
         public string Id { get; set; }
         [Required]
-        [StringLength(10)]
+        [StringLength(30)]
         public string RoleName { get; set; }
     }
 }
