@@ -30,7 +30,7 @@ namespace Core.Databases
         {
             try
             {
-                // Migration Database - Create database if it does not exist
+                // Migrate the database schema to the latest version
                 await _context.Database.MigrateAsync();
             }
             catch (Exception ex)
@@ -44,6 +44,7 @@ namespace Core.Databases
         {
             try
             {
+                // Seed the database with initial data
                 await TrySeedAsync();
             }
             catch (Exception ex)
@@ -60,13 +61,14 @@ namespace Core.Databases
                 return;
             }
 
-            var superAdminRole = new Role { Id="SA", RoleName = "Super Admin" };
+            var superAdminRole = new Role { Id = "SA", RoleName = "Super Admin" };
             var adminRole = new Role { Id = "AD", RoleName = "Admin" };
-            var User = new Role { Id= "US",RoleName = "User" };
+            var userRole = new Role { Id = "US", RoleName = "User" };
             List<Role> userRoles = new()
             {
                 superAdminRole,
                 adminRole,
+                userRole,
             };
             var khanh = new User
             {
@@ -84,6 +86,14 @@ namespace Core.Databases
                 Status = "Active",
                 RoleID = "AD",
             };
+            List<User> users = new()
+            {
+                khanh,
+                bao,
+            };
+
+            await _context.Roles.AddRangeAsync(userRoles);
+            await _context.Users.AddRangeAsync(users);
             // Save to DB
             await _context.SaveChangesAsync();
         }
