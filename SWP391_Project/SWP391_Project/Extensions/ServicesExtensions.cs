@@ -59,7 +59,8 @@ public static class ServicesExtensions
 
         services.AddDbContext<AppDbContext>(opt =>
         {
-            opt.UseNpgsql(configuration.GetConnectionString("PgDbConnection"));
+            //opt.UseNpgsql(configuration.GetConnectionString("PgDbConnection"));
+            opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
 
         services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));

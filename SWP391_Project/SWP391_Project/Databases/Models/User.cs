@@ -4,6 +4,7 @@ using System.Data;
 
 namespace SWP391_Project.Databases.Models
 {
+    [Table("User")]
     public class User
     {
         [Key]
