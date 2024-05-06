@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Service\NewFolder\**" />
+    <Content Remove="Service\NewFolder\**" />
+    <EmbeddedResource Remove="Service\NewFolder\**" />
+    <None Remove="Service\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.0" />

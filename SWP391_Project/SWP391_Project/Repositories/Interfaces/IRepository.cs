@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Repositories
 {
-    public interface IRepository<TEntity, in TKey>
+    public interface IRepository<TEntity, in TKey> where TEntity : class
     {
         IQueryable<TEntity> GetAll();
         IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> predicate);
