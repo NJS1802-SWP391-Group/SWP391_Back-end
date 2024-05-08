@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
-using Core.Databases;
-using Core.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SWP391_Project.Databases;
+using SWP391_Project.Mapper;
 using SWP391_Project.Middlewares;
+using SWP391_Project.Repositories;
+using SWP391_Project.Repositories.Interfaces;
+using SWP391_Project.Service;
 using SWP391_Project.Settings;
 using System.Text;
 
@@ -19,17 +22,14 @@ public static class ServicesExtensions
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
-/*        //Add Mapper
+        //Add Mapper
         var mapperConfig = new MapperConfiguration(mc =>
         {
             mc.AddProfile(new ApplicationMapper());
         });
 
         IMapper mapper = mapperConfig.CreateMapper();
-        services.AddSingleton(mapper);*/
-
-        //Set time
-        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        services.AddSingleton(mapper);
 
         var jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
         services.Configure<JwtSettings>(val =>
@@ -65,6 +65,8 @@ public static class ServicesExtensions
 
         services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
         services.AddScoped<DatabaseInitialiser>();
+        services.AddScoped<UserService>();
+        services.AddScoped<IdentityService>();
 
 
 
