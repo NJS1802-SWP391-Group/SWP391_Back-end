@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Helpers
+namespace SWP391_Project.Helpers
 {
     public static class SecurityUtil
     {

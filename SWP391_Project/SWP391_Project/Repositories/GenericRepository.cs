@@ -1,5 +1,6 @@
-﻿using Core.Databases;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SWP391_Project.Databases;
+using SWP391_Project.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Repositories
+namespace SWP391_Project.Repositories
 {
     public class GenericRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 where TEntity : class

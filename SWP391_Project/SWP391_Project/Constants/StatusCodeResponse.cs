@@ -1,6 +1,5 @@
-﻿
-using System.Net;
-namespace Domain.Constants
+﻿using System.Net;
+namespace SWP391_Project.Constants
 {
     public class StatusCodeResponse<T>
     {

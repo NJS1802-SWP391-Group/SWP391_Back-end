@@ -4,11 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Core.Helpers;
 using Microsoft.EntityFrameworkCore;
 using SWP391_Project.Databases.Models;
+using SWP391_Project.Helpers;
 
-namespace Core.Databases
+namespace SWP391_Project.Databases
 {
     public interface IDatabaseInitialiser
     {
@@ -72,6 +72,7 @@ namespace Core.Databases
             };
             var khanh = new User
             {
+                Email = "KhanhKhongKhoc@gmail.com",
                 UserName = "KhanhKhongKhoc",
                 Password = SecurityUtil.Hash("123456"),
                 Status = "Active",
@@ -81,6 +82,7 @@ namespace Core.Databases
             var bao = new User
             {
                 Name = "Bao",
+                Email = "BaoBongBay@gmail.com",
                 UserName = "BaoBongBay",
                 Password = SecurityUtil.Hash("123456"),
                 Status = "Active",
