@@ -35,7 +35,6 @@
 
   <ItemGroup>
     <Folder Include="Domains\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

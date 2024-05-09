@@ -17,6 +17,11 @@ namespace SWP391_Project.Databases
         #region DbSet
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Diamond> Diamonds { get; set; }
+        public DbSet<SWP391_Project.Databases.Models.Service> Services { get; set; }
+        public DbSet<RequestValuationForm> RequestValuationForms{ get; set; }
+        public DbSet<ScheduleForm> ScheduleForms{ get; set; }
+
         #endregion
     }
 
