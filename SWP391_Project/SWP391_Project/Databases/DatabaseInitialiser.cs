@@ -73,20 +73,26 @@ namespace SWP391_Project.Databases
             var khanh = new User
             {
                 Email = "KhanhKhongKhoc@gmail.com",
-                UserName = "KhanhKhongKhoc",
+                FirstName = "Khanh",
+                LastName = "KhongKhoc",
                 Password = SecurityUtil.Hash("123456"),
+                CCCD = "123456879",
+                Address = "Dong Nai",
+                PhoneNumber = "0907080907",
                 Status = "Active",
-                Name = "Khanh",
-                RoleID = "AD",
+                Role = adminRole,
             };
             var bao = new User
             {
-                Name = "Bao",
+                FirstName = "Bao",
+                LastName = "BongBay",
                 Email = "BaoBongBay@gmail.com",
-                UserName = "BaoBongBay",
                 Password = SecurityUtil.Hash("123456"),
+                CCCD = "123456879",
+                Address = "Dong Nai",
+                PhoneNumber = "0907080907",
                 Status = "Active",
-                RoleID = "AD",
+                Role = adminRole,
             };
             List<User> users = new()
             {

@@ -38,9 +38,12 @@ public class IdentityService
         var userAdd = await _userRepository.AddAsync(new User
         {
             Password = SecurityUtil.Hash(req.Password),
-            UserName = req.username,
             Email = req.Email,
-            Name = req.fullname,
+            FirstName = req.FirstName,
+            LastName = req.LastName,
+            PhoneNumber = req.PhoneNumber,
+            Address = req.Address,
+            CCCD = req.CCCD,
             Status = "Active",
             RoleID = "US"
         });
@@ -64,7 +67,7 @@ public class IdentityService
         }
         var userRole = _roleRepository.FindByCondition(ur => ur.Id == user.RoleID).FirstOrDefault();
 
-        user.UserRole = userRole!;
+        user.Role = userRole!;
 
         var hash = SecurityUtil.Hash(password);
         if (!user.Password.Equals(hash))
