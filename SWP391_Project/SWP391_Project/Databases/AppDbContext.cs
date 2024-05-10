@@ -19,9 +19,13 @@ namespace SWP391_Project.Databases
         public DbSet<Role> Roles { get; set; }
         public DbSet<Diamond> Diamonds { get; set; }
         public DbSet<SWP391_Project.Databases.Models.Service> Services { get; set; }
-        public DbSet<RequestValuationForm> RequestValuationForms{ get; set; }
-        public DbSet<ScheduleForm> ScheduleForms{ get; set; }
-
+        public DbSet<RequestValuationForm> RequestValuationForms { get; set; }
+        public DbSet<ScheduleForm> ScheduleForms { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<FinalReceipt> FinalReceipts{ get;set; }
+        public DbSet<DiamondPrice> DiamondPrices { get; set; }
+        public DbSet<ValuationReceipt> ValuationReceipts { get; set; }
+        public DbSet<ValuationResult> ValuationResult { get; set; }
         #endregion
     }
 
