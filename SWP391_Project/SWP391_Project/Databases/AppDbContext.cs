@@ -27,6 +27,22 @@ namespace SWP391_Project.Databases
         public DbSet<ValuationReceipt> ValuationReceipts { get; set; }
         public DbSet<ValuationResult> ValuationResult { get; set; }
         #endregion
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ValuationReceipt>()
+                .HasOne(vr => vr.ConsultStaff)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<ValuationReceipt>()
+                .HasOne(vr => vr.ValuationStaff)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<ValuationResult>()
+                .HasOne(vr => vr.ValuationReceipt)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 
 

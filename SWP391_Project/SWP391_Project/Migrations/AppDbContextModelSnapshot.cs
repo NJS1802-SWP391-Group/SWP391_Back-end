@@ -22,6 +22,36 @@ namespace SWP391_Project.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("SWP391_Project.Databases.Models.Blog", b =>
+                {
+                    b.Property<int>("BlogID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BlogID"), 1L, 1);
+
+                    b.Property<string>("BlogName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("BlogID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Blog");
+                });
+
             modelBuilder.Entity("SWP391_Project.Databases.Models.Diamond", b =>
                 {
                     b.Property<int>("DiamondID")
@@ -100,6 +130,59 @@ namespace SWP391_Project.Migrations
                     b.HasKey("DiamondID");
 
                     b.ToTable("Diamond");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.DiamondPrice", b =>
+                {
+                    b.Property<int>("DiamondPriceID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiamondPriceID"), 1L, 1);
+
+                    b.Property<int>("DiamondID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("DiamondPriceID");
+
+                    b.HasIndex("DiamondID");
+
+                    b.ToTable("DiamondPrice");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.FinalReceipt", b =>
+                {
+                    b.Property<int>("FinalReceiptID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FinalReceiptID"), 1L, 1);
+
+                    b.Property<string>("Signature")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ValuationResultID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FinalReceiptID");
+
+                    b.HasIndex("ValuationResultID");
+
+                    b.ToTable("FinalReceipt");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.Models.RequestValuationForm", b =>
@@ -282,6 +365,125 @@ namespace SWP391_Project.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationReceipt", b =>
+                {
+                    b.Property<int>("ValuationReceiptID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuationReceiptID"), 1L, 1);
+
+                    b.Property<int>("ConsultStaffID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("ReceiptPrice")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ScheduleFormID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Signature")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ValuationStaffID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ValuationReceiptID");
+
+                    b.HasIndex("ConsultStaffID");
+
+                    b.HasIndex("ScheduleFormID");
+
+                    b.HasIndex("ServiceID");
+
+                    b.HasIndex("ValuationStaffID");
+
+                    b.ToTable("ValuationReceipts");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationResult", b =>
+                {
+                    b.Property<int>("ValuationResultID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuationResultID"), 1L, 1);
+
+                    b.Property<int>("DiamondID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Signature")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ValuationReceiptID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ValuationStaffID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ValuationResultID");
+
+                    b.HasIndex("DiamondID");
+
+                    b.HasIndex("ValuationReceiptID");
+
+                    b.HasIndex("ValuationStaffID");
+
+                    b.ToTable("ValuationResult");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.Blog", b =>
+                {
+                    b.HasOne("SWP391_Project.Databases.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.DiamondPrice", b =>
+                {
+                    b.HasOne("SWP391_Project.Databases.Models.Diamond", "Diamond")
+                        .WithMany()
+                        .HasForeignKey("DiamondID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Diamond");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.FinalReceipt", b =>
+                {
+                    b.HasOne("SWP391_Project.Databases.Models.ValuationResult", "ValuationResult")
+                        .WithMany()
+                        .HasForeignKey("ValuationResultID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ValuationResult");
+                });
+
             modelBuilder.Entity("SWP391_Project.Databases.Models.RequestValuationForm", b =>
                 {
                     b.HasOne("SWP391_Project.Databases.Models.Service", "Service")
@@ -325,6 +527,68 @@ namespace SWP391_Project.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationReceipt", b =>
+                {
+                    b.HasOne("SWP391_Project.Databases.Models.User", "ConsultStaff")
+                        .WithMany()
+                        .HasForeignKey("ConsultStaffID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SWP391_Project.Databases.Models.ScheduleForm", "ScheduleForm")
+                        .WithMany()
+                        .HasForeignKey("ScheduleFormID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SWP391_Project.Databases.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SWP391_Project.Databases.Models.User", "ValuationStaff")
+                        .WithMany()
+                        .HasForeignKey("ValuationStaffID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ConsultStaff");
+
+                    b.Navigation("ScheduleForm");
+
+                    b.Navigation("Service");
+
+                    b.Navigation("ValuationStaff");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationResult", b =>
+                {
+                    b.HasOne("SWP391_Project.Databases.Models.Diamond", "Diamond")
+                        .WithMany()
+                        .HasForeignKey("DiamondID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SWP391_Project.Databases.Models.ValuationReceipt", "ValuationReceipt")
+                        .WithMany()
+                        .HasForeignKey("ValuationReceiptID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SWP391_Project.Databases.Models.User", "ValuationStaff")
+                        .WithMany()
+                        .HasForeignKey("ValuationStaffID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Diamond");
+
+                    b.Navigation("ValuationReceipt");
+
+                    b.Navigation("ValuationStaff");
                 });
 #pragma warning restore 612, 618
         }
