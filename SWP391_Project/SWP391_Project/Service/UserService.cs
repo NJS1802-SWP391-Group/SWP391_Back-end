@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using SWP391_Project.Databases.Models;
 using SWP391_Project.Dtos;
+using SWP391_Project.DTOs;
 using SWP391_Project.Repositories.Interfaces;
-using SWP391_Project.Service.Interfaces;
 
 namespace SWP391_Project.Service
 {
-    public class UserService:IUserService
+    public class UserService
     {
         private readonly IRepository<User, int> _userRepository;
         private readonly IMapper _mapper;
@@ -16,6 +16,13 @@ namespace SWP391_Project.Service
             _userRepository = userRepository;
             _mapper = mapper;
             _roleRepository = roleRepository;
+        }
+
+        public async Task<List<UserModel>> GetAll()
+        {
+            var users = _userRepository.GetAll().ToList();
+            var result = _mapper.Map<List<UserModel>>(users);
+            return result;
         }
 
         public async Task<UserModel> GetUserByEmail(string email)

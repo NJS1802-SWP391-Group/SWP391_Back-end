@@ -67,7 +67,7 @@ public static class ServicesExtensions
         services.AddScoped<DatabaseInitialiser>();
         services.AddScoped<UserService>();
         services.AddScoped<IdentityService>();
-
+        services.AddScoped<RequestValuationFormService>();
 
 
         return services;
