@@ -1,35 +1,34 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SWP391_Project.Common.Requests;
-using SWP391_Project.Common.Responses;
 using SWP391_Project.Common;
-using SWP391_Project.Service;
 using SWP391_Project.Constants;
 using SWP391_Project.Databases.Models;
-using System.Net;
 using SWP391_Project.Dtos;
+using SWP391_Project.DTOs;
+using SWP391_Project.Service;
+using System.Net;
 
 namespace SWP391_Project.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : Controller
+    public class RequestValuationFormController : Controller
     {
-        private readonly UserService _userService;
+        private readonly RequestValuationFormService _requestValuationFormService;
 
-        public UsersController(UserService userService)
+        public RequestValuationFormController(RequestValuationFormService requestValuationFormService)
         {
-            _userService = userService;
+            _requestValuationFormService = requestValuationFormService;
         }
 
         [AllowAnonymous]
-        [HttpGet("GetAllUsers")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("GetAllRequestValuation")]
+        public async Task<IActionResult> GetAll() 
         {
-            var res = await _userService.GetAll();
-            if (res is null)
+            var res = await _requestValuationFormService.GetAll();
+            if(res is null)
             {
-                var resultFail = new StatusCodeResponse<List<UserModel>>
+                var resultFail = new StatusCodeResponse<List<RequestValuationFormModel>>
                 {
                     Data = null,
                     StatusCode = HttpStatusCode.BadRequest,
@@ -37,7 +36,7 @@ namespace SWP391_Project.Controllers
                 };
                 return StatusCode((int)resultFail.StatusCode, resultFail.Message);
             }
-            var result = new StatusCodeResponse<List<UserModel>>
+            var result = new StatusCodeResponse<List<RequestValuationFormModel>>
             {
                 Data = res,
                 StatusCode = HttpStatusCode.OK,

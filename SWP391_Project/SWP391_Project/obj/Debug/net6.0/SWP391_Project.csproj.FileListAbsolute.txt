@@ -348,7 +348,6 @@ D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\D
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\SWP391_Project.dll
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\SWP391_Project.pdb
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\AutoMapper.dll
-D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\Humanizer.dll
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\Microsoft.AspNetCore.Server.Kestrel.Https.dll

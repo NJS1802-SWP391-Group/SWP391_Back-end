@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Project\\SWP391_Project\\SWP391_Project.csproj": {}
+    "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Back-end\\SWP391_Project\\SWP391_Project\\SWP391_Project.csproj": {}
   },
   "projects": {
-    "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Project\\SWP391_Project\\SWP391_Project.csproj": {
+    "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Back-end\\SWP391_Project\\SWP391_Project\\SWP391_Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Project\\SWP391_Project\\SWP391_Project.csproj",
+        "projectUniqueName": "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Back-end\\SWP391_Project\\SWP391_Project\\SWP391_Project.csproj",
         "projectName": "SWP391_Project",
-        "projectPath": "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Project\\SWP391_Project\\SWP391_Project.csproj",
+        "projectPath": "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Back-end\\SWP391_Project\\SWP391_Project\\SWP391_Project.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Project\\SWP391_Project\\obj\\",
+        "outputPath": "D:\\FPT\\Term 7\\SWP391\\Project\\SWP391_Back-end\\SWP391_Project\\SWP391_Project\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -48,9 +48,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+            "AutoMapper": {
               "target": "Package",
-              "version": "[6.1.1, )"
+              "version": "[6.0.2, )"
             },
             "Microsoft.AspNetCore": {
               "target": "Package",
