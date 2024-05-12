@@ -11,9 +11,6 @@ namespace SWP391_Project.Databases.Models
         public int DiamondID { get; set; }
         [ForeignKey("DiamondID")]
         public Diamond Diamond { get; set; }
-        public int ValuationReceiptID { get; set; }
-        [ForeignKey("ValuationReceiptID")]
-        public ValuationReceipt ValuationReceipt { get; set; }
         public DateTime Time {  get; set; }
         public string Signature { get; set; }
         public string Status { get; set; }

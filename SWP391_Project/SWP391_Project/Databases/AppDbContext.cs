@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using SWP391_Project.Databases.Models;
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,7 @@ namespace SWP391_Project.Databases
         public DbSet<DiamondPrice> DiamondPrices { get; set; }
         public DbSet<ValuationReceipt> ValuationReceipts { get; set; }
         public DbSet<ValuationResult> ValuationResult { get; set; }
+        public DbSet<Diamond_ValuationStaff> Diamond_ValuationStaff { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,12 +37,20 @@ namespace SWP391_Project.Databases
                 .HasOne(vr => vr.ConsultStaff)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<ValuationReceipt>()
+            modelBuilder.Entity<ValuationResult>()
+                .HasOne(vr => vr.Diamond)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<FinalReceipt>()
+                .HasOne(vr => vr.ValuationResult)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Diamond_ValuationStaff>()
                 .HasOne(vr => vr.ValuationStaff)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<ValuationResult>()
-                .HasOne(vr => vr.ValuationReceipt)
+            modelBuilder.Entity<Diamond_ValuationStaff>()
+                .HasOne(vr => vr.Diamond)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
         }

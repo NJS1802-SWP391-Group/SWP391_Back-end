@@ -186,7 +186,6 @@ C:\Users\Admin\OneDrive\Máy tính\SWP391_Back-end\SWP391_Project\SWP391_Project
 C:\Users\Admin\OneDrive\Máy tính\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\SWP391_Project.dll
 C:\Users\Admin\OneDrive\Máy tính\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\SWP391_Project.pdb
 C:\Users\Admin\OneDrive\Máy tính\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\AutoMapper.dll
-C:\Users\Admin\OneDrive\Máy tính\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\Admin\OneDrive\Máy tính\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\Humanizer.dll
 C:\Users\Admin\OneDrive\Máy tính\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Admin\OneDrive\Máy tính\SWP391_Back-end\SWP391_Project\SWP391_Project\bin\Debug\net6.0\Microsoft.AspNetCore.Server.Kestrel.Https.dll
