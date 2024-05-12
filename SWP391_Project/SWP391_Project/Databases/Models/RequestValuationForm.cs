@@ -16,9 +16,5 @@ namespace SWP391_Project.Databases.Models
         public string Address { get; set; }
         public string Quantity { get; set; }
         public string Status { get; set; }
-        public int ServiceID { get; set; }
-        [ForeignKey("ServiceID")]
-        public Service Service { get; set; }
-
     }
 }

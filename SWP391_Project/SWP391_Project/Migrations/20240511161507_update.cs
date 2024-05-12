@@ -10,32 +10,23 @@ namespace SWP391_Project.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Diamond",
+                name: "RequestValuationForm",
                 columns: table => new
                 {
-                    DiamondID = table.Column<int>(type: "int", nullable: false)
+                    RequestValuationFormID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Shape = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Carat = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Clarity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Fluorescence = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Symmetry = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Polish = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Certificate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CertificateDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Measurement = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CutGrade = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CutScore = table.Column<double>(type: "float", nullable: false),
-                    ClarityCharacteristic = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Inscription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CCCD = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Diamond", x => x.DiamondID);
+                    table.PrimaryKey("PK_RequestValuationForm", x => x.RequestValuationFormID);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,27 +58,6 @@ namespace SWP391_Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DiamondPrice",
-                columns: table => new
-                {
-                    DiamondPriceID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DiamondID = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DiamondPrice", x => x.DiamondPriceID);
-                    table.ForeignKey(
-                        name: "FK_DiamondPrice_Diamond_DiamondID",
-                        column: x => x.DiamondID,
-                        principalTable: "Diamond",
-                        principalColumn: "DiamondID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -111,33 +81,6 @@ namespace SWP391_Project.Migrations
                         column: x => x.RoleID,
                         principalTable: "Role",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RequestValuationForm",
-                columns: table => new
-                {
-                    RequestValuationFormID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CCCD = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Quantity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ServiceID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RequestValuationForm", x => x.RequestValuationFormID);
-                    table.ForeignKey(
-                        name: "FK_RequestValuationForm_Service_ServiceID",
-                        column: x => x.ServiceID,
-                        principalTable: "Service",
-                        principalColumn: "ServiceID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -202,14 +145,12 @@ namespace SWP391_Project.Migrations
                 {
                     ValuationReceiptID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ValuationStaffID = table.Column<int>(type: "int", nullable: false),
                     ConsultStaffID = table.Column<int>(type: "int", nullable: false),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Signature = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceiptPrice = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ScheduleFormID = table.Column<int>(type: "int", nullable: false),
-                    ServiceID = table.Column<int>(type: "int", nullable: false)
+                    ScheduleFormID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,21 +162,103 @@ namespace SWP391_Project.Migrations
                         principalColumn: "ScheduleFormID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ValuationReceipts_Service_ServiceID",
+                        name: "FK_ValuationReceipts_User_ConsultStaffID",
+                        column: x => x.ConsultStaffID,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Diamond",
+                columns: table => new
+                {
+                    DiamondID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GIA = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Shape = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Carat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Clarity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fluorescence = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Symmetry = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Polish = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Certificate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CertificateDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Measurement = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CutGrade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CutScore = table.Column<double>(type: "float", nullable: false),
+                    ClarityCharacteristic = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Inscription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServiceID = table.Column<int>(type: "int", nullable: false),
+                    RequestValidationFormID = table.Column<int>(type: "int", nullable: false),
+                    ValuationReceiptID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Diamond", x => x.DiamondID);
+                    table.ForeignKey(
+                        name: "FK_Diamond_Service_ServiceID",
                         column: x => x.ServiceID,
                         principalTable: "Service",
                         principalColumn: "ServiceID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ValuationReceipts_User_ConsultStaffID",
-                        column: x => x.ConsultStaffID,
-                        principalTable: "User",
-                        principalColumn: "Id");
+                        name: "FK_Diamond_ValuationReceipts_ValuationReceiptID",
+                        column: x => x.ValuationReceiptID,
+                        principalTable: "ValuationReceipts",
+                        principalColumn: "ValuationReceiptID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Diamond_ValuationStaff",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ValuationStaffID = table.Column<int>(type: "int", nullable: false),
+                    DiamondID = table.Column<int>(type: "int", nullable: false),
+                    Deadline = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Diamond_ValuationStaff", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_ValuationReceipts_User_ValuationStaffID",
+                        name: "FK_Diamond_ValuationStaff_Diamond_DiamondID",
+                        column: x => x.DiamondID,
+                        principalTable: "Diamond",
+                        principalColumn: "DiamondID");
+                    table.ForeignKey(
+                        name: "FK_Diamond_ValuationStaff_User_ValuationStaffID",
                         column: x => x.ValuationStaffID,
                         principalTable: "User",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DiamondPrice",
+                columns: table => new
+                {
+                    DiamondPriceID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DiamondID = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiamondPrice", x => x.DiamondPriceID);
+                    table.ForeignKey(
+                        name: "FK_DiamondPrice_Diamond_DiamondID",
+                        column: x => x.DiamondID,
+                        principalTable: "Diamond",
+                        principalColumn: "DiamondID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,7 +268,6 @@ namespace SWP391_Project.Migrations
                     ValuationResultID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DiamondID = table.Column<int>(type: "int", nullable: false),
-                    ValuationReceiptID = table.Column<int>(type: "int", nullable: false),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Signature = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -258,19 +280,13 @@ namespace SWP391_Project.Migrations
                         name: "FK_ValuationResult_Diamond_DiamondID",
                         column: x => x.DiamondID,
                         principalTable: "Diamond",
-                        principalColumn: "DiamondID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "DiamondID");
                     table.ForeignKey(
                         name: "FK_ValuationResult_User_ValuationStaffID",
                         column: x => x.ValuationStaffID,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ValuationResult_ValuationReceipts_ValuationReceiptID",
-                        column: x => x.ValuationReceiptID,
-                        principalTable: "ValuationReceipts",
-                        principalColumn: "ValuationReceiptID");
                 });
 
             migrationBuilder.CreateTable(
@@ -281,6 +297,7 @@ namespace SWP391_Project.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Signature = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ValuationResultID = table.Column<int>(type: "int", nullable: false),
+                    ManagerID = table.Column<int>(type: "int", nullable: false),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -288,11 +305,16 @@ namespace SWP391_Project.Migrations
                 {
                     table.PrimaryKey("PK_FinalReceipt", x => x.FinalReceiptID);
                     table.ForeignKey(
+                        name: "FK_FinalReceipt_User_ManagerID",
+                        column: x => x.ManagerID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_FinalReceipt_ValuationResult_ValuationResultID",
                         column: x => x.ValuationResultID,
                         principalTable: "ValuationResult",
-                        principalColumn: "ValuationResultID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ValuationResultID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -301,19 +323,39 @@ namespace SWP391_Project.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Diamond_ServiceID",
+                table: "Diamond",
+                column: "ServiceID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Diamond_ValuationReceiptID",
+                table: "Diamond",
+                column: "ValuationReceiptID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Diamond_ValuationStaff_DiamondID",
+                table: "Diamond_ValuationStaff",
+                column: "DiamondID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Diamond_ValuationStaff_ValuationStaffID",
+                table: "Diamond_ValuationStaff",
+                column: "ValuationStaffID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DiamondPrice_DiamondID",
                 table: "DiamondPrice",
                 column: "DiamondID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FinalReceipt_ManagerID",
+                table: "FinalReceipt",
+                column: "ManagerID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FinalReceipt_ValuationResultID",
                 table: "FinalReceipt",
                 column: "ValuationResultID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RequestValuationForm_ServiceID",
-                table: "RequestValuationForm",
-                column: "ServiceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ScheduleForm_ConsultStaffID",
@@ -346,24 +388,9 @@ namespace SWP391_Project.Migrations
                 column: "ScheduleFormID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ValuationReceipts_ServiceID",
-                table: "ValuationReceipts",
-                column: "ServiceID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ValuationReceipts_ValuationStaffID",
-                table: "ValuationReceipts",
-                column: "ValuationStaffID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ValuationResult_DiamondID",
                 table: "ValuationResult",
                 column: "DiamondID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ValuationResult_ValuationReceiptID",
-                table: "ValuationResult",
-                column: "ValuationReceiptID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ValuationResult_ValuationStaffID",
@@ -375,6 +402,9 @@ namespace SWP391_Project.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Blog");
+
+            migrationBuilder.DropTable(
+                name: "Diamond_ValuationStaff");
 
             migrationBuilder.DropTable(
                 name: "DiamondPrice");
@@ -389,6 +419,9 @@ namespace SWP391_Project.Migrations
                 name: "Diamond");
 
             migrationBuilder.DropTable(
+                name: "Service");
+
+            migrationBuilder.DropTable(
                 name: "ValuationReceipts");
 
             migrationBuilder.DropTable(
@@ -399,9 +432,6 @@ namespace SWP391_Project.Migrations
 
             migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "Service");
 
             migrationBuilder.DropTable(
                 name: "Role");

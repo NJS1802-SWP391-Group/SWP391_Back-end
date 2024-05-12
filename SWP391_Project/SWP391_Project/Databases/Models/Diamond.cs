@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-
+using SWP391_Project.Exceptions;
 
 namespace SWP391_Project.Databases.Models
 {
@@ -10,6 +10,7 @@ namespace SWP391_Project.Databases.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DiamondID { get; set; }
+        public string GIA { get; set; }
         public string Type { get; set; }
         public string Shape { get; set; }
         public string Carat { get; set; }
@@ -27,6 +28,11 @@ namespace SWP391_Project.Databases.Models
         public string Inscription { get; set; }
         public string Comments { get; set; }
         public string Status { get; set; }
-
+        public int ServiceID { get; set; }
+        [ForeignKey("ServiceID")]
+        public Service Service { get; set; }
+        public int RequestValidationFormID {  get; set; }
+        [ForeignKey("ValuationReceiptID")]
+        public ValuationReceipt requestValidationForm { get; set; }
     }
 }
