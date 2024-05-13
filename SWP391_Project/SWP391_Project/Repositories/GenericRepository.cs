@@ -59,7 +59,7 @@ where TEntity : class
             return entityEntry.Entity;
         }
 
-        public Task<int> Commit() => _dbContext.SaveChangesAsync();
+        public Task<int> SaveChangesAsync() => _dbContext.SaveChangesAsync();
 
         public async Task<int> CountAsync()
         {

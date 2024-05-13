@@ -7,7 +7,7 @@ using SWP391_Project.Mapper;
 using SWP391_Project.Middlewares;
 using SWP391_Project.Repositories;
 using SWP391_Project.Repositories.Interfaces;
-using SWP391_Project.Service;
+using SWP391_Project.Services;
 using SWP391_Project.Settings;
 using System.Text;
 

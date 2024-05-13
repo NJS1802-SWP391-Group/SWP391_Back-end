@@ -12,7 +12,7 @@ using SWP391_Project.Repositories;
 using SWP391_Project.Settings;
 using SWP391_Project.Repositories.Interfaces;
 
-namespace SWP391_Project.Service;
+namespace SWP391_Project.Services;
 
 public class IdentityService
 {
@@ -47,7 +47,7 @@ public class IdentityService
             Status = "Active",
             RoleID = "US"
         });
-        var res = await _userRepository.Commit();
+        var res = await _userRepository.SaveChangesAsync();
 
         return res > 0;
     }

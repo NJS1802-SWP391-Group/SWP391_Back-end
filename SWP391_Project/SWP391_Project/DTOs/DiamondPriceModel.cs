@@ -1,19 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using SWP391_Project.Databases.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
-
-namespace SWP391_Project.Databases.Models
+namespace SWP391_Project.DTOs
 {
-    [Table("DiamondPrice")]
-    public class DiamondPrice
+    public class DiamondPriceModel
     {
-        [Key]
         public int DiamondPriceID { get; set; }
         public int DiamondID { get; set; }
         [ForeignKey("DiamondID")]
         public Diamond Diamond { get; set; }
         public double Price { get; set; }
         public DateTime UpdateTime { get; set; }
-        public string? Source {  get; set; }
+        public string? Source { get; set; }
     }
 }

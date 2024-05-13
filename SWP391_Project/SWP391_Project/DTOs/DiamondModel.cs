@@ -1,16 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using SWP391_Project.Exceptions;
+using SWP391_Project.Databases.Models;
 
-namespace SWP391_Project.Databases.Models
+namespace SWP391_Project.DTOs
 {
-    [Table("Diamond")]
-    public class Diamond
+    public class DiamondModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DiamondID { get; set; }
-        public string? Code { get; set; }
+        public string? GIA { get; set; }
         public string? Origin { get; set; }
         public string? Shape { get; set; }
         public string? Carat { get; set; }

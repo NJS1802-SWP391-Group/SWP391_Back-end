@@ -6,7 +6,7 @@ using SWP391_Project.Dtos.Auth;
 using SWP391_Project.Exceptions;
 using SWP391_Project.Common.Requests;
 using SWP391_Project.Common.Responses;
-using SWP391_Project.Service;
+using SWP391_Project.Services;
 
 namespace SWP391_Project.Common;
 

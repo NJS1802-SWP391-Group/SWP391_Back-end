@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SWP391_Project.Common.Requests;
 using SWP391_Project.Common.Responses;
 using SWP391_Project.Common;
-using SWP391_Project.Service;
+using SWP391_Project.Services;
 using SWP391_Project.Constants;
 using SWP391_Project.Databases.Models;
 using System.Net;

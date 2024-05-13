@@ -1,17 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using SWP391_Project.Databases.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SWP391_Project.Databases.Models
+namespace SWP391_Project.DTOs
 {
-    [Table("ValuationResult")]
-    public class ValuationResult
+    public class ValuationResultModel
     {
-        [Key]
         public int ValuationResultID { get; set; }
         public int ValuationReceiptDetailID { get; set; }
         [ForeignKey("ValuationReceiptDetailID")]
         public ValuationReceiptDetail ValuationReceiptDetail { get; set; }
-        public DateTime Time {  get; set; }
+        public DateTime Time { get; set; }
         public string Signature { get; set; }
         public string Status { get; set; }
         public int ValuationStaffID { get; set; }

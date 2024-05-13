@@ -4,7 +4,7 @@ using SWP391_Project.Dtos;
 using SWP391_Project.DTOs;
 using SWP391_Project.Repositories.Interfaces;
 
-namespace SWP391_Project.Service
+namespace SWP391_Project.Services
 {
     public class UserService
     {
@@ -20,14 +20,28 @@ namespace SWP391_Project.Service
 
         public async Task<List<UserModel>> GetAll()
         {
-            var users = _userRepository.GetAll().ToList();
-            var result = _mapper.Map<List<UserModel>>(users);
-            return result;
+            try
+            {
+                var users = _userRepository.GetAll().ToList();
+                var result = _mapper.Map<List<UserModel>>(users);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<UserModel> GetUserByEmail(string email)
         {
-            return _mapper.Map<UserModel>(_userRepository.FindByCondition(x => x.Email == email).FirstOrDefault());
+            try
+            {
+                return _mapper.Map<UserModel>(_userRepository.FindByCondition(x => x.Email == email).FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

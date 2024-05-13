@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SWP391_Project.Common;
+using SWP391_Project.Common.Requests;
 using SWP391_Project.Constants;
 using SWP391_Project.Databases.Models;
 using SWP391_Project.Dtos;
 using SWP391_Project.DTOs;
-using SWP391_Project.Service;
+using SWP391_Project.Services;
 using System.Net;
 
 namespace SWP391_Project.Controllers
@@ -43,6 +44,14 @@ namespace SWP391_Project.Controllers
                 Message = "Succeed"
             };
             return StatusCode((int)result.StatusCode, result.Data);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("CreateRequestValuationForm")]
+        public async Task<IActionResult> CreateRequestValuationForm([FromBody]CreateRequestValuationFormReq req) 
+        {
+            var result = await _requestValuationFormService.CreateRequestValuationForm(req);
+            return StatusCode((int)result.StatusCode, result.Data == null ? result.Message : result.Data);
         }
     }
 }
