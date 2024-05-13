@@ -12,7 +12,7 @@ using SWP391_Project.Databases;
 namespace SWP391_Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240511161507_update")]
+    [Migration("20240513034404_update")]
     partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,6 @@ namespace SWP391_Project.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserID")
@@ -63,68 +62,51 @@ namespace SWP391_Project.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiamondID"), 1L, 1);
 
                     b.Property<string>("Carat")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Certificate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CertificateDate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Clarity")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClarityCharacteristic")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CutGrade")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("CutScore")
+                    b.Property<double?>("CutScore")
                         .HasColumnType("float");
 
                     b.Property<string>("Fluorescence")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GIA")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Inscription")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Measurement")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Origin")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Polish")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RequestValidationFormID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Shape")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
@@ -132,21 +114,9 @@ namespace SWP391_Project.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Symmetry")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ValuationReceiptID")
-                        .HasColumnType("int");
 
                     b.HasKey("DiamondID");
-
-                    b.HasIndex("ServiceID");
-
-                    b.HasIndex("ValuationReceiptID");
 
                     b.ToTable("Diamond");
                 });
@@ -198,6 +168,9 @@ namespace SWP391_Project.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<string>("Source")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdateTime")
                         .HasColumnType("datetime2");
@@ -455,6 +428,48 @@ namespace SWP391_Project.Migrations
                     b.ToTable("ValuationReceipts");
                 });
 
+            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationReceiptDetail", b =>
+                {
+                    b.Property<int>("ValuationReceiptDetailID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuationReceiptDetailID"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DiamondID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("EstimatePrice")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ServiceID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Signature")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ValuationReceiptID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ValuationReceiptDetailID");
+
+                    b.HasIndex("DiamondID");
+
+                    b.HasIndex("ServiceID");
+
+                    b.HasIndex("ValuationReceiptID");
+
+                    b.ToTable("ValuationReceiptDetails");
+                });
+
             modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationResult", b =>
                 {
                     b.Property<int>("ValuationResultID")
@@ -462,9 +477,6 @@ namespace SWP391_Project.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuationResultID"), 1L, 1);
-
-                    b.Property<int>("DiamondID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Signature")
                         .IsRequired()
@@ -477,12 +489,15 @@ namespace SWP391_Project.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ValuationReceiptDetailID")
+                        .HasColumnType("int");
+
                     b.Property<int>("ValuationStaffID")
                         .HasColumnType("int");
 
                     b.HasKey("ValuationResultID");
 
-                    b.HasIndex("DiamondID");
+                    b.HasIndex("ValuationReceiptDetailID");
 
                     b.HasIndex("ValuationStaffID");
 
@@ -498,25 +513,6 @@ namespace SWP391_Project.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SWP391_Project.Databases.Models.Diamond", b =>
-                {
-                    b.HasOne("SWP391_Project.Databases.Models.Service", "Service")
-                        .WithMany()
-                        .HasForeignKey("ServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SWP391_Project.Databases.Models.ValuationReceipt", "requestValidationForm")
-                        .WithMany()
-                        .HasForeignKey("ValuationReceiptID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Service");
-
-                    b.Navigation("requestValidationForm");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.Models.Diamond_ValuationStaff", b =>
@@ -621,11 +617,38 @@ namespace SWP391_Project.Migrations
                     b.Navigation("ScheduleForm");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationResult", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationReceiptDetail", b =>
                 {
                     b.HasOne("SWP391_Project.Databases.Models.Diamond", "Diamond")
                         .WithMany()
                         .HasForeignKey("DiamondID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SWP391_Project.Databases.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SWP391_Project.Databases.Models.ValuationReceipt", "ValuationReceipt")
+                        .WithMany()
+                        .HasForeignKey("ValuationReceiptID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Diamond");
+
+                    b.Navigation("Service");
+
+                    b.Navigation("ValuationReceipt");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationResult", b =>
+                {
+                    b.HasOne("SWP391_Project.Databases.Models.ValuationReceiptDetail", "ValuationReceiptDetail")
+                        .WithMany()
+                        .HasForeignKey("ValuationReceiptDetailID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -635,7 +658,7 @@ namespace SWP391_Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Diamond");
+                    b.Navigation("ValuationReceiptDetail");
 
                     b.Navigation("ValuationStaff");
                 });

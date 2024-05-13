@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Service\NewFolder\**" />
-    <Content Remove="Service\NewFolder\**" />
-    <EmbeddedResource Remove="Service\NewFolder\**" />
-    <None Remove="Service\NewFolder\**" />
+    <Compile Remove="Services\NewFolder\**" />
+    <Content Remove="Services\NewFolder\**" />
+    <EmbeddedResource Remove="Services\NewFolder\**" />
+    <None Remove="Services\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>

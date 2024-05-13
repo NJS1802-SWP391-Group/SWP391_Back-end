@@ -19,7 +19,7 @@ namespace SWP391_Project.Repositories.Interfaces
         TEntity Update(TEntity entity);
         TEntity Remove(TKey id);
         public TEntity RemoveCompositeKey(TKey id1, TKey id2);
-        Task<int> Commit();
+        Task<int> SaveChangesAsync();
         Task<int> CountAsync();
         Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
         Task<IEnumerable<TEntity>> GetTopNItems<TKeyProperty>(Expression<Func<TEntity, TKeyProperty>> keySelector, int n);

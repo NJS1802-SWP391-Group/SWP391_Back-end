@@ -29,16 +29,13 @@ namespace SWP391_Project.Databases
         public DbSet<ValuationReceipt> ValuationReceipts { get; set; }
         public DbSet<ValuationResult> ValuationResult { get; set; }
         public DbSet<Diamond_ValuationStaff> Diamond_ValuationStaff { get; set; }
+        public DbSet<ValuationReceiptDetail> ValuationReceiptDetails { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ValuationReceipt>()
                 .HasOne(vr => vr.ConsultStaff)
-                .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<ValuationResult>()
-                .HasOne(vr => vr.Diamond)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<FinalReceipt>()
@@ -51,6 +48,10 @@ namespace SWP391_Project.Databases
                 .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Diamond_ValuationStaff>()
                 .HasOne(vr => vr.Diamond)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<ValuationResult>()
+                .HasOne(vr => vr.ValuationReceiptDetail)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
         }
