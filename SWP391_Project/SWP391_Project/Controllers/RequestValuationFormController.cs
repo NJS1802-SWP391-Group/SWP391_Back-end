@@ -47,10 +47,26 @@ namespace SWP391_Project.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("GetRequestValuationFormById")]
+        public async Task<IActionResult> GetRequestValuationFormById(int id)
+        {
+            var result = await _requestValuationFormService.GetRequestValuationFormById(id);
+            return StatusCode((int)result.StatusCode, result.Data == null ? result.Message : result.Data);
+        }
+
+        [AllowAnonymous]
         [HttpPost("CreateRequestValuationForm")]
         public async Task<IActionResult> CreateRequestValuationForm([FromBody]CreateRequestValuationFormReq req) 
         {
             var result = await _requestValuationFormService.CreateRequestValuationForm(req);
+            return StatusCode((int)result.StatusCode, result.Data == null ? result.Message : result.Data);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("ChangeStatus")]
+        public async Task<IActionResult> ChangeStatus([FromBody] ChangeStatusReq req)
+        {
+            var result = await _requestValuationFormService.ChangeStatus(req.ID, req.Status);
             return StatusCode((int)result.StatusCode, result.Data == null ? result.Message : result.Data);
         }
     }

@@ -34,18 +34,32 @@ namespace SWP391_Project.Services
             }
         }
 
-        public async Task<RequestValuationFormModel> GetById(int id)
+        public async Task<StatusCodeResponse<RequestValuationFormModel>> GetRequestValuationFormById(int id)
         {
+            var result = new StatusCodeResponse<RequestValuationFormModel>();
             try
             {
-                var reqValuationForm = await _requestValuationFormRepo.FindByCondition(r => r.RequestValuationFormID == id).FirstOrDefaultAsync();
-                var result = _mapper.Map<RequestValuationFormModel>(reqValuationForm);
-                return result;
+                var reqValuationForm = await _requestValuationFormRepo.FindByCondition(r => r.RequestValuationFormID == id && r.Status.ToUpper() == "Active".ToUpper()).FirstOrDefaultAsync();
+                if (reqValuationForm != null)
+                {
+                    result.Data = _mapper.Map<RequestValuationFormModel>(reqValuationForm);
+                    result.StatusCode = HttpStatusCode.OK;
+                    result.Message = "OK";
+                }
+                else
+                {
+                    result.Data = _mapper.Map<RequestValuationFormModel>(reqValuationForm);
+                    result.StatusCode = HttpStatusCode.NotFound;
+                    result.Message = "Cannot find this form";
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                result.StatusCode = HttpStatusCode.InternalServerError;
+                result.Message = ex.Message;
+                result.Data = null;
             }
+            return result;
         }
 
         public async Task<StatusCodeResponse<RequestValuationFormModel>> CreateRequestValuationForm(CreateRequestValuationFormReq req)
@@ -64,6 +78,28 @@ namespace SWP391_Project.Services
             catch (Exception ex)
             {
                 result.StatusCode = HttpStatusCode.InternalServerError; 
+                result.Message = ex.Message;
+                result.Data = null;
+            }
+            return result;
+        }
+
+        public async Task<StatusCodeResponse<RequestValuationFormModel>> ChangeStatus(int id, string status)
+        {
+            var result = new StatusCodeResponse<RequestValuationFormModel>();
+            try
+            {
+                var reqValuationForm = await _requestValuationFormRepo.FindByCondition(rvf => rvf.RequestValuationFormID == id).FirstOrDefaultAsync();
+                reqValuationForm.Status = status;
+                var data = _requestValuationFormRepo.Update(reqValuationForm);
+                await _requestValuationFormRepo.SaveChangesAsync();
+                result.Data = _mapper.Map<RequestValuationFormModel>(data);
+                result.StatusCode = HttpStatusCode.OK;
+                result.Message = "OK";
+            }
+            catch (Exception ex)
+            {
+                result.StatusCode = HttpStatusCode.InternalServerError;
                 result.Message = ex.Message;
                 result.Data = null;
             }

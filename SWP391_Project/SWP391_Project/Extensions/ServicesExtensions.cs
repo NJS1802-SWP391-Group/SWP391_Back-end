@@ -68,6 +68,7 @@ public static class ServicesExtensions
         services.AddScoped<UserService>();
         services.AddScoped<IdentityService>();
         services.AddScoped<RequestValuationFormService>();
+        services.AddScoped<ScheduleFormService>();
 
 
         return services;
