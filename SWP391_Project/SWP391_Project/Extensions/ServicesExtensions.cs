@@ -9,6 +9,7 @@ using SWP391_Project.Repositories;
 using SWP391_Project.Repositories.Interfaces;
 using SWP391_Project.Services;
 using SWP391_Project.Settings;
+using System.Globalization;
 using System.Text;
 
 namespace SWP391_Project.Extensions;
@@ -62,6 +63,10 @@ public static class ServicesExtensions
             //opt.UseNpgsql(configuration.GetConnectionString("PgDbConnection"));
             opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
+
+        AppContext.SetSwitch("System.Globalization.Invariant", true);
+        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
         services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
         services.AddScoped<DatabaseInitialiser>();

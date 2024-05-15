@@ -12,7 +12,7 @@ using SWP391_Project.Databases;
 namespace SWP391_Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240513034404_update")]
+    [Migration("20240515020358_update")]
     partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

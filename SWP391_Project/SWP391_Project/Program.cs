@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using SWP391_Project.Databases;
 using SWP391_Project.Extensions;
+using SWP391_Project.Helpers;
 using SWP391_Project.Middlewares;
 
 namespace SWP391_Project
@@ -13,6 +16,11 @@ namespace SWP391_Project
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddInfrastructure(builder.Configuration);
+
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new DateTimeHelper("yyyy-MM-ddTHH:mm:ss"));
+            });
 
             builder.Services.AddSwaggerGen(option =>
             {
@@ -27,19 +35,24 @@ namespace SWP391_Project
                     Scheme = "Bearer"
                 });
                 option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new string[]{}
-        }
-    });
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
+                option.MapType<DateTime>(() => new OpenApiSchema { 
+                    Type = "string", 
+                    Format = "string",
+                    Pattern = @"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$" 
+                });
             });
 
 
