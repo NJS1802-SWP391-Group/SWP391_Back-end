@@ -23,7 +23,7 @@ namespace SWP391_Project.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("GetAllRequestValuation")]
+        [HttpGet("Get-All-Request-Valuation")]
         public async Task<IActionResult> GetAll() 
         {
             var res = await _requestValuationFormService.GetAll();
@@ -47,7 +47,7 @@ namespace SWP391_Project.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("GetRequestValuationFormById")]
+        [HttpGet("Get-Request-Valuation-Form-By-Id")]
         public async Task<IActionResult> GetRequestValuationFormById(int id)
         {
             var result = await _requestValuationFormService.GetRequestValuationFormById(id);
@@ -55,7 +55,7 @@ namespace SWP391_Project.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("CreateRequestValuationForm")]
+        [HttpPost("Create-Request-Valuation-Form")]
         public async Task<IActionResult> CreateRequestValuationForm([FromBody]CreateRequestValuationFormReq req) 
         {
             var result = await _requestValuationFormService.CreateRequestValuationForm(req);
@@ -63,10 +63,10 @@ namespace SWP391_Project.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("ChangeStatus")]
-        public async Task<IActionResult> ChangeStatus([FromBody] ChangeStatusReq req)
+        [HttpPut("Change-Status/{id}")]
+        public async Task<IActionResult> ChangeStatus(int id, [FromBody] ChangeStatusReq req)
         {
-            var result = await _requestValuationFormService.ChangeStatus(req.ID, req.Status);
+            var result = await _requestValuationFormService.ChangeStatus(id, req.Status);
             return StatusCode((int)result.StatusCode, result.Data == null ? result.Message : result.Data);
         }
     }

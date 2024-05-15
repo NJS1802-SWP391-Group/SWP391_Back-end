@@ -24,37 +24,78 @@ namespace SWP391_Project.Services
             _mapper = mapper;
         }
 
-        public async Task<StatusCodeResponse<List<ScheduleFormModel>>> GetAllScheduleForm()
+        public async Task<StatusCodeResponse<List<ScheduleFormModel>>> GetAllActiveScheduleForm()
         {
-            var result = new StatusCodeResponse<List<ScheduleFormModel>>();
             try
             {
-                var scheduleForms = await _scheduleFormRepo.GetAll().ToListAsync();
-                if (scheduleForms != null)
+                var scheduleForms = await _scheduleFormRepo.GetAll().Where(s => s.Status.ToLower().Trim() == "active").ToListAsync();
+                if (scheduleForms.Any())
                 {
-                    result.Data = _mapper.Map<List<ScheduleFormModel>>(scheduleForms);
-                    result.StatusCode = HttpStatusCode.OK;
-                    result.Message = "OK";
+                    return new StatusCodeResponse<List<ScheduleFormModel>>()
+                    {
+                        Data = _mapper.Map<List<ScheduleFormModel>>(scheduleForms),
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "OK",
+                    };
                 }
                 else
                 {
-                    result.Data = _mapper.Map<List<ScheduleFormModel>>(scheduleForms);
-                    result.StatusCode = HttpStatusCode.NotFound;
-                    result.Message = "No schedule form available";
+                    return new StatusCodeResponse<List<ScheduleFormModel>>()
+                    {
+                        Data = _mapper.Map<List<ScheduleFormModel>>(scheduleForms),
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = "No schedule form available",
+                    };
                 }
             }
             catch (Exception ex)
             {
-                result.StatusCode = HttpStatusCode.InternalServerError;
-                result.Message = ex.Message;
-                result.Data = null;
+                return new StatusCodeResponse<List<ScheduleFormModel>>()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.Message,
+                    Data = null,
+                };
             }
-            return result;
+        }
+
+        public async Task<StatusCodeResponse<ScheduleFormModel>> GetScheduleFormById(int id)
+        {
+            try
+            {
+                var scheduleForms = await _scheduleFormRepo.FindByCondition(s => s.Status.ToLower().Trim() == "active").FirstOrDefaultAsync();
+                if (scheduleForms is null)
+                {
+                    return new StatusCodeResponse<ScheduleFormModel>()
+                    {
+                        Data = _mapper.Map<ScheduleFormModel>(scheduleForms),
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "OK",
+                    };
+                }
+                else
+                {
+                    return new StatusCodeResponse<ScheduleFormModel>()
+                    {
+                        Data = _mapper.Map<ScheduleFormModel>(scheduleForms),
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = "No schedule form available",
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new StatusCodeResponse<ScheduleFormModel>()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.Message,
+                    Data = null,
+                };
+            }
         }
 
         public async Task<StatusCodeResponse<ScheduleFormModel>> CreateScheduleForm(CreateScheduleFormReq req)
         {
-            var result = new StatusCodeResponse<ScheduleFormModel>();
             try
             {
                 var scheduleForms = await _scheduleFormRepo.AddAsync(new ScheduleForm
@@ -68,24 +109,70 @@ namespace SWP391_Project.Services
                 if (scheduleForms != null)
                 {
                     await _scheduleFormRepo.SaveChangesAsync();
-                    result.Data = _mapper.Map<ScheduleFormModel>(scheduleForms);
-                    result.StatusCode = HttpStatusCode.OK;
-                    result.Message = "OK";
+                    return new StatusCodeResponse<ScheduleFormModel>()
+                    {
+                        Data = _mapper.Map<ScheduleFormModel>(scheduleForms),
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "OK",
+                    };
                 }
                 else
                 {
-                    result.Data = _mapper.Map<ScheduleFormModel>(scheduleForms);
-                    result.StatusCode = HttpStatusCode.NotFound;
-                    result.Message = "Cannot create schedule form";
+                    return new StatusCodeResponse<ScheduleFormModel>()
+                    {
+                        Data = _mapper.Map<ScheduleFormModel>(scheduleForms),
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = "Cannot create schedule form",
+                    };
                 }
             }
             catch(Exception ex)
             {
-                result.StatusCode = HttpStatusCode.InternalServerError;
-                result.Message = ex.Message;
-                result.Data = null;
+                return new StatusCodeResponse<ScheduleFormModel>()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.Message,
+                    Data = null,
+                };
             }
-            return result;
+        }
+
+        public async Task<StatusCodeResponse<ScheduleFormModel>> ChangeStatus(int id, string status)
+        {
+            try
+            {
+                var scheduleForm = await _scheduleFormRepo.FindByCondition(rvf => rvf.ScheduleFormID == id).FirstOrDefaultAsync();
+                if (scheduleForm != null)
+                {
+                    scheduleForm.Status = status;
+                    var data = _scheduleFormRepo.Update(scheduleForm);
+                    await _requestValuationFormRepo.SaveChangesAsync();
+                    return new StatusCodeResponse<ScheduleFormModel>()
+                    {
+                        Data = _mapper.Map<ScheduleFormModel>(data),
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "OK",
+                    };
+                }
+                else
+                {
+                    return new StatusCodeResponse<ScheduleFormModel>()
+                    {
+                        Data = null,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Cannot upate",
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new StatusCodeResponse<ScheduleFormModel>()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.Message,
+                    Data = null,
+                };
+            }
         }
     }
 }

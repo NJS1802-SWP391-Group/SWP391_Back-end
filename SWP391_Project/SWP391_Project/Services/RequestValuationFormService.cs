@@ -36,74 +36,113 @@ namespace SWP391_Project.Services
 
         public async Task<StatusCodeResponse<RequestValuationFormModel>> GetRequestValuationFormById(int id)
         {
-            var result = new StatusCodeResponse<RequestValuationFormModel>();
             try
             {
-                var reqValuationForm = await _requestValuationFormRepo.FindByCondition(r => r.RequestValuationFormID == id && r.Status.ToUpper() == "Active".ToUpper()).FirstOrDefaultAsync();
+                var reqValuationForm = await _requestValuationFormRepo.FindByCondition(r => r.RequestValuationFormID == id && r.Status.ToLower().Trim() == "active").FirstOrDefaultAsync();
                 if (reqValuationForm != null)
                 {
-                    result.Data = _mapper.Map<RequestValuationFormModel>(reqValuationForm);
-                    result.StatusCode = HttpStatusCode.OK;
-                    result.Message = "OK";
+                    return new StatusCodeResponse<RequestValuationFormModel>()
+                    {
+                        Data = _mapper.Map<RequestValuationFormModel>(reqValuationForm),
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "OK",
+                    };
                 }
                 else
                 {
-                    result.Data = _mapper.Map<RequestValuationFormModel>(reqValuationForm);
-                    result.StatusCode = HttpStatusCode.NotFound;
-                    result.Message = "Cannot find this form";
+                    return new StatusCodeResponse<RequestValuationFormModel>()
+                    {
+                        Data = _mapper.Map<RequestValuationFormModel>(reqValuationForm),
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = "Cannot find this form",
+                    };
                 }
             }
             catch (Exception ex)
             {
-                result.StatusCode = HttpStatusCode.InternalServerError;
-                result.Message = ex.Message;
-                result.Data = null;
+                return new StatusCodeResponse<RequestValuationFormModel>()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.Message,
+                    Data = null,
+                };
             }
-            return result;
         }
 
         public async Task<StatusCodeResponse<RequestValuationFormModel>> CreateRequestValuationForm(CreateRequestValuationFormReq req)
         {
-            var result = new StatusCodeResponse<RequestValuationFormModel>();
             try
             {
                 var reqValuationForm = _mapper.Map<RequestValuationForm>(req);
                 reqValuationForm.Status = "Active";
                 var data = await _requestValuationFormRepo.AddAsync(reqValuationForm);
-                await _requestValuationFormRepo.SaveChangesAsync();
-                result.Data = _mapper.Map<RequestValuationFormModel>(data);
-                result.StatusCode = HttpStatusCode.OK;
-                result.Message = "OK";
+                if (data != null)
+                {
+                    await _requestValuationFormRepo.SaveChangesAsync();
+                    return new StatusCodeResponse<RequestValuationFormModel>()
+                    {
+                        Data = _mapper.Map<RequestValuationFormModel>(data),
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "OK",
+                    };
+                }
+                else
+                {
+                    return new StatusCodeResponse<RequestValuationFormModel>()
+                    {
+                        Data = _mapper.Map<RequestValuationFormModel>(data),
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = "Cannot create schedule form",
+                    };
+                }
             }
             catch (Exception ex)
             {
-                result.StatusCode = HttpStatusCode.InternalServerError; 
-                result.Message = ex.Message;
-                result.Data = null;
+                return new StatusCodeResponse<RequestValuationFormModel>()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.Message,
+                    Data = null,
+                };
             }
-            return result;
         }
 
         public async Task<StatusCodeResponse<RequestValuationFormModel>> ChangeStatus(int id, string status)
         {
-            var result = new StatusCodeResponse<RequestValuationFormModel>();
             try
             {
                 var reqValuationForm = await _requestValuationFormRepo.FindByCondition(rvf => rvf.RequestValuationFormID == id).FirstOrDefaultAsync();
-                reqValuationForm.Status = status;
-                var data = _requestValuationFormRepo.Update(reqValuationForm);
-                await _requestValuationFormRepo.SaveChangesAsync();
-                result.Data = _mapper.Map<RequestValuationFormModel>(data);
-                result.StatusCode = HttpStatusCode.OK;
-                result.Message = "OK";
+                if (reqValuationForm != null)
+                {
+                    reqValuationForm.Status = status;
+                    var data = _requestValuationFormRepo.Update(reqValuationForm);
+                    await _requestValuationFormRepo.SaveChangesAsync();
+                    return new StatusCodeResponse<RequestValuationFormModel>()
+                    {
+                        Data = _mapper.Map<RequestValuationFormModel>(data),
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "OK",
+                    };
+                }
+                else
+                {
+                    return new StatusCodeResponse<RequestValuationFormModel>()
+                    {
+                        Data = null,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Cannot upate",
+                    };
+                }
             }
             catch (Exception ex)
             {
-                result.StatusCode = HttpStatusCode.InternalServerError;
-                result.Message = ex.Message;
-                result.Data = null;
+                return new StatusCodeResponse<RequestValuationFormModel>()
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.Message,
+                    Data = null,
+                };
             }
-            return result;
         }
     }
 }
