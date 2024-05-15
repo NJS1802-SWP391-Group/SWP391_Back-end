@@ -14,6 +14,7 @@ namespace SWP391_Project.Mapper
             CreateMap<RequestValuationForm, RequestValuationFormModel>().ReverseMap();
             CreateMap<CreateRequestValuationFormReq, RequestValuationForm>().ReverseMap();
             CreateMap<ScheduleFormModel, ScheduleForm>().ReverseMap();
+            CreateMap<ServiceModel, Service>().ReverseMap();
         }
     }
 }
