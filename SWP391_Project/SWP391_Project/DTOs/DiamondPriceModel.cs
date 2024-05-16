@@ -7,8 +7,6 @@ namespace SWP391_Project.DTOs
     {
         public int DiamondPriceID { get; set; }
         public int DiamondID { get; set; }
-        [ForeignKey("DiamondID")]
-        public Diamond Diamond { get; set; }
         public double Price { get; set; }
         public DateTime UpdateTime { get; set; }
         public string? Source { get; set; }

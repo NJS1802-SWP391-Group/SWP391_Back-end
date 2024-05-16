@@ -10,7 +10,5 @@ namespace SWP391_Project.DTOs
         public string Content { get; set; }
         public string Image { get; set; }
         public int UserID { get; set; }
-        [ForeignKey("UserID")]
-        public User User { get; set; }
     }
 }
