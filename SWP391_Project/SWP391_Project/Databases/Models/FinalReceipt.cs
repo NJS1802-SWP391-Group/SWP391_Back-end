@@ -12,6 +12,7 @@ namespace SWP391_Project.Databases.Models
         public int ValuationResultID { get; set; }
         [ForeignKey("ValuationResultID")]
         public ValuationResult ValuationResult { get; set; }
+        public int ManagerID {  get; set; }
         [ForeignKey("ManagerID")]
         public User Manager { get; set; }
         public DateTime Time { get; set; }

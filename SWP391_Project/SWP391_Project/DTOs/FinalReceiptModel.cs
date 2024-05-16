@@ -8,10 +8,7 @@ namespace SWP391_Project.DTOs
         public int FinalReceiptID { get; set; }
         public string Signature { get; set; }
         public int ValuationResultID { get; set; }
-        [ForeignKey("ValuationResultID")]
-        public ValuationResult ValuationResult { get; set; }
-        [ForeignKey("ManagerID")]
-        public User Manager { get; set; }
+        public int ManagerID {  get; set; }
         public DateTime Time { get; set; }
         public string Status { get; set; }
     }

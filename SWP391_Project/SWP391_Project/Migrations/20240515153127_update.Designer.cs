@@ -12,7 +12,7 @@ using SWP391_Project.Databases;
 namespace SWP391_Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240515020358_update")]
+    [Migration("20240515153127_update")]
     partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,40 +119,6 @@ namespace SWP391_Project.Migrations
                     b.HasKey("DiamondID");
 
                     b.ToTable("Diamond");
-                });
-
-            modelBuilder.Entity("SWP391_Project.Databases.Models.Diamond_ValuationStaff", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<DateTime>("Deadline")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DiamondID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ValuationStaffID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("DiamondID");
-
-                    b.HasIndex("ValuationStaffID");
-
-                    b.ToTable("Diamond_ValuationStaff");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.Models.DiamondPrice", b =>
@@ -470,6 +436,40 @@ namespace SWP391_Project.Migrations
                     b.ToTable("ValuationReceiptDetails");
                 });
 
+            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationReceiptDetail_ValuationStaff", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ValuationReceiptDetailID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ValuationStaffID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ValuationReceiptDetailID");
+
+                    b.HasIndex("ValuationStaffID");
+
+                    b.ToTable("ValuationReceiptDetail_ValuationStaff");
+                });
+
             modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationResult", b =>
                 {
                     b.Property<int>("ValuationResultID")
@@ -513,25 +513,6 @@ namespace SWP391_Project.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SWP391_Project.Databases.Models.Diamond_ValuationStaff", b =>
-                {
-                    b.HasOne("SWP391_Project.Databases.Models.Diamond", "Diamond")
-                        .WithMany()
-                        .HasForeignKey("DiamondID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SWP391_Project.Databases.Models.User", "ValuationStaff")
-                        .WithMany()
-                        .HasForeignKey("ValuationStaffID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Diamond");
-
-                    b.Navigation("ValuationStaff");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.Models.DiamondPrice", b =>
@@ -642,6 +623,25 @@ namespace SWP391_Project.Migrations
                     b.Navigation("Service");
 
                     b.Navigation("ValuationReceipt");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationReceiptDetail_ValuationStaff", b =>
+                {
+                    b.HasOne("SWP391_Project.Databases.Models.ValuationReceiptDetail", "ValuationReceiptDetail")
+                        .WithMany()
+                        .HasForeignKey("ValuationReceiptDetailID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SWP391_Project.Databases.Models.User", "ValuationStaff")
+                        .WithMany()
+                        .HasForeignKey("ValuationStaffID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ValuationReceiptDetail");
+
+                    b.Navigation("ValuationStaff");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.Models.ValuationResult", b =>

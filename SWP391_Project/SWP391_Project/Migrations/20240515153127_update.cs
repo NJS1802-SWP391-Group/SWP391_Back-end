@@ -159,33 +159,6 @@ namespace SWP391_Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Diamond_ValuationStaff",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ValuationStaffID = table.Column<int>(type: "int", nullable: false),
-                    DiamondID = table.Column<int>(type: "int", nullable: false),
-                    Deadline = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Diamond_ValuationStaff", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Diamond_ValuationStaff_Diamond_DiamondID",
-                        column: x => x.DiamondID,
-                        principalTable: "Diamond",
-                        principalColumn: "DiamondID");
-                    table.ForeignKey(
-                        name: "FK_Diamond_ValuationStaff_User_ValuationStaffID",
-                        column: x => x.ValuationStaffID,
-                        principalTable: "User",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ScheduleForm",
                 columns: table => new
                 {
@@ -285,6 +258,33 @@ namespace SWP391_Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ValuationReceiptDetail_ValuationStaff",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ValuationStaffID = table.Column<int>(type: "int", nullable: false),
+                    ValuationReceiptDetailID = table.Column<int>(type: "int", nullable: false),
+                    Deadline = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ValuationReceiptDetail_ValuationStaff", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ValuationReceiptDetail_ValuationStaff_User_ValuationStaffID",
+                        column: x => x.ValuationStaffID,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ValuationReceiptDetail_ValuationStaff_ValuationReceiptDetails_ValuationReceiptDetailID",
+                        column: x => x.ValuationReceiptDetailID,
+                        principalTable: "ValuationReceiptDetails",
+                        principalColumn: "ValuationReceiptDetailID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ValuationResult",
                 columns: table => new
                 {
@@ -346,16 +346,6 @@ namespace SWP391_Project.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Diamond_ValuationStaff_DiamondID",
-                table: "Diamond_ValuationStaff",
-                column: "DiamondID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Diamond_ValuationStaff_ValuationStaffID",
-                table: "Diamond_ValuationStaff",
-                column: "ValuationStaffID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DiamondPrice_DiamondID",
                 table: "DiamondPrice",
                 column: "DiamondID");
@@ -389,6 +379,16 @@ namespace SWP391_Project.Migrations
                 name: "IX_User_RoleID",
                 table: "User",
                 column: "RoleID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ValuationReceiptDetail_ValuationStaff_ValuationReceiptDetailID",
+                table: "ValuationReceiptDetail_ValuationStaff",
+                column: "ValuationReceiptDetailID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ValuationReceiptDetail_ValuationStaff_ValuationStaffID",
+                table: "ValuationReceiptDetail_ValuationStaff",
+                column: "ValuationStaffID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ValuationReceiptDetails_DiamondID",
@@ -432,13 +432,13 @@ namespace SWP391_Project.Migrations
                 name: "Blog");
 
             migrationBuilder.DropTable(
-                name: "Diamond_ValuationStaff");
-
-            migrationBuilder.DropTable(
                 name: "DiamondPrice");
 
             migrationBuilder.DropTable(
                 name: "FinalReceipt");
+
+            migrationBuilder.DropTable(
+                name: "ValuationReceiptDetail_ValuationStaff");
 
             migrationBuilder.DropTable(
                 name: "ValuationResult");

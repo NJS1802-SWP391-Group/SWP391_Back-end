@@ -325,12 +325,12 @@ namespace SWP391_Project.Databases
                 }
             };
 
-            List<Diamond_ValuationStaff> diamond_ValuationStaffs = new()
+            List<ValuationReceiptDetail_ValuationStaff> diamond_ValuationStaffs = new()
             {
-                new Diamond_ValuationStaff
+                new ValuationReceiptDetail_ValuationStaff
                 {
                     ValuationStaff = users[4],
-                    Diamond = diamonds[2],
+                    ValuationReceiptDetail = valuationReceiptDetails[0],
                     Deadline = DateTime.Now,
                     Location = "A01",
                     Status = "Active"
@@ -389,7 +389,7 @@ namespace SWP391_Project.Databases
             await _context.Services.AddRangeAsync(services);
             await _context.Diamonds.AddRangeAsync(diamonds);
             await _context.DiamondPrices.AddRangeAsync(diamondPrices);
-            await _context.Diamond_ValuationStaff.AddRangeAsync(diamond_ValuationStaffs);
+            await _context.ValuationReceiptDetail_ValuationStaff.AddRangeAsync(diamond_ValuationStaffs);
             await _context.ValuationReceipts.AddRangeAsync(valuationReceipts);
             await _context.ValuationReceiptDetails.AddRangeAsync(valuationReceiptDetails);
             await _context.ValuationResult.AddRangeAsync(valuationResults);

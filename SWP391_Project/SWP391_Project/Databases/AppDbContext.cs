@@ -28,7 +28,7 @@ namespace SWP391_Project.Databases
         public DbSet<DiamondPrice> DiamondPrices { get; set; }
         public DbSet<ValuationReceipt> ValuationReceipts { get; set; }
         public DbSet<ValuationResult> ValuationResult { get; set; }
-        public DbSet<Diamond_ValuationStaff> Diamond_ValuationStaff { get; set; }
+        public DbSet<ValuationReceiptDetail_ValuationStaff> ValuationReceiptDetail_ValuationStaff { get; set; }
         public DbSet<ValuationReceiptDetail> ValuationReceiptDetails { get; set; }
         #endregion
 
@@ -42,12 +42,12 @@ namespace SWP391_Project.Databases
                 .HasOne(vr => vr.ValuationResult)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Diamond_ValuationStaff>()
+            modelBuilder.Entity<ValuationReceiptDetail_ValuationStaff>()
                 .HasOne(vr => vr.ValuationStaff)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Diamond_ValuationStaff>()
-                .HasOne(vr => vr.Diamond)
+            modelBuilder.Entity<ValuationReceiptDetail_ValuationStaff>()
+                .HasOne(vr => vr.ValuationReceiptDetail)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<ValuationResult>()
