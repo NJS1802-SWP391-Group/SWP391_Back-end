@@ -13,6 +13,7 @@ namespace SWP391_Project.Databases.System
 {
     public class AppDbContext : DbContext
     {
+        public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -32,6 +33,10 @@ namespace SWP391_Project.Databases.System
 
         #endregion
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("server=localhost;database=SWP391_DiavanSystem;uid=sa;pwd=12345;TrustServerCertificate=True;MultipleActiveResultSets=True");
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            

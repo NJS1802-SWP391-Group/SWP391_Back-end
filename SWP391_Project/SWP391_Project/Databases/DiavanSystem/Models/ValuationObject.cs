@@ -19,5 +19,6 @@ namespace SWP391_Project.Databases.DiavanSystem.Models
         public string? Symmetry { get; set; }
         public string? Polish { get; set; }
         public string? CutGrade { get; set; }
+        public string Status { get; set; }
     }
 }

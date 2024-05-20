@@ -15,5 +15,6 @@ namespace SWP391_Project.Databases.System.Models
         public int AdminId { get; set; }
         [ForeignKey("AdminId")]
         public Account Admin { get; set; }
+        public string Status { get; set; }
     }
 }

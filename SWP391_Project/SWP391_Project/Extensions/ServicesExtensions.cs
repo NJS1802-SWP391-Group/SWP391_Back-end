@@ -10,6 +10,7 @@ using SWP391_Project.Mapper;
 using SWP391_Project.Middlewares;
 using SWP391_Project.Repositories;
 using SWP391_Project.Repositories.Interfaces;
+using SWP391_Project.Services;
 using SWP391_Project.Settings;
 using System.Globalization;
 using System.Text;
@@ -62,11 +63,12 @@ public static class ServicesExtensions
 
         services.AddDbContext<AppDbContext>(opt =>
         {
-            //opt.UseNpgsql(configuration.GetConnectionString("PgDbConnection"));
             opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
 
-        services.AddDbContext<DiamondContext>(options => { options.UseSqlServer(configuration.GetConnectionString("DiamondConnection"));
+        services.AddDbContext<DiamondContext>(options => 
+        { 
+            options.UseSqlServer(configuration.GetConnectionString("DiamondConnection"));
         });
     
 
@@ -75,9 +77,8 @@ public static class ServicesExtensions
         CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
         services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
-        //services.AddScoped<DatabaseInitialiser>();
-        //services.AddScoped<UserService>();
-        //services.AddScoped<IdentityService>();
+        services.AddScoped<UserService>();
+        services.AddScoped<IdentityService>();
         //services.AddScoped<RequestValuationFormService>();
         //services.AddScoped<ScheduleFormService>();
         //services.AddScoped<ServiceService>();
