@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace SWP391_Project.Databases.Models
+namespace SWP391_Project.Databases.System.Models
 {
     [Table("Service")]
     public class Service

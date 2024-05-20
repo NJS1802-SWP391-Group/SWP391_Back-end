@@ -1,5 +1,4 @@
-﻿using SWP391_Project.Databases.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SWP391_Project.DTOs
 {

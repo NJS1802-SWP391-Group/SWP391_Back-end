@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Domains\**" />
     <Compile Remove="Services\NewFolder\**" />
+    <Content Remove="Domains\**" />
     <Content Remove="Services\NewFolder\**" />
+    <EmbeddedResource Remove="Domains\**" />
     <EmbeddedResource Remove="Services\NewFolder\**" />
+    <None Remove="Domains\**" />
     <None Remove="Services\NewFolder\**" />
   </ItemGroup>
 
@@ -31,10 +35,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Domains\" />
   </ItemGroup>
 
 </Project>
