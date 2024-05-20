@@ -1,5 +1,4 @@
-﻿using SWP391_Project.Databases.Models;
-using SWP391_Project.Helpers;
+﻿using SWP391_Project.Helpers;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 

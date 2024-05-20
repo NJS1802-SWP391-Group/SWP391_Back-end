@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using SWP391_Project.Exceptions;
-using SWP391_Project.Databases.Models;
 
 namespace SWP391_Project.DTOs
 {

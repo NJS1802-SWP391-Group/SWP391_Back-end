@@ -1,13 +1,15 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SWP391_Project.Databases;
+using SWP391_Project.Databases.DiamondSystem;
+using SWP391_Project.Databases.System;
 using SWP391_Project.Mapper;
 using SWP391_Project.Middlewares;
 using SWP391_Project.Repositories;
 using SWP391_Project.Repositories.Interfaces;
-using SWP391_Project.Services;
 using SWP391_Project.Settings;
 using System.Globalization;
 using System.Text;
@@ -41,11 +43,11 @@ public static class ServicesExtensions
         services.AddAuthorization();
 
         services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+        {
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters()
@@ -64,17 +66,21 @@ public static class ServicesExtensions
             opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
 
+        services.AddDbContext<DiamondContext>(options => { options.UseSqlServer(configuration.GetConnectionString("DiamondConnection"));
+        });
+    
+
         AppContext.SetSwitch("System.Globalization.Invariant", true);
         CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
         services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
-        services.AddScoped<DatabaseInitialiser>();
-        services.AddScoped<UserService>();
-        services.AddScoped<IdentityService>();
-        services.AddScoped<RequestValuationFormService>();
-        services.AddScoped<ScheduleFormService>();
-        services.AddScoped<ServiceService>();
+        //services.AddScoped<DatabaseInitialiser>();
+        //services.AddScoped<UserService>();
+        //services.AddScoped<IdentityService>();
+        //services.AddScoped<RequestValuationFormService>();
+        //services.AddScoped<ScheduleFormService>();
+        //services.AddScoped<ServiceService>();
 
 
         return services;
