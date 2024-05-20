@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using SWP391_Project.Databases;
 using SWP391_Project.Databases.DiamondSystem;
 using SWP391_Project.Databases.System;
+using SWP391_Project.Extensions;
 using SWP391_Project.Helpers;
 using SWP391_Project.Middlewares;
 
@@ -15,7 +18,7 @@ namespace SWP391_Project
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddInfrastructure(builder.Configuration);
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
@@ -71,11 +74,14 @@ namespace SWP391_Project
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                await using (var scope = app.Services.CreateAsyncScope())
+                using (var dbContext = new AppDbContext())
                 {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                    var diamondContext = scope.ServiceProvider.GetRequiredService<DiamondContext>();
                     await dbContext.Database.MigrateAsync();
+                }
+
+                using (var diamondContext = new DiamondContext())
+                {
+                    await diamondContext.Database.MigrateAsync();
                 }
 
                 app.UseSwagger();

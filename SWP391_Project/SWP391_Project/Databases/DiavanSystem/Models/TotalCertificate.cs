@@ -9,8 +9,9 @@ namespace SWP391_Project.Databases.DiavanSystem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int Code { get; set; }
-        public int Time {  get; set; }
+        public string Code { get; set; }
+        public DateTime Time {  get; set; }
         public string Information {  get; set; }
+        public string Status { get; set; }
     }
 }

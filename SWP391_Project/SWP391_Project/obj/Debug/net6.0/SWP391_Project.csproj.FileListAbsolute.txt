@@ -400,6 +400,6 @@ D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\obj\D
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SWP391_Project.props
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\obj\Debug\net6.0\staticwebassets.pack.json
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\obj\Debug\net6.0\scopedcss\bundle\SWP391_Project.styles.css
-D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\obj\Debug\net6.0\SWP391_Project.csproj.CopyComplete
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\obj\Debug\net6.0\SWP391_Project.genruntimeconfig.cache
 D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\obj\Debug\net6.0\ref\SWP391_Project.dll
+D:\FPT\Term 7\SWP391\Project\SWP391_Back-end\SWP391_Project\SWP391_Project\obj\Debug\net6.0\SWP391_P.D7BEED9E.Up2Date

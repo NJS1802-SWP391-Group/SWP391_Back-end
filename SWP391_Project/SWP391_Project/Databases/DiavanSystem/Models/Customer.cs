@@ -12,7 +12,7 @@ namespace SWP391_Project.Databases.System.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CustomerId { get; set; }
         public string Email { get; set; }
-        public DateOnly Dob {  get; set; }
+        public DateTime Dob {  get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string CCCD { get; set; }
