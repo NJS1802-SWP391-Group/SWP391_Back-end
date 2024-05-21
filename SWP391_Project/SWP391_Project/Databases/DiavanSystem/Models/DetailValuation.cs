@@ -17,6 +17,11 @@ namespace SWP391_Project.Databases.DiavanSystem.Models
         public double Price { get; set; }
         public string Status {  get; set; }
         public bool? isDiamond { get; set; }
-        public ValuationObject? valuationObject { get; set; }
+        public int OrderValuationId { get; set; }
+        [ForeignKey("OrderValuationId")]
+        public OrderValuation OrderValuation { get; set; }
+        public int? ValuationObjectId {  get; set; }
+        [ForeignKey("ValuationObjectId")]
+        public ValuationObject? ValuationObject { get; set; }
     }
 }

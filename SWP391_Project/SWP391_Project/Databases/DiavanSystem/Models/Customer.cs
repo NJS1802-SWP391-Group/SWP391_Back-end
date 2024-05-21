@@ -19,8 +19,8 @@ namespace SWP391_Project.Databases.System.Models
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string Status { get; set; }
-        public int AccountId { get; set; }
+        public int? AccountId { get; set; }
         [ForeignKey("AccountId")]
-        public Account Account { get; set; }
+        public Account? Account { get; set; }
     }
 }

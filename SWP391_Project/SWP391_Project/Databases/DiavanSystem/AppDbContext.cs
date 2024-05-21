@@ -39,7 +39,14 @@ namespace SWP391_Project.Databases.System
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+            modelBuilder.Entity<Customer>()
+               .HasOne(c => c.Account)
+               .WithOne(a => a.Customer)
+               .HasForeignKey<Customer>(c => c.AccountId);
+            modelBuilder.Entity<ValuationObject>()
+           .HasOne(vo => vo.DetailValuation)
+           .WithOne(dv => dv.ValuationObject)
+           .HasForeignKey<ValuationObject>(vo => vo.DetailValuationId);
         }
     }
 

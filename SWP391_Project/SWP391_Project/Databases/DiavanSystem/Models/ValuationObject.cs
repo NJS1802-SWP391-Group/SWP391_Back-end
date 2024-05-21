@@ -20,5 +20,8 @@ namespace SWP391_Project.Databases.DiavanSystem.Models
         public string? Polish { get; set; }
         public string? CutGrade { get; set; }
         public string Status { get; set; }
+        public int DetailValuationId { get; set; }
+        [ForeignKey("DetailValuationId")]
+        public DetailValuation DetailValuation { get; set; }
     }
 }

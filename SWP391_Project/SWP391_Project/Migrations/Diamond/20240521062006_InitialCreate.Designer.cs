@@ -11,8 +11,8 @@ using SWP391_Project.Databases.DiamondSystem;
 namespace SWP391_Project.Migrations.Diamond
 {
     [DbContext(typeof(DiamondContext))]
-    [Migration("20240520173254_initialcreate")]
-    partial class initialcreate
+    [Migration("20240521062006_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

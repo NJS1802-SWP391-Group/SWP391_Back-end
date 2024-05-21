@@ -4,7 +4,7 @@
 
 namespace SWP391_Project.Migrations.Diamond
 {
-    public partial class initialcreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
