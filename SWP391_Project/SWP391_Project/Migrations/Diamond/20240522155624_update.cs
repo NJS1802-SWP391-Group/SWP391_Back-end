@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SWP391_Project.Migrations.Diamond
 {
-    public partial class InitialCreate : Migration
+    public partial class update : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,28 +33,41 @@ namespace SWP391_Project.Migrations.Diamond
                 });
 
             migrationBuilder.CreateTable(
-                name: "Source",
+                name: "Price",
                 columns: table => new
                 {
-                    SourceId = table.Column<int>(type: "int", nullable: false)
+                    PriceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Value = table.Column<double>(type: "float", nullable: true),
+                    DayUpdate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Rate = table.Column<double>(type: "float", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiamondId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Source", x => x.SourceId);
+                    table.PrimaryKey("PK_Price", x => x.PriceId);
+                    table.ForeignKey(
+                        name: "FK_Price_Diamond_DiamondId",
+                        column: x => x.DiamondId,
+                        principalTable: "Diamond",
+                        principalColumn: "DiamondId",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Price_DiamondId",
+                table: "Price",
+                column: "DiamondId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Diamond");
+                name: "Price");
 
             migrationBuilder.DropTable(
-                name: "Source");
+                name: "Diamond");
         }
     }
 }

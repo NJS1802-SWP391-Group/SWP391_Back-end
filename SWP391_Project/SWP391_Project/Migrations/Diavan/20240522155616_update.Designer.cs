@@ -12,8 +12,8 @@ using SWP391_Project.Databases.System;
 namespace SWP391_Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240521061951_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240522155616_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,7 +81,10 @@ namespace SWP391_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ValuationObjectId")
+                    b.Property<int?>("ValuationResultId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ValuationStaffId")
                         .HasColumnType("int");
 
                     b.Property<bool?>("isDiamond")
@@ -93,44 +96,18 @@ namespace SWP391_Project.Migrations
 
                     b.HasIndex("ServiceId");
 
+                    b.HasIndex("ValuationStaffId");
+
                     b.ToTable("DetailValuation");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.TotalCertificate", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ValuationResultId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Information")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TotalCertificate");
-                });
-
-            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.ValuationObject", b =>
-                {
-                    b.Property<int>("ValuationObjectId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuationObjectId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuationResultId"), 1L, 1);
 
                     b.Property<string>("Carat")
                         .HasColumnType("nvarchar(max)");
@@ -150,8 +127,14 @@ namespace SWP391_Project.Migrations
                     b.Property<int>("DetailValuationId")
                         .HasColumnType("int");
 
+                    b.Property<double?>("DiamondValue")
+                        .HasColumnType("float");
+
                     b.Property<string>("Fluorescence")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDiamond")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Origin")
                         .HasColumnType("nvarchar(max)");
@@ -169,46 +152,15 @@ namespace SWP391_Project.Migrations
                     b.Property<string>("Symmetry")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ValuationObjectId");
+                    b.Property<int?>("ValuationCertificateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ValuationResultId");
 
                     b.HasIndex("DetailValuationId")
                         .IsUnique();
 
-                    b.ToTable("ValuationObject");
-                });
-
-            modelBuilder.Entity("SWP391_Project.Databases.System.Models.Assignment", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<DateTime>("Deadline")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ValuationObjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ValuationStaffID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ValuationObjectId");
-
-                    b.HasIndex("ValuationStaffID");
-
-                    b.ToTable("Assignment");
+                    b.ToTable("ValuationResult");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.System.Models.Blog", b =>
@@ -359,23 +311,20 @@ namespace SWP391_Project.Migrations
                     b.ToTable("Service");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.System.Models.ValuationResult", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.System.Models.ValuationCertificate", b =>
                 {
-                    b.Property<int>("ValuationResultID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuationResultID"), 1L, 1);
-
-                    b.Property<int>("AssignmentID")
+                    b.Property<int>("ValuationCertificateId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Signature")
                         .IsRequired()
@@ -385,25 +334,18 @@ namespace SWP391_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("TotalCertificateId")
+                    b.Property<int>("ValuationResultId")
                         .HasColumnType("int");
 
-                    b.HasKey("ValuationResultID");
+                    b.HasKey("ValuationCertificateId");
 
-                    b.HasIndex("AssignmentID");
-
-                    b.HasIndex("TotalCertificateId");
-
-                    b.ToTable("ValuationResult");
+                    b.ToTable("ValuationCertificate");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.DetailValuation", b =>
                 {
                     b.HasOne("SWP391_Project.Databases.System.Models.OrderValuation", "OrderValuation")
-                        .WithMany()
+                        .WithMany("DetailValuations")
                         .HasForeignKey("OrderValuationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -414,37 +356,26 @@ namespace SWP391_Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.Account", "ValuationStaff")
+                        .WithMany()
+                        .HasForeignKey("ValuationStaffId");
+
                     b.Navigation("OrderValuation");
 
                     b.Navigation("Service");
+
+                    b.Navigation("ValuationStaff");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.ValuationObject", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", b =>
                 {
                     b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.DetailValuation", "DetailValuation")
-                        .WithOne("ValuationObject")
-                        .HasForeignKey("SWP391_Project.Databases.DiavanSystem.Models.ValuationObject", "DetailValuationId")
+                        .WithOne("ValuationResult")
+                        .HasForeignKey("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", "DetailValuationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("DetailValuation");
-                });
-
-            modelBuilder.Entity("SWP391_Project.Databases.System.Models.Assignment", b =>
-                {
-                    b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.ValuationObject", "ValuationObject")
-                        .WithMany()
-                        .HasForeignKey("ValuationObjectId");
-
-                    b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.Account", "ValuationStaff")
-                        .WithMany()
-                        .HasForeignKey("ValuationStaffID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ValuationObject");
-
-                    b.Navigation("ValuationStaff");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.System.Models.Blog", b =>
@@ -470,7 +401,7 @@ namespace SWP391_Project.Migrations
             modelBuilder.Entity("SWP391_Project.Databases.System.Models.OrderValuation", b =>
                 {
                     b.HasOne("SWP391_Project.Databases.System.Models.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("OrderValuations")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -478,21 +409,15 @@ namespace SWP391_Project.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.System.Models.ValuationResult", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.System.Models.ValuationCertificate", b =>
                 {
-                    b.HasOne("SWP391_Project.Databases.System.Models.Assignment", "Assignment")
-                        .WithMany()
-                        .HasForeignKey("AssignmentID")
+                    b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", "ValuationResult")
+                        .WithOne("ValuationCertificate")
+                        .HasForeignKey("SWP391_Project.Databases.System.Models.ValuationCertificate", "ValuationCertificateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.TotalCertificate", "TotalCertificate")
-                        .WithMany()
-                        .HasForeignKey("TotalCertificateId");
-
-                    b.Navigation("Assignment");
-
-                    b.Navigation("TotalCertificate");
+                    b.Navigation("ValuationResult");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.Account", b =>
@@ -502,7 +427,22 @@ namespace SWP391_Project.Migrations
 
             modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.DetailValuation", b =>
                 {
-                    b.Navigation("ValuationObject");
+                    b.Navigation("ValuationResult");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", b =>
+                {
+                    b.Navigation("ValuationCertificate");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.System.Models.Customer", b =>
+                {
+                    b.Navigation("OrderValuations");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.System.Models.OrderValuation", b =>
+                {
+                    b.Navigation("DetailValuations");
                 });
 #pragma warning restore 612, 618
         }

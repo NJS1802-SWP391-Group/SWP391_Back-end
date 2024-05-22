@@ -13,7 +13,7 @@ namespace SWP391_Project.Databases.DiamondSystem
 
         #region DbSet
         public DbSet<Diamond> Diamonds { get; set; }
-        public DbSet<Source> Sources { get; set; }
+        public DbSet<Price> Prices { get; set; }
 
 
         #endregion

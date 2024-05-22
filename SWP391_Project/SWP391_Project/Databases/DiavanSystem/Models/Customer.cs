@@ -22,5 +22,6 @@ namespace SWP391_Project.Databases.System.Models
         public int? AccountId { get; set; }
         [ForeignKey("AccountId")]
         public Account? Account { get; set; }
+        public List<OrderValuation> OrderValuations { get; set; } = new List<OrderValuation>();
     }
 }
