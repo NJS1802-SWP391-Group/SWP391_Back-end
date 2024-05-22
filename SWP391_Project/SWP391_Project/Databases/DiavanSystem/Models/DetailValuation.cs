@@ -20,8 +20,11 @@ namespace SWP391_Project.Databases.DiavanSystem.Models
         public int OrderValuationId { get; set; }
         [ForeignKey("OrderValuationId")]
         public OrderValuation OrderValuation { get; set; }
-        public int? ValuationObjectId {  get; set; }
-        [ForeignKey("ValuationObjectId")]
-        public ValuationObject? ValuationObject { get; set; }
+        public int? ValuationStaffId { get; set; }
+        [ForeignKey("ValuationStaffId")]
+        public Account? ValuationStaff {  get; set; }
+        public int? ValuationResultId { get; set; }
+        [ForeignKey("ValuationResultId")]
+        public ValuationResult? ValuationResult { get; set; }
     }
 }

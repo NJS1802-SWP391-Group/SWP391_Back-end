@@ -1,24 +1,34 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using SWP391_Project.Databases.System.Models;
 using System.ComponentModel.DataAnnotations;
-using SWP391_Project.Databases.DiavanSystem.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SWP391_Project.Databases.System.Models
+namespace SWP391_Project.Databases.DiavanSystem.Models
 {
     [Table("ValuationResult")]
     public class ValuationResult
     {
         [Key]
-        public int ValuationResultID { get; set; }
-        public int AssignmentID { get; set; }
-        [ForeignKey("AssignmentID")]
-        public Assignment Assignment { get; set; }
-        public DateTime Time { get; set; }
-        public string Signature { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ValuationResultId { get; set; }
+        public bool IsDiamond { get; set; }
+    //  public string? GIACode { get; set; }
+        public string? Code { get; set; }
+        public string? Origin { get; set; }
+        public string? Shape { get; set; }
+        public string? Carat { get; set; }
+        public string? Color { get; set; }
+        public string? Clarity { get; set; }
+        public string? Fluorescence { get; set; }
+        public string? Symmetry { get; set; }
+        public string? Polish { get; set; }
+        public string? CutGrade { get; set; }
         public string Status { get; set; }
-        public double Price { get; set; }
-        public string Description { get; set; }
-        public int? TotalCertificateId {  get; set; }
-        [ForeignKey("TotalCertificateId")]
-        public TotalCertificate? TotalCertificate {  get; set; }
+        public double? DiamondValue  { get; set; }
+        public int DetailValuationId { get; set; }
+        [ForeignKey("DetailValuationId")]
+        public DetailValuation DetailValuation { get; set; }
+        public int? ValuationCertificateId {  get; set; }
+        [ForeignKey("ValuationCertificateId")]
+        public ValuationCertificate? ValuationCertificate { get; set; }
     }
 }
