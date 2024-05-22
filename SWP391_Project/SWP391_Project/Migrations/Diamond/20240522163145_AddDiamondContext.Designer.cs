@@ -12,8 +12,8 @@ using SWP391_Project.Databases.DiamondSystem;
 namespace SWP391_Project.Migrations.Diamond
 {
     [DbContext(typeof(DiamondContext))]
-    [Migration("20240522155624_update")]
-    partial class update
+    [Migration("20240522163145_AddDiamondContext")]
+    partial class AddDiamondContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,9 +36,6 @@ namespace SWP391_Project.Migrations.Diamond
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Clarity")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
@@ -69,6 +66,71 @@ namespace SWP391_Project.Migrations.Diamond
                     b.HasKey("DiamondId");
 
                     b.ToTable("Diamond");
+                });
+
+            modelBuilder.Entity("SWP391_Project.Databases.DiamondSystem.Models.DiamondGIACheck", b =>
+                {
+                    b.Property<int>("DiamondGIACheckId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiamondGIACheckId"), 1L, 1);
+
+                    b.Property<string>("Carat")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Clarity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClarityCharacteristic")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CutGrade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CutScore")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("FairPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Fluorescence")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GIAID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Measurement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Origin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Polish")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Shape")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Symmetry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DiamondGIACheckId");
+
+                    b.ToTable("DiamondGIACheck");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.DiamondSystem.Models.Price", b =>

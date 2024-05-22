@@ -189,7 +189,6 @@ namespace SWP391_Project.Databases
             {
                 new Diamond
                 {
-                    Code = "1234567890",
                     Origin = "Natural",
                     Shape = "Brilliant",
                     Carat = "1.50",
@@ -203,7 +202,6 @@ namespace SWP391_Project.Databases
                 },
                 new Diamond
                 {
-                    Code = "0987654321",
                     Origin = "Lab Grown",
                     Shape = "Square",
                     Carat = "2.10",
@@ -217,7 +215,6 @@ namespace SWP391_Project.Databases
                 },
                 new Diamond
                 {
-                    Code = "2468135790",
                     Origin = "Natural",
                     Shape = "Rectangular",
                     Carat = "3.25",
@@ -226,14 +223,11 @@ namespace SWP391_Project.Databases
                     Fluorescence = "Medium",
                     Symmetry = "Good",
                     Polish = "Good",
-
                     CutGrade = "Good",
-
                     Status = "Active",
                 },
                 new Diamond
                 {
-                    Code = "1357924680",
                     Origin = "Lab Grown",
                     Shape = "Oval",
                     Carat = "1.75",
@@ -242,9 +236,7 @@ namespace SWP391_Project.Databases
                     Fluorescence = "Strong",
                     Symmetry = "Fair",
                     Polish = "Fair",
-
                     CutGrade = "Fair",
-
                     Status = "Active",
                 }
             };

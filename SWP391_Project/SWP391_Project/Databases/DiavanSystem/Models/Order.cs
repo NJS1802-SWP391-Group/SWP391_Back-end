@@ -4,11 +4,11 @@ using SWP391_Project.Databases.DiavanSystem.Models;
 
 namespace SWP391_Project.Databases.System.Models
 {
-    [Table("OrderValuation")]
-    public class OrderValuation
+    [Table("Order")]
+    public class Order
     {
         [Key]
-        public int ID { get; set; }
+        public int OrderID { get; set; }
         public int CustomerId { get; set; }
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }
@@ -18,6 +18,6 @@ namespace SWP391_Project.Databases.System.Models
         public string? Payment {  get; set; }
         public string? StatusPayment { get; set; }
         public string? Status { get; set; }
-        public List<DetailValuation> DetailValuations { get; set; }
+        public List<OrderDetail> DetailValuations { get; set; }
     }
 }

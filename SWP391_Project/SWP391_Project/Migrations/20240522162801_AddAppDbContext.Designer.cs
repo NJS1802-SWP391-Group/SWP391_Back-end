@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SWP391_Project.Databases.System;
 
@@ -11,9 +12,10 @@ using SWP391_Project.Databases.System;
 namespace SWP391_Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240522162801_AddAppDbContext")]
+    partial class AddAppDbContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,23 +56,26 @@ namespace SWP391_Project.Migrations
                     b.ToTable("Account");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.DetailValuation", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.OrderDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("OrderDetailId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"), 1L, 1);
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderValuationId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<int?>("ResultId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
@@ -79,36 +84,36 @@ namespace SWP391_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ValuationResultId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ValuationStaffId")
                         .HasColumnType("int");
 
                     b.Property<bool?>("isDiamond")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("OrderDetailId");
 
-                    b.HasIndex("OrderValuationId");
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ServiceId");
 
                     b.HasIndex("ValuationStaffId");
 
-                    b.ToTable("DetailValuation");
+                    b.ToTable("OrderDetail");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.Result", b =>
                 {
-                    b.Property<int>("ValuationResultId")
+                    b.Property<int>("ResultId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuationResultId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResultId"), 1L, 1);
 
                     b.Property<string>("Carat")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CertificateId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Clarity")
                         .HasColumnType("nvarchar(max)");
@@ -122,9 +127,6 @@ namespace SWP391_Project.Migrations
                     b.Property<string>("CutGrade")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DetailValuationId")
-                        .HasColumnType("int");
-
                     b.Property<double?>("DiamondValue")
                         .HasColumnType("float");
 
@@ -133,6 +135,9 @@ namespace SWP391_Project.Migrations
 
                     b.Property<bool>("IsDiamond")
                         .HasColumnType("bit");
+
+                    b.Property<int>("OrderDetailId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Origin")
                         .HasColumnType("nvarchar(max)");
@@ -150,15 +155,12 @@ namespace SWP391_Project.Migrations
                     b.Property<string>("Symmetry")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ValuationCertificateId")
-                        .HasColumnType("int");
+                    b.HasKey("ResultId");
 
-                    b.HasKey("ValuationResultId");
-
-                    b.HasIndex("DetailValuationId")
+                    b.HasIndex("OrderDetailId")
                         .IsUnique();
 
-                    b.ToTable("ValuationResult");
+                    b.ToTable("Result");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.System.Models.Blog", b =>
@@ -194,6 +196,37 @@ namespace SWP391_Project.Migrations
                     b.ToTable("Blog");
                 });
 
+            modelBuilder.Entity("SWP391_Project.Databases.System.Models.Certificate", b =>
+                {
+                    b.Property<int>("CertificateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ResultId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Signature")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CertificateId");
+
+                    b.ToTable("Certificate");
+                });
+
             modelBuilder.Entity("SWP391_Project.Databases.System.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -202,7 +235,7 @@ namespace SWP391_Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"), 1L, 1);
 
-                    b.Property<int?>("AccountId")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
@@ -239,19 +272,18 @@ namespace SWP391_Project.Migrations
                     b.HasKey("CustomerId");
 
                     b.HasIndex("AccountId")
-                        .IsUnique()
-                        .HasFilter("[AccountId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.System.Models.OrderValuation", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.System.Models.Order", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("OrderID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"), 1L, 1);
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -274,11 +306,11 @@ namespace SWP391_Project.Migrations
                     b.Property<double?>("TotalPay")
                         .HasColumnType("float");
 
-                    b.HasKey("ID");
+                    b.HasKey("OrderID");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("OrderValuation");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.System.Models.Service", b =>
@@ -309,42 +341,11 @@ namespace SWP391_Project.Migrations
                     b.ToTable("Service");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.System.Models.ValuationCertificate", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.OrderDetail", b =>
                 {
-                    b.Property<int>("ValuationCertificateId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ExpireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("IssueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Signature")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ValuationResultId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ValuationCertificateId");
-
-                    b.ToTable("ValuationCertificate");
-                });
-
-            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.DetailValuation", b =>
-                {
-                    b.HasOne("SWP391_Project.Databases.System.Models.OrderValuation", "OrderValuation")
+                    b.HasOne("SWP391_Project.Databases.System.Models.Order", "Order")
                         .WithMany("DetailValuations")
-                        .HasForeignKey("OrderValuationId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -358,22 +359,22 @@ namespace SWP391_Project.Migrations
                         .WithMany()
                         .HasForeignKey("ValuationStaffId");
 
-                    b.Navigation("OrderValuation");
+                    b.Navigation("Order");
 
                     b.Navigation("Service");
 
                     b.Navigation("ValuationStaff");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.Result", b =>
                 {
-                    b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.DetailValuation", "DetailValuation")
-                        .WithOne("ValuationResult")
-                        .HasForeignKey("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", "DetailValuationId")
+                    b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.OrderDetail", "OrderDetail")
+                        .WithOne("Result")
+                        .HasForeignKey("SWP391_Project.Databases.DiavanSystem.Models.Result", "OrderDetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DetailValuation");
+                    b.Navigation("OrderDetail");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.System.Models.Blog", b =>
@@ -387,19 +388,32 @@ namespace SWP391_Project.Migrations
                     b.Navigation("Admin");
                 });
 
+            modelBuilder.Entity("SWP391_Project.Databases.System.Models.Certificate", b =>
+                {
+                    b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.Result", "Result")
+                        .WithOne("Certificate")
+                        .HasForeignKey("SWP391_Project.Databases.System.Models.Certificate", "CertificateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Result");
+                });
+
             modelBuilder.Entity("SWP391_Project.Databases.System.Models.Customer", b =>
                 {
                     b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.Account", "Account")
                         .WithOne("Customer")
-                        .HasForeignKey("SWP391_Project.Databases.System.Models.Customer", "AccountId");
+                        .HasForeignKey("SWP391_Project.Databases.System.Models.Customer", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.System.Models.OrderValuation", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.System.Models.Order", b =>
                 {
                     b.HasOne("SWP391_Project.Databases.System.Models.Customer", "Customer")
-                        .WithMany("OrderValuations")
+                        .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -407,38 +421,27 @@ namespace SWP391_Project.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.System.Models.ValuationCertificate", b =>
-                {
-                    b.HasOne("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", "ValuationResult")
-                        .WithOne("ValuationCertificate")
-                        .HasForeignKey("SWP391_Project.Databases.System.Models.ValuationCertificate", "ValuationCertificateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ValuationResult");
-                });
-
             modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.Account", b =>
                 {
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.DetailValuation", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.OrderDetail", b =>
                 {
-                    b.Navigation("ValuationResult");
+                    b.Navigation("Result");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.ValuationResult", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.DiavanSystem.Models.Result", b =>
                 {
-                    b.Navigation("ValuationCertificate");
+                    b.Navigation("Certificate");
                 });
 
             modelBuilder.Entity("SWP391_Project.Databases.System.Models.Customer", b =>
                 {
-                    b.Navigation("OrderValuations");
+                    b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Databases.System.Models.OrderValuation", b =>
+            modelBuilder.Entity("SWP391_Project.Databases.System.Models.Order", b =>
                 {
                     b.Navigation("DetailValuations");
                 });
