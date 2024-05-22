@@ -14,7 +14,7 @@ namespace SWP391_Project.Databases.DiamondSystem
         #region DbSet
         public DbSet<Diamond> Diamonds { get; set; }
         public DbSet<Price> Prices { get; set; }
-
+        public DbSet<DiamondGIACheck> DiamondGIAChecks { get; set; }
 
         #endregion
 

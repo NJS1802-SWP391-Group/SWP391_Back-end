@@ -24,10 +24,10 @@ namespace SWP391_Project.Databases.System
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<DetailValuation> DetailValuations { get; set; }
-        public DbSet<OrderValuation> OrderValuations { get; set; }
-        public DbSet<ValuationResult> ValuationObjects { get; set; }
-        public DbSet<ValuationCertificate> ValuationResults { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Result> Results { get; set; }
+        public DbSet<Certificate> Certificates { get; set; }
 
         #endregion
 
@@ -42,15 +42,15 @@ namespace SWP391_Project.Databases.System
                .WithOne(a => a.Customer)
                .HasForeignKey<Customer>(c => c.AccountId);
 
-            modelBuilder.Entity<ValuationResult>()
-               .HasOne(vo => vo.DetailValuation)
-               .WithOne(dv => dv.ValuationResult)
-               .HasForeignKey<ValuationResult>(vo => vo.DetailValuationId);
+            modelBuilder.Entity<Result>()
+               .HasOne(vo => vo.OrderDetail)
+               .WithOne(dv => dv.Result)
+               .HasForeignKey<Result>(vo => vo.OrderDetailId);
 
-            modelBuilder.Entity<ValuationCertificate>()
-                .HasOne(vo => vo.ValuationResult)
-                .WithOne(dv => dv.ValuationCertificate)
-                .HasForeignKey<ValuationCertificate>(vo => vo.ValuationCertificateId);
+            modelBuilder.Entity<Certificate>()
+                .HasOne(vo => vo.Result)
+                .WithOne(dv => dv.Certificate)
+                .HasForeignKey<Certificate>(vo => vo.CertificateId);
         }
     }
 

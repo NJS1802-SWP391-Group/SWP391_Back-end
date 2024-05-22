@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SWP391_Project.Databases.DiavanSystem.Models
 {
-    [Table("ValuationResult")]
-    public class ValuationResult
+    [Table("Result")]
+    public class Result
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ValuationResultId { get; set; }
+        public int ResultId { get; set; }
         public bool IsDiamond { get; set; }
     //  public string? GIACode { get; set; }
         public string? Code { get; set; }
@@ -24,11 +24,11 @@ namespace SWP391_Project.Databases.DiavanSystem.Models
         public string? CutGrade { get; set; }
         public string Status { get; set; }
         public double? DiamondValue  { get; set; }
-        public int DetailValuationId { get; set; }
-        [ForeignKey("DetailValuationId")]
-        public DetailValuation DetailValuation { get; set; }
-        public int? ValuationCertificateId {  get; set; }
-        [ForeignKey("ValuationCertificateId")]
-        public ValuationCertificate? ValuationCertificate { get; set; }
+        public int OrderDetailId { get; set; }
+        [ForeignKey("OrderDetailId")]
+        public OrderDetail OrderDetail { get; set; }
+        public int? CertificateId {  get; set; }
+        [ForeignKey("CertificateId")]
+        public Certificate? Certificate { get; set; }
     }
 }

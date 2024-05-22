@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SWP391_Project.Migrations.Diamond
 {
-    public partial class update : Migration
+    public partial class AddDiamondContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,6 @@ namespace SWP391_Project.Migrations.Diamond
                 {
                     DiamondId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Shape = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Carat = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -30,6 +29,35 @@ namespace SWP391_Project.Migrations.Diamond
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Diamond", x => x.DiamondId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DiamondGIACheck",
+                columns: table => new
+                {
+                    DiamondGIACheckId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GIAID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Shape = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Carat = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Clarity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fluorescence = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Symmetry = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Polish = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CutGrade = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CutScore = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FairPrice = table.Column<double>(type: "float", nullable: true),
+                    CertDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Measurement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClarityCharacteristic = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiamondGIACheck", x => x.DiamondGIACheckId);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,6 +91,9 @@ namespace SWP391_Project.Migrations.Diamond
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "DiamondGIACheck");
+
             migrationBuilder.DropTable(
                 name: "Price");
 

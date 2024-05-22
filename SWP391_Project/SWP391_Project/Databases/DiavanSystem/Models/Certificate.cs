@@ -4,14 +4,14 @@ using SWP391_Project.Databases.DiavanSystem.Models;
 
 namespace SWP391_Project.Databases.System.Models
 {
-    [Table("ValuationCertificate")]
-    public class ValuationCertificate
+    [Table("Certificate")]
+    public class Certificate
     {
         [Key]
-        public int ValuationCertificateId { get; set; }
-        public int ValuationResultId { get; set; }
-        [ForeignKey("ValuationResultId")]
-        public ValuationResult ValuationResult { get; set; }
+        public int CertificateId { get; set; }
+        public int ResultId { get; set; }
+        [ForeignKey("ResultId")]
+        public Result Result { get; set; }
         public DateTime IssueDate { get; set; }
         public DateTime ExpireDate { get; set; }
         public string Signature { get; set; }
