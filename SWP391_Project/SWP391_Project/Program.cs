@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
@@ -8,7 +9,6 @@ using SWP391_Project.Databases.DiamondSystem;
 using SWP391_Project.Databases.System;
 using SWP391_Project.Extensions;
 using SWP391_Project.Helpers;
-using SWP391_Project.Middlewares;
 
 namespace SWP391_Project
 {
@@ -69,7 +69,7 @@ namespace SWP391_Project
             app.Lifetime.ApplicationStarted.Register(async () =>
             {
                 // Database Initialiser 
-                await app.InitialiseDatabaseAsync();
+                await InitialiseDatabaseAsync();
             });
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -85,7 +85,6 @@ namespace SWP391_Project
                 }
 
                 app.UseSwagger();
-                app.UseSwaggerUI();
             }
 
             app.UseCors("CORS");
@@ -103,5 +102,9 @@ namespace SWP391_Project
 
             app.Run();
         }
+    }
+
+    internal class ExceptionMiddleware
+    {
     }
 }
