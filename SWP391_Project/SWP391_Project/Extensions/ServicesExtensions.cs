@@ -7,7 +7,6 @@ using SWP391_Project.Databases;
 using SWP391_Project.Databases.DiamondSystem;
 using SWP391_Project.Databases.System;
 using SWP391_Project.Mapper;
-using SWP391_Project.Middlewares;
 using SWP391_Project.Repositories;
 using SWP391_Project.Repositories.Interfaces;
 using SWP391_Project.Services;
@@ -21,10 +20,8 @@ public static class ServicesExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<ExceptionMiddleware>();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
 
         //Add Mapper
         var mapperConfig = new MapperConfiguration(mc =>
