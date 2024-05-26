@@ -18,7 +18,7 @@ namespace Data.Repositories.Generic
 
         public GenericRepository()
         {
-            _context = new AppDbContext(new DbContextOptions<AppDbContext>());
+            _context = new AppDbContext();
             _dbSet = _context.Set<T>();
         }
 

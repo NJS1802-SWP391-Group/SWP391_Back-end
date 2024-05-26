@@ -7,7 +7,7 @@ namespace SWP391_Project.Data.Databases.DiavanSystem
 {
     public class AppDbContext : DbContext
     {
-        //public AppDbContext() { }
+        public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -25,10 +25,10 @@ namespace SWP391_Project.Data.Databases.DiavanSystem
 
         #endregion
 
-/*        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("server=localhost;database=SWP391_DiavanSystem;uid=sa;pwd=12345;TrustServerCertificate=True;MultipleActiveResultSets=True");
-        }*/
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>()
