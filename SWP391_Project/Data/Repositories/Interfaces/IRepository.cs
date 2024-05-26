@@ -1,27 +1,48 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SWP391_Project.Repositories.Interfaces
+namespace SWP391_Project.Data.Repositories.Interfaces
 {
-    public interface IRepository<TEntity, in TKey> where TEntity : class
+    public interface IRepository<T> where T : class
     {
-        IQueryable<TEntity> GetAll();
-        IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> predicate);
-        TEntity? FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
-        Task<TEntity?> GetByIdAsync(TKey id);
-        Task<TEntity?> GetByIdCompositeKeyAsync(TKey id1, TKey id2);
-        Task<TEntity> AddAsync(TEntity entity);
-        Task AddRangeAsync(IEnumerable<TEntity> entities);
-        TEntity Update(TEntity entity);
-        TEntity Remove(TKey id);
-        public TEntity RemoveCompositeKey(TKey id1, TKey id2);
-        Task<int> SaveChangesAsync();
-        Task<int> CountAsync();
-        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
-        Task<IEnumerable<TEntity>> GetTopNItems<TKeyProperty>(Expression<Func<TEntity, TKeyProperty>> keySelector, int n);
+        public void PrepareCreate(T entity);
+
+        public void PrepareUpdate(T entity);
+
+        public void PrepareRemove(T entity);
+
+        public int Save();
+
+        public Task<int> SaveAsync();
+        public List<T> GetAll();
+        public Task<List<T>> GetAllAsync();
+        public void Create(T entity);
+
+        public Task<int> CreateAsync(T entity);
+
+        public void Update(T entity);
+
+        public Task<int> UpdateAsync(T entity);
+
+        public bool Remove(T entity);
+
+        public Task<bool> RemoveAsync(T entity);
+
+        public T GetById(int id);
+
+        public Task<T> GetByIdAsync(int id);
+
+        public T GetById(string code);
+
+        public Task<T> GetByIdAsync(string code);
+
+        public T GetById(Guid code);
+
+        public Task<T> GetByIdAsync(Guid code);
     }
 }

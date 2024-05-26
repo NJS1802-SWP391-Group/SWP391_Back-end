@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace SWP391_Project.Databases.System.Models
+namespace SWP391_Project.Domain.DiavanEntities
 {
     [Table("Service")]
     public class Service

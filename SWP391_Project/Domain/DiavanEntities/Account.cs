@@ -1,8 +1,7 @@
-﻿using SWP391_Project.Databases.System.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SWP391_Project.Databases.DiavanSystem.Models
+namespace SWP391_Project.Domain.DiavanEntities
 {
     [Table("Account")]
     public class Account

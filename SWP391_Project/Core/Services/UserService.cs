@@ -1,47 +1,52 @@
 ﻿using AutoMapper;
-using SWP391_Project.Databases.DiavanSystem.Models;
-using SWP391_Project.Databases.System.Models;
+using Business.Constants;
+using Data.Repositories;
+using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Dtos;
-using SWP391_Project.Repositories.Interfaces;
 using System.Data;
 
 namespace SWP391_Project.Services
 {
-    public class UserService
+    public interface IUserService
     {
-        private readonly IRepository<Account, int> _userRepository;
-        private readonly IRepository<Customer, int> _customerRepository;
+        public Task<IServiceResult> GetAll();
+        public Task<IServiceResult> GetUserByUserName(string email);
+    }
+
+    public class UserService : IUserService
+    {
+        private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public UserService(IRepository<Account, int> userRepository, IMapper mapper, IRepository<Customer, int> customerRepository)
+        public UserService(IMapper mapper)
         {
-            _userRepository = userRepository;
+            _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
-            _customerRepository = customerRepository;
         }
 
-        public async Task<List<AccountModel>>GetAll()
+        public async Task<IServiceResult> GetAll()
         {
             try
             {
-                var users = _userRepository.GetAll().ToList();
+                var users = _unitOfWork.UserRepository.GetAll().ToList();
                 var result = _mapper.Map<List<AccountModel>>(users);
-                return result;
+                return new ServiceResult(1, "Get all users", result);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return new ServiceResult(-1, ex.Message);
             }
         }
 
-        public async Task<AccountModel> GetUserByEmail(string email)
+        public async Task<IServiceResult> GetUserByUserName(string username)
         {
             try
             {
-                return _mapper.Map<AccountModel>(_userRepository.FindByCondition(x => x.UserName == email).FirstOrDefault());
+                var result = _mapper.Map<AccountModel>(_unitOfWork.UserRepository.GetAll().Where(_ => _.UserName == username).FirstOrDefault());
+                return new ServiceResult(1, "Get user by user name", result);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return new ServiceResult(-1, ex.Message);
             }
         }
     }

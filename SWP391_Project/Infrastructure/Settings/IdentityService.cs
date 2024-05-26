@@ -4,49 +4,46 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SWP391_Project.Helpers;
-using SWP391_Project.Repositories;
-using SWP391_Project.Repositories.Interfaces;
-using SWP391_Project.Databases.System.Models;
-using System.Data;
-using SWP391_Project.Databases.DiavanSystem.Models;
 using SWP391_Project.Settings;
 using SWP391_Project.Common.Requests;
 using SWP391_Project.Dtos.Auth;
+using Data.Repositories;
+using SWP391_Project.Domain.DiavanEntities;
 
 namespace SWP391_Project.Services
 {
     public class IdentityService
     {
         private readonly JwtSettings _jwtSettings;
-        private readonly IRepository<Account, int> _userRepository;
-        private readonly IRepository<Customer, int> _customerRepository;
+        private readonly UnitOfWork _unitOfWork;
 
-        public IdentityService(IOptions<JwtSettings> jwtSettingsOptions, IRepository<Account, int> userRepository, IRepository<Customer, int> customerRepository)
+        public IdentityService(IOptions<JwtSettings> jwtSettingsOptions)
         {
-            _userRepository = userRepository;
+            _unitOfWork ??= new UnitOfWork();
             _jwtSettings = jwtSettingsOptions.Value;
-            _customerRepository = customerRepository;
         }
 
         public async Task<bool> Signup(SignupRequest req)
         {
-            var user = _userRepository.FindByCondition(u => u.UserName == req.Username).FirstOrDefault();
+            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == req.Username).FirstOrDefault();
             if (user is not null)
             {
                 throw new Exception("username or email already exists");
             }
 
-            var userAdd = await _userRepository.AddAsync(new Account
+            var account = new Account
             {
                 UserName = req.Username,
                 Password = SecurityUtil.Hash(req.Password),
                 Status = "Active",
                 RoleName = "Customer"
-            });
+            };
 
-            var custormerAdd = await _customerRepository.AddAsync(new Customer
+            _unitOfWork.UserRepository.PrepareCreate(account);
+
+            _unitOfWork.CustomerRepository.PrepareCreate(new Customer
             {
-                Account = userAdd,
+                Account = account,
                 Address = req.Address,
                 CCCD = req.CCCD,
                 Dob = req.Dob,
@@ -56,16 +53,16 @@ namespace SWP391_Project.Services
                 PhoneNumber = req.PhoneNumber,
                 Status = "Active"
             });
-            var res = await _userRepository.SaveChangesAsync();
+            var res = await _unitOfWork.UserRepository.SaveAsync();
 
-            var cusRes = await _customerRepository.SaveChangesAsync();
+            var cusRes = await _unitOfWork.CustomerRepository.SaveAsync();
 
             return (res > 0 && cusRes > 0);
         }
 
         public LoginResult Login(string userName, string password)
         {
-            var user = _userRepository.FindByCondition(u => u.UserName == userName).FirstOrDefault();
+            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName).FirstOrDefault();
 
             if (user is null)
             {

@@ -4,6 +4,6 @@ namespace SWP391_Project.Common.Responses
 {
     public class CheckTokenResponse
     {
-        public AccountModel User { get; set; }
+        public object? User { get; set; }
     }
 }

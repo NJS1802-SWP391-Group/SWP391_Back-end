@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
-using SWP391_Project.Databases.DiavanSystem.Models;
 
-namespace SWP391_Project.Databases.System.Models
+namespace SWP391_Project.Domain.DiavanEntities
 {
     [Table("Customer")]
     public class Customer
