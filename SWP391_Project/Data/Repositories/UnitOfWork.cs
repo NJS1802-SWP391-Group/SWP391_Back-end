@@ -11,7 +11,7 @@ namespace Data.Repositories
 {
     public class UnitOfWork
     {
-        private AppDbContext _context;
+        private readonly AppDbContext _context;
         private BlogRepository _blogRepository;
         private CustomerRepository _customerRepository;
         private DiamondRepository _diamondRepository;
