@@ -1,19 +1,19 @@
 ﻿
+using Domain.DiavanEntities;
 using Microsoft.EntityFrameworkCore;
-using SWP391_Project.Databases.DiavanSystem.Models;
-using SWP391_Project.Databases.System.Models;
+using SWP391_Project.Domain.DiavanEntities;
 
-namespace SWP391_Project.Databases.System
+namespace SWP391_Project.Data.Databases.DiavanSystem
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext() { }
+        //public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
         #region DbSet
-       
+        public DbSet<Diamond> Diamonds { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Account> Accounts { get; set; }
@@ -25,10 +25,10 @@ namespace SWP391_Project.Databases.System
 
         #endregion
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+/*        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("server=localhost;database=SWP391_DiavanSystem;uid=sa;pwd=12345;TrustServerCertificate=True;MultipleActiveResultSets=True");
-        }
+        }*/
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>()

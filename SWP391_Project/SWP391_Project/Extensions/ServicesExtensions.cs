@@ -1,18 +1,18 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SWP391_Project.Databases;
-using SWP391_Project.Databases.DiamondSystem;
-using SWP391_Project.Databases.System;
-using SWP391_Project.Mapper;
-using SWP391_Project.Repositories;
-using SWP391_Project.Repositories.Interfaces;
+using SWP391_Project.Data.Databases.DiavanSystem;
+using SWP391_Project.Data.Databases.DiamondSystem;
+using SWP391_Project.Common.Mapper;
 using SWP391_Project.Services;
 using SWP391_Project.Settings;
 using System.Globalization;
 using System.Text;
+using SWP391_Project.Data.Repositories.Interfaces;
+using Data.Repositories.Generic;
+using SWP391_Project.Data.Databases;
+using SWP391_Project.Middlewares;
 
 namespace SWP391_Project.Extensions;
 
@@ -20,8 +20,10 @@ public static class ServicesExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<ExceptionMiddleware>();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
 
         //Add Mapper
         var mapperConfig = new MapperConfiguration(mc =>
@@ -63,17 +65,18 @@ public static class ServicesExtensions
             opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
 
-        services.AddDbContext<DiamondContext>(options => 
-        { 
+        services.AddDbContext<DiamondContext>(options =>
+        {
             options.UseSqlServer(configuration.GetConnectionString("DiamondConnection"));
         });
-    
+
 
         AppContext.SetSwitch("System.Globalization.Invariant", true);
         CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
-        services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
+        services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<Data.Databases.DatabaseInitialiser>();
         services.AddScoped<UserService>();
         services.AddScoped<IdentityService>();
         //services.AddScoped<RequestValuationFormService>();

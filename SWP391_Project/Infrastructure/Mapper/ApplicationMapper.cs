@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using SWP391_Project.Databases.DiavanSystem.Models;
+using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Dtos;
 
-namespace SWP391_Project.Mapper
+namespace SWP391_Project.Common.Mapper
 {
     public class ApplicationMapper : Profile
     {
