@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Domain.DiavanEntities
 {
     [Table("Diamond")]
-    public class Diamond
+    public class SystemDiamond
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

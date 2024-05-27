@@ -9,15 +9,16 @@ namespace SWP391_Project.Domain.DiavanEntities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderID { get; set; }
+        public string Code { get; set; }
         public int CustomerId { get; set; }
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }
         public DateTime Time {  get; set; }
-        public string? Quantity { get; set; }
+        public int? Quantity { get; set; }
         public double? TotalPay { get; set; }
         public string? Payment {  get; set; }
         public string? StatusPayment { get; set; }
         public string? Status { get; set; }
-        public List<OrderDetail> DetailValuations { get; set; }
+        public List<OrderDetail>? DetailValuations { get; set; }
     }
 }

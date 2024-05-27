@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories.DiavanRepo
 {
-    public class DiamondRepository : GenericRepository<Diamond>
+    public class DiamondRepository : GenericRepository<SystemDiamond>
     {
         public DiamondRepository() { }
     }

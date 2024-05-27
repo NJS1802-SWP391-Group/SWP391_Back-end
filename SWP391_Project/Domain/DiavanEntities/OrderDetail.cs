@@ -11,8 +11,8 @@ namespace SWP391_Project.Domain.DiavanEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderDetailId { get; set; }
         public string Code {  get; set; }
-        public double Range { get; set; }
-        public int ServiceId {  get; set; }
+        public double EstimateLength { get; set; }
+        public int ServiceDetailId {  get; set; }
         [ForeignKey("ServiceDetailId")]
         public ServiceDetail ServiceDetail { get; set; }
         public double Price { get; set; }

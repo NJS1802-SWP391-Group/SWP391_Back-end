@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class CreateAppDbContext : Migration
+    public partial class CreateApDbContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -122,19 +122,20 @@ namespace Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MinRange = table.Column<double>(type: "float", nullable: false),
                     MaxRange = table.Column<double>(type: "float", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Status = table.Column<double>(type: "float", nullable: false),
-                    ServiceId = table.Column<int>(type: "int", nullable: false)
+                    ExtraPricePerMM = table.Column<double>(type: "float", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServiceID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServiceDetail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ServiceDetail_Service_ServiceId",
-                        column: x => x.ServiceId,
+                        name: "FK_ServiceDetail_Service_ServiceID",
+                        column: x => x.ServiceID,
                         principalTable: "Service",
                         principalColumn: "ServiceID",
                         onDelete: ReferentialAction.Cascade);
@@ -146,9 +147,10 @@ namespace Data.Migrations
                 {
                     OrderID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Quantity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
                     TotalPay = table.Column<double>(type: "float", nullable: true),
                     Payment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StatusPayment = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -172,8 +174,7 @@ namespace Data.Migrations
                     OrderDetailId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Range = table.Column<double>(type: "float", nullable: false),
-                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    EstimateLength = table.Column<double>(type: "float", nullable: false),
                     ServiceDetailId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -224,10 +225,10 @@ namespace Data.Migrations
                     ValueStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DiamondValue = table.Column<double>(type: "float", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderDetailId = table.Column<int>(type: "int", nullable: false),
                     IssueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Signature = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CertificateStatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -279,9 +280,9 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServiceDetail_ServiceId",
+                name: "IX_ServiceDetail_ServiceID",
                 table: "ServiceDetail",
-                column: "ServiceId");
+                column: "ServiceID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -12,8 +12,8 @@ using SWP391_Project.Data.Databases.DiavanSystem;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240526093624_CreateAppDbContext")]
-    partial class CreateAppDbContext
+    [Migration("20240527032409_CreateApDbContext")]
+    partial class CreateApDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -200,14 +200,18 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"), 1L, 1);
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Payment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Quantity")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -240,22 +244,19 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("EstimateLength")
+                        .HasColumnType("float");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<double>("Range")
-                        .HasColumnType("float");
-
                     b.Property<int?>("ResultId")
                         .HasColumnType("int");
 
                     b.Property<int>("ServiceDetailId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -335,7 +336,8 @@ namespace Data.Migrations
                     b.Property<string>("Shape")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Signature")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Symmetry")
@@ -386,6 +388,13 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ExtraPricePerMM")
+                        .HasColumnType("float");
+
                     b.Property<double>("MaxRange")
                         .HasColumnType("float");
 
@@ -395,19 +404,16 @@ namespace Data.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("ServiceId")
+                    b.Property<int>("ServiceID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Size")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Status")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("ServiceID");
 
                     b.ToTable("ServiceDetail");
                 });
@@ -485,7 +491,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("SWP391_Project.Domain.DiavanEntities.Service", "Service")
                         .WithMany()
-                        .HasForeignKey("ServiceId")
+                        .HasForeignKey("ServiceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
