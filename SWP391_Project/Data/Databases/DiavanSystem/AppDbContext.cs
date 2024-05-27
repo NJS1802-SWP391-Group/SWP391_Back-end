@@ -13,7 +13,7 @@ namespace SWP391_Project.Data.Databases.DiavanSystem
         }
 
         #region DbSet
-        public DbSet<Diamond> Diamonds { get; set; }
+        public DbSet<SystemDiamond> SystemDiamonds { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Account> Accounts { get; set; }
@@ -21,7 +21,7 @@ namespace SWP391_Project.Data.Databases.DiavanSystem
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Result> Results { get; set; }
-        public DbSet<ServiceDetail> Certificates { get; set; }
+        public DbSet<ServiceDetail> ServiceDetails { get; set; }
 
         #endregion
 
