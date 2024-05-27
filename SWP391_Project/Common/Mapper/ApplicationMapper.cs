@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Dtos;
+using SWP391_Project.DTOs;
 
 namespace SWP391_Project.Common.Mapper
 {
@@ -9,6 +10,8 @@ namespace SWP391_Project.Common.Mapper
         public ApplicationMapper() 
         {
             CreateMap<AccountModel, Account>().ReverseMap();
+            CreateMap<ServiceModel, Service>().ReverseMap();
+            CreateMap<ServiceDetailModel, ServiceDetail>().ReverseMap();
         }
     }
 }

@@ -3,14 +3,16 @@ using Business.Constants;
 using Data.Repositories;
 using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Common.Requests;
+using SWP391_Project.DTOs;
 
-namespace SWP391_Project.Services
+namespace Business.Services
 {
     public interface IServiceService
     {
         public Task<IServiceResult> GetAll();
         public Task<IServiceResult> GetAllActive();
         public Task<IServiceResult> GetServiceById(int id);
+        public Task<IServiceResult> CreateService(CreateServiceReq req);
         public Task<IServiceResult> UpdateService(int id, CreateServiceReq req);
         public Task<IServiceResult> ChangeStatus(int id, ChangeStatusReq req);
     }
@@ -31,7 +33,8 @@ namespace SWP391_Project.Services
             try
             {
                 var services = _unitOfWork.ServiceRepository.GetAll();
-                return new ServiceResult(200, "Get all active services", services);
+                var rs = _mapper.Map<List<ServiceModel>>(services);
+                return new ServiceResult(200, "Get all active services", rs);
             }
             catch (Exception ex)
             {
@@ -44,9 +47,10 @@ namespace SWP391_Project.Services
             try
             {
                 var services = _unitOfWork.ServiceRepository.GetAllActive();
+                var rs = _mapper.Map<List<ServiceModel>>(services);
                 if (services.Any())
                 {
-                    return new ServiceResult(200, "Get all active services", services);
+                    return new ServiceResult(200, "Get all active services", rs);
                 }
                 else
                 {
@@ -64,13 +68,14 @@ namespace SWP391_Project.Services
             try
             {
                 var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
+                var rs = _mapper.Map<ServiceModel>(service);
                 if (service is null)
                 {
                     return new ServiceResult(404, "Cannot find service");
                 }
                 else
                 {
-                    return new ServiceResult(200, "Get service by id", service);
+                    return new ServiceResult(200, "Get service by id", rs);
                 }
             }
             catch (Exception ex)
@@ -87,6 +92,7 @@ namespace SWP391_Project.Services
                 {
                     Name = req.Name,
                     Description = req.Description,
+                    Status = "Active"
                 });
                 if (rs > 0)
                 {

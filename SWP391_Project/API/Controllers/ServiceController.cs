@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SWP391_Project.Common.Requests;
-using SWP391_Project.Services;
+using Business.Services;
 
 namespace SWP391_Project.Controllers
 {
@@ -9,7 +9,7 @@ namespace SWP391_Project.Controllers
     [ApiController]
     public class ServiceController : Controller
     {
-        private readonly ServiceService _serviceService;
+        private readonly IServiceService _serviceService;
 
         public ServiceController(ServiceService serviceService)
         {

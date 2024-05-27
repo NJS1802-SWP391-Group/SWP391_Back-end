@@ -14,6 +14,8 @@ using Data.Repositories.Generic;
 using SWP391_Project.Data.Databases;
 using SWP391_Project.Middlewares;
 using Data.Repositories;
+using SWP391_Project.Domain.DiavanEntities;
+using Business.Services;
 
 namespace SWP391_Project.Extensions;
 
@@ -81,6 +83,7 @@ public static class ServicesExtensions
         services.AddScoped<UnitOfWork>();
         services.AddScoped<UserService>();
         services.AddScoped<IdentityService>();
+        services.AddScoped<ServiceDetailService>();
         //services.AddScoped<RequestValuationFormService>();
         //services.AddScoped<ScheduleFormService>();
         services.AddScoped<ServiceService>();

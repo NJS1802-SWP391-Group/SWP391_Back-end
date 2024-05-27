@@ -8,7 +8,7 @@ namespace SWP391_Project.Domain.DiavanEntities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int ServiceDetailID { get; set; }
         public string Code {  get; set; }
         public double MinRange {  get; set; }
         public double MaxRange { get; set; }
