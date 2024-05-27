@@ -24,12 +24,13 @@ namespace SWP391_Project.Domain.DiavanEntities
         public string ValueStatus { get; set; }
         public string? Description { get; set; }
         public double? DiamondValue  { get; set; }
+        public string Status { get; set; }
         public int OrderDetailId { get; set; }
         [ForeignKey("OrderDetailId")]
         public OrderDetail OrderDetail { get; set; }  
         public DateTime? IssueDate { get; set; }
         public DateTime? ExpireDate { get; set; }
-        public string? Signature { get; set; }
+        //public string? Signature { get; set; }
         public string? CertificateStatus { get; set; }
     }
 }
