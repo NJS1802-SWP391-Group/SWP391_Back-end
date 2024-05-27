@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "SWP391_Project": {
+    "API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
