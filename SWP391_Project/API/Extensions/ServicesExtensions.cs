@@ -13,6 +13,7 @@ using SWP391_Project.Data.Repositories.Interfaces;
 using Data.Repositories.Generic;
 using SWP391_Project.Data.Databases;
 using SWP391_Project.Middlewares;
+using Data.Repositories;
 
 namespace SWP391_Project.Extensions;
 
@@ -77,11 +78,12 @@ public static class ServicesExtensions
 
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         services.AddScoped<Data.Databases.DatabaseInitialiser>();
+        services.AddScoped<UnitOfWork>();
         services.AddScoped<UserService>();
         services.AddScoped<IdentityService>();
         //services.AddScoped<RequestValuationFormService>();
         //services.AddScoped<ScheduleFormService>();
-        //services.AddScoped<ServiceService>();
+        services.AddScoped<ServiceService>();
 
 
         return services;

@@ -12,5 +12,10 @@ namespace Data.Repositories.DiavanRepo
     public class ServiceRepository : GenericRepository<Service>
     {
         public ServiceRepository() { }
+
+        public List<Service> GetAllActive()
+        {
+            return _dbSet.Where(_ => _.Status.ToLower().Trim() == "active").ToList();
+        }
     }
 }
