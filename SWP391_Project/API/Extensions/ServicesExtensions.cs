@@ -83,9 +83,8 @@ public static class ServicesExtensions
         services.AddScoped<UnitOfWork>();
         services.AddScoped<UserService>();
         services.AddScoped<IdentityService>();
+        services.AddScoped<OrderService>();
         services.AddScoped<ServiceDetailService>();
-        //services.AddScoped<RequestValuationFormService>();
-        //services.AddScoped<ScheduleFormService>();
         services.AddScoped<ServiceService>();
 
 
