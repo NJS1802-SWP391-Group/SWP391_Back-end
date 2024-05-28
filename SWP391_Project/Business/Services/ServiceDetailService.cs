@@ -1,28 +1,35 @@
 ﻿using AutoMapper;
 using Business.Constants;
+using Common.Requests;
 using Data.Repositories;
-using SWP391_Project.Domain.DiavanEntities;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using SWP391_Project.Common.Requests;
+using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Business.Services
 {
-    public interface IServiceService
+    public interface IServiceDetailService
     {
         public Task<IServiceResult> GetAll();
         public Task<IServiceResult> GetAllActive();
-        public Task<IServiceResult> GetServiceById(int id);
-        public Task<IServiceResult> CreateService(CreateServiceReq req);
-        public Task<IServiceResult> UpdateService(int id, CreateServiceReq req);
+        public Task<IServiceResult> GetById(int id);
+        public Task<IServiceResult> Create(CreateServiceDetailReq req);
+        public Task<IServiceResult> Update(int id, UpdateServiceDetailReq req);
         public Task<IServiceResult> ChangeStatus(int id, ChangeStatusReq req);
     }
 
-    public class ServiceService : IServiceService
+    public class ServiceDetailService : IServiceDetailService
     {
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ServiceService(UnitOfWork unitOfWork, IMapper mapper)
+        public ServiceDetailService(UnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -32,9 +39,9 @@ namespace Business.Services
         {
             try
             {
-                var services = _unitOfWork.ServiceRepository.GetAll();
-                var rs = _mapper.Map<List<ServiceModel>>(services);
-                return new ServiceResult(200, "Get all active services", rs);
+                var services = _unitOfWork.ServiceDetailRepository.GetAll();
+                var rs = _mapper.Map<List<ServiceDetailModel>>(services);
+                return new ServiceResult(200, "Get all active service details", rs);
             }
             catch (Exception ex)
             {
@@ -46,15 +53,15 @@ namespace Business.Services
         {
             try
             {
-                var services = _unitOfWork.ServiceRepository.GetAllActive();
-                var rs = _mapper.Map<List<ServiceModel>>(services);
+                var services = _unitOfWork.ServiceDetailRepository.GetAllActive();
+                var rs = _mapper.Map<List<ServiceDetailModel>>(services);
                 if (services.Any())
                 {
-                    return new ServiceResult(200, "Get all active services", rs);
+                    return new ServiceResult(200, "Get all active service details", rs);
                 }
                 else
                 {
-                    return new ServiceResult(404, "No active service");
+                    return new ServiceResult(404, "No active service details");
                 }
             }
             catch (Exception ex)
@@ -63,15 +70,15 @@ namespace Business.Services
             }
         }
 
-        public async Task<IServiceResult> GetServiceById(int id)
+        public async Task<IServiceResult> GetById(int id)
         {
             try
             {
-                var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
-                var rs = _mapper.Map<ServiceModel>(service);
+                var service = await _unitOfWork.ServiceDetailRepository.GetByIdAsync(id);
+                var rs = _mapper.Map<ServiceDetailModel>(service);
                 if (service is null)
                 {
-                    return new ServiceResult(404, "Cannot find service");
+                    return new ServiceResult(404, "Cannot find service detail");
                 }
                 else
                 {
@@ -84,15 +91,19 @@ namespace Business.Services
             }
         }
 
-        public async Task<IServiceResult> CreateService(CreateServiceReq req)
+        public async Task<IServiceResult> Create(CreateServiceDetailReq req)
         {
             try
             {
-                var rs = await _unitOfWork.ServiceRepository.CreateAsync(new Service
+                var rs = await _unitOfWork.ServiceDetailRepository.CreateAsync(new ServiceDetail
                 {
-                    Name = req.Name,
-                    Description = req.Description,
-                    Status = "Active"
+                    MinRange = req.MinRange,
+                    MaxRange = req.MaxRange,
+                    ExtraPricePerMM = req.ExtraPricePerMM,
+                    Price = req.Price,
+                    Status = "Active",
+                    Code = req.Code,
+                    ServiceID = req.ServiceID,
                 });
                 if (rs > 0)
                 {
@@ -109,16 +120,19 @@ namespace Business.Services
             }
         }
 
-        public async Task<IServiceResult> UpdateService(int id, CreateServiceReq req)
+        public async Task<IServiceResult> Update(int id, UpdateServiceDetailReq req)
         {
             try
             {
-                var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
+                var service = await _unitOfWork.ServiceDetailRepository.GetByIdAsync(id);
                 if (service != null)
                 {
-                    service.Name = req.Name;
-                    service.Description = req.Description;
-                    var rs = await _unitOfWork.ServiceRepository.UpdateAsync(service);
+                    service.MinRange = req.MinRange;
+                    service.MaxRange = req.MaxRange;
+                    service.Price = req.Price;
+                    service.ExtraPricePerMM = req.ExtraPricePerMM;
+                    
+                    var rs = await _unitOfWork.ServiceDetailRepository.UpdateAsync(service);
                     if (rs > 0)
                     {
                         return new ServiceResult(200, "Update successfully");
@@ -130,7 +144,7 @@ namespace Business.Services
                 }
                 else
                 {
-                    return new ServiceResult(404, "Cannot find ervice");
+                    return new ServiceResult(404, "Cannot find service detail");
                 }
             }
             catch (Exception ex)

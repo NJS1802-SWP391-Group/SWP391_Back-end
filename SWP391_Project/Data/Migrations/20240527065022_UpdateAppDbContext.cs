@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class CreateApDbContext : Migration
+    public partial class UpdateAppDbContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -120,7 +120,7 @@ namespace Data.Migrations
                 name: "ServiceDetail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ServiceDetailID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MinRange = table.Column<double>(type: "float", nullable: false),
@@ -132,7 +132,7 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ServiceDetail", x => x.Id);
+                    table.PrimaryKey("PK_ServiceDetail", x => x.ServiceDetailID);
                     table.ForeignKey(
                         name: "FK_ServiceDetail_Service_ServiceID",
                         column: x => x.ServiceID,
@@ -201,7 +201,7 @@ namespace Data.Migrations
                         name: "FK_OrderDetail_ServiceDetail_ServiceDetailId",
                         column: x => x.ServiceDetailId,
                         principalTable: "ServiceDetail",
-                        principalColumn: "Id",
+                        principalColumn: "ServiceDetailID",
                         onDelete: ReferentialAction.Cascade);
                 });
 

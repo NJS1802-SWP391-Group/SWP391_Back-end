@@ -12,8 +12,8 @@ using SWP391_Project.Data.Databases.DiavanSystem;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240527032409_CreateApDbContext")]
-    partial class CreateApDbContext
+    [Migration("20240527065022_UpdateAppDbContext")]
+    partial class UpdateAppDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Domain.DiavanEntities.Diamond", b =>
+            modelBuilder.Entity("Domain.DiavanEntities.SystemDiamond", b =>
                 {
                     b.Property<int>("DiamondId")
                         .ValueGeneratedOnAdd()
@@ -382,11 +382,11 @@ namespace Data.Migrations
 
             modelBuilder.Entity("SWP391_Project.Domain.DiavanEntities.ServiceDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ServiceDetailID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceDetailID"), 1L, 1);
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -411,7 +411,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ServiceDetailID");
 
                     b.HasIndex("ServiceID");
 
