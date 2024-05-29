@@ -232,7 +232,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "S6R2",
-                    MinRange = 3.1,
+                    MinRange = 3,
                     MaxRange = 5,
                     Price = 55,
                     ExtraPricePerMM = 0,
@@ -242,7 +242,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "S6R3",
-                    MinRange = 5.1,
+                    MinRange = 5,
                     MaxRange = 8,
                     Price = 60,
                     ExtraPricePerMM = 0,
@@ -252,7 +252,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "S6R4",
-                    MinRange = 8.1,
+                    MinRange = 8,
                     MaxRange = 0,
                     Price = 65,
                     ExtraPricePerMM = 5,
@@ -272,7 +272,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "S24R2",
-                    MinRange = 3.1,
+                    MinRange = 3,
                     MaxRange = 5,
                     Price = 45,
                     ExtraPricePerMM = 0,
@@ -282,7 +282,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "S24R3",
-                    MinRange = 5.1,
+                    MinRange = 5,
                     MaxRange = 8,
                     Price = 50,
                     ExtraPricePerMM = 0,
@@ -292,7 +292,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "S24R4",
-                    MinRange = 8.1,
+                    MinRange = 8,
                     MaxRange = 0,
                     Price = 55,
                     ExtraPricePerMM = 5,
@@ -312,7 +312,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "S48R2",
-                    MinRange = 3.1,
+                    MinRange = 3,
                     MaxRange = 5,
                     Price = 35,
                     ExtraPricePerMM = 0,
@@ -322,7 +322,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "S48R3",
-                    MinRange = 5.1,
+                    MinRange = 5,
                     MaxRange = 8,
                     Price = 40,
                     ExtraPricePerMM = 0,
@@ -332,7 +332,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "S48R4",
-                    MinRange = 8.1,
+                    MinRange = 8,
                     MaxRange = 0,
                     Price = 45,
                     ExtraPricePerMM = 5,
@@ -352,7 +352,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "SSR2",
-                    MinRange = 3.1,
+                    MinRange = 3,
                     MaxRange = 5,
                     Price = 25,
                     ExtraPricePerMM = 0,
@@ -362,7 +362,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "SSR3",
-                    MinRange = 5.1,
+                    MinRange = 5,
                     MaxRange = 8,
                     Price = 30,
                     ExtraPricePerMM = 0,
@@ -372,7 +372,7 @@ namespace SWP391_Project.Data.Databases
                 new ServiceDetail
                 {
                     Code = "SSR4",
-                    MinRange = 8.1,
+                    MinRange = 8,
                     MaxRange = 0,
                     Price = 35,
                     ExtraPricePerMM = 5,
