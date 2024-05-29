@@ -22,6 +22,7 @@ namespace Business.Services
         public Task<IServiceResult> Create(CreateServiceDetailReq req);
         public Task<IServiceResult> Update(int id, UpdateServiceDetailReq req);
         public Task<IServiceResult> ChangeStatus(int id, ChangeStatusReq req);
+        public Task<IServiceResult> GetPriceByServiceAndLength(int serviceID, double length);
     }
 
     public class ServiceDetailService : IServiceDetailService
@@ -39,7 +40,7 @@ namespace Business.Services
         {
             try
             {
-                var services = _unitOfWork.ServiceDetailRepository.GetAll();
+                var services = await _unitOfWork.ServiceDetailRepository.GetAllAsync();
                 var rs = _mapper.Map<List<ServiceDetailModel>>(services);
                 return new ServiceResult(200, "Get all active service details", rs);
             }
@@ -53,7 +54,7 @@ namespace Business.Services
         {
             try
             {
-                var services = _unitOfWork.ServiceDetailRepository.GetAllActive();
+                var services = await _unitOfWork.ServiceDetailRepository.GetAllActiveAsync();
                 var rs = _mapper.Map<List<ServiceDetailModel>>(services);
                 if (services.Any())
                 {
@@ -157,11 +158,11 @@ namespace Business.Services
         {
             try
             {
-                var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
+                var service = await _unitOfWork.ServiceDetailRepository.GetByIdAsync(id);
                 if (service != null)
                 {
-                    service.Name = req.Status;
-                    var rs = await _unitOfWork.ServiceRepository.UpdateAsync(service);
+                    service.Status = req.Status;
+                    var rs = await _unitOfWork.ServiceDetailRepository.UpdateAsync(service);
                     if (rs > 0)
                     {
                         return new ServiceResult(200, "Change status successfully");
@@ -174,6 +175,30 @@ namespace Business.Services
                 else
                 {
                     return new ServiceResult(404, "Cannot find ervice");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+        public async Task<IServiceResult> GetPriceByServiceAndLength(int serviceID, double length)
+        {
+            try
+            {
+                var detail = await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(serviceID, length);
+                if (detail is null)
+                {
+                    return new ServiceResult(404, "Cannot find service detail");
+                }
+                var rs = detail.Price + (length - detail.MinRange) * detail.ExtraPricePerMM;
+                if (rs <= 0)
+                {
+                    return new ServiceResult(404, "Cannot find price");
+                }
+                else
+                {
+                    return new ServiceResult(200, "Get price by service and length", rs);
                 }
             }
             catch (Exception ex)
