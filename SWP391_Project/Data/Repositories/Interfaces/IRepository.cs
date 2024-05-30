@@ -23,7 +23,7 @@ namespace SWP391_Project.Data.Repositories.Interfaces
         public Task<List<T>> GetAllAsync();
         public void Create(T entity);
 
-        public Task<int> CreateAsync(T entity);
+        public Task<T> CreateAsync(T entity);
 
         public void Update(T entity);
 

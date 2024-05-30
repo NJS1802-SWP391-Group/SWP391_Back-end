@@ -73,10 +73,11 @@ namespace Data.Repositories.Generic
             _context.SaveChanges();
         }
 
-        public async Task<int> CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
-            _dbSet.Add(entity);
-            return await _context.SaveChangesAsync();
+           var result = await _dbSet.AddAsync(entity);
+           await _context.SaveChangesAsync();
+           return result.Entity;
         }
 
         public void Update(T entity)

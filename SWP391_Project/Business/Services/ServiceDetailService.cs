@@ -107,7 +107,7 @@ namespace Business.Services
                     Code = req.Code,
                     ServiceID = req.ServiceID,
                 });
-                if (rs > 0)
+                if (rs != null)
                 {
                     return new ServiceResult(200, "Create successfully");
                 }
