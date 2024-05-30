@@ -52,10 +52,15 @@ namespace SWP391_Project
                         new string[]{}
                     }
                 });
-                option.MapType<DateTime>(() => new OpenApiSchema { 
+/*                option.MapType<DateTime>(() => new OpenApiSchema { 
                     Type = "string", 
                     Format = "string",
                     Pattern = @"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$" 
+                });*/
+                option.MapType<DateTime>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "date",
                 });
             });
 

@@ -49,5 +49,18 @@ namespace SWP391_Project.Services
                 return new ServiceResult(-1, ex.Message);
             }
         }
+
+        public async Task<IServiceResult> GetAllValuationStaff()
+        {
+            try
+            {
+                var result = _mapper.Map<List<AccountModel>>(await _unitOfWork.UserRepository.GetAllValuationStaffAsync());
+                return new ServiceResult(200, "Get all valuation staff", result);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(-1, ex.Message);
+            }
+        }
     }
 }
