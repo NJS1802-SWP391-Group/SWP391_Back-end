@@ -89,13 +89,13 @@ namespace Data.Migrations.Diamond
                     b.Property<DateTime?>("CertDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CertificateId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Clarity")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClarityCharacteristic")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")

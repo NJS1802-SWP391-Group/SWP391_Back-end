@@ -12,9 +12,9 @@ namespace SWP391_Project.Domain.DiavanEntities
         public int OrderDetailId { get; set; }
         public string Code {  get; set; }
         public double EstimateLength { get; set; }
-        public int ServiceDetailId {  get; set; }
-        [ForeignKey("ServiceDetailId")]
-        public ServiceDetail ServiceDetail { get; set; }
+        public int ServiceId {  get; set; }
+        [ForeignKey("ServiceId")]
+        public Service Service { get; set; }
         public double Price { get; set; }
         public string Status {  get; set; }
         public bool? isDiamond { get; set; }

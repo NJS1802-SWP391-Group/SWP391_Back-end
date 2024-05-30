@@ -9,7 +9,7 @@ namespace Domain.DiamondEntities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DiamondCheckId { get; set; }
-        public string? Code { get; set; }
+        public string? CertificateId { get; set; }
         public string? Origin { get; set; }
         public string? Shape { get; set; }
         public string? Carat { get; set; }
