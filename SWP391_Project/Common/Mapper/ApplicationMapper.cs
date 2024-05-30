@@ -14,6 +14,9 @@ namespace SWP391_Project.Common.Mapper
             CreateMap<ServiceModel, Service>().ReverseMap();
             CreateMap<ServiceDetailModel, ServiceDetail>().ReverseMap();
             CreateMap<ViewOrderResponse,Order>().ReverseMap();
+            CreateMap<GetServiceDetailPriceResponse, ServiceDetail>()
+                .ForMember(x => x.ServiceDetailID, opt => opt.MapFrom(x => x.ServiceDetailID))
+                .ForMember(x => x.Price, opt => opt.MapFrom(x => x.Price)).ReverseMap();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Data.Repositories.Generic;
+using Microsoft.EntityFrameworkCore;
 using SWP391_Project.Data.Databases.DiavanSystem;
 using SWP391_Project.Domain.DiavanEntities;
 using System;
@@ -13,9 +14,9 @@ namespace Data.Repositories.DiavanRepo
     {
         public ServiceRepository() { }
 
-        public List<Service> GetAllActive()
+        public async Task<List<Service>> GetAllActiveAsync()
         {
-            return _dbSet.Where(_ => _.Status.ToLower().Trim() == "active").ToList();
+            return await _dbSet.Where(_ => _.Status.ToLower().Trim() == "active").ToListAsync();
         }
     }
 }

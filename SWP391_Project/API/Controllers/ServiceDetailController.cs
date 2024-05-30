@@ -104,5 +104,21 @@ namespace SWP391_Project.Controllers
             var result = await _serviceDetailService.ChangeStatus(id, req);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
+
+        [AllowAnonymous]
+        [HttpGet("Get-Price-By-Service-And-Length/{serviceId}/{length}")]
+        public async Task<IActionResult> GetPriceByServiceAndLength(int serviceId, double length)
+        {
+            if (serviceId <= 0)
+            {
+                return StatusCode(500, "Invalid ID");
+            }
+            if (length <= 0)
+            {
+                return StatusCode(500, "Invalid length");
+            }
+            var result = await _serviceDetailService.GetPriceByServiceAndLength(serviceId, length);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
     }
 }
