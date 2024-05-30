@@ -94,9 +94,9 @@ namespace Business.Services
                     Description = req.Description,
                     Status = "Active"
                 });
-                if (rs > 0)
+                if (rs!=null)
                 {
-                    return new ServiceResult(200, "Create successfully");
+                    return new ServiceResult(200, "Create successfully",rs);
                 }
                 else
                 {
