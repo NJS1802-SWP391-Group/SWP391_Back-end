@@ -425,7 +425,7 @@ namespace SWP391_Project.Data.Databases
                     {
                         Code = GenerateCode.OrderDetailCode(orders[1].OrderID),
                         EstimateLength = 2.5,
-                        Service = services[2],
+                        Service = services[3],
                         Price = serviceDetails[4].Price,
                         isDiamond = true,
                         Status = "Active",
@@ -437,7 +437,7 @@ namespace SWP391_Project.Data.Databases
                     {
                         Code = GenerateCode.OrderDetailCode(orders[1].OrderID),
                         EstimateLength = 1.8,
-                        Service= services[2],
+                        Service = services[3],
                         Price = serviceDetails[4].Price,
                         isDiamond = true,
                         Status = "Active",
@@ -571,7 +571,8 @@ namespace SWP391_Project.Data.Databases
                 {
                     BlogName = "This is a blog",
                     Content = "Hello world",
-                    Admin = accounts[1],
+                    CreatedBy = "Admin",
+                    CreatedDate = DateTime.Now,
                     Status = "Active"
                 }
             };
@@ -663,7 +664,7 @@ namespace SWP391_Project.Data.Databases
                 {
                                 new DiamondCheck
             {
-                CertificateCode = "DC001",
+                CertificateId = "DC001",
                 Origin = "South Africa",
                 Shape = "Round",
                 Carat = "1.0",
@@ -683,7 +684,7 @@ namespace SWP391_Project.Data.Databases
             },
             new DiamondCheck
             {
-                CertificateCode = "DC002",
+                CertificateId = "DC002",
                 Origin = "Russia",
                 Shape = "Princess",
                 Carat = "1.5",
@@ -703,7 +704,7 @@ namespace SWP391_Project.Data.Databases
             },
             new DiamondCheck
             {
-                CertificateCode = "DC003",
+                CertificateId = "DC003",
                 Origin = "Canada",
                 Shape = "Oval",
                 Carat = "2.0",

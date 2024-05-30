@@ -12,8 +12,8 @@ using SWP391_Project.Data.Databases.DiavanSystem;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240527065022_UpdateAppDbContext")]
-    partial class UpdateAppDbContext
+    [Migration("20240530141332_CreateAppDbContext")]
+    partial class CreateAppDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,9 +117,6 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BlogId"), 1L, 1);
 
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int");
-
                     b.Property<string>("BlogName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -128,16 +125,27 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BlogId");
-
-                    b.HasIndex("AdminId");
 
                     b.ToTable("Blog");
                 });
@@ -256,7 +264,7 @@ namespace Data.Migrations
                     b.Property<int?>("ResultId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ServiceDetailId")
+                    b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -273,7 +281,7 @@ namespace Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ServiceDetailId");
+                    b.HasIndex("ServiceId");
 
                     b.HasIndex("ValuationStaffId");
 
@@ -418,17 +426,6 @@ namespace Data.Migrations
                     b.ToTable("ServiceDetail");
                 });
 
-            modelBuilder.Entity("SWP391_Project.Domain.DiavanEntities.Blog", b =>
-                {
-                    b.HasOne("SWP391_Project.Domain.DiavanEntities.Account", "Admin")
-                        .WithMany()
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
-                });
-
             modelBuilder.Entity("SWP391_Project.Domain.DiavanEntities.Customer", b =>
                 {
                     b.HasOne("SWP391_Project.Domain.DiavanEntities.Account", "Account")
@@ -459,9 +456,9 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SWP391_Project.Domain.DiavanEntities.ServiceDetail", "ServiceDetail")
+                    b.HasOne("SWP391_Project.Domain.DiavanEntities.Service", "Service")
                         .WithMany()
-                        .HasForeignKey("ServiceDetailId")
+                        .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -471,7 +468,7 @@ namespace Data.Migrations
 
                     b.Navigation("Order");
 
-                    b.Navigation("ServiceDetail");
+                    b.Navigation("Service");
 
                     b.Navigation("ValuationStaff");
                 });

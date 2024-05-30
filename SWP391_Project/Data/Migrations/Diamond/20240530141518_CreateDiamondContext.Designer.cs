@@ -12,7 +12,7 @@ using SWP391_Project.Data.Databases.DiamondSystem;
 namespace Data.Migrations.Diamond
 {
     [DbContext(typeof(DiamondContext))]
-    [Migration("20240526093722_CreateDiamondContext")]
+    [Migration("20240530141518_CreateDiamondContext")]
     partial class CreateDiamondContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,13 +91,13 @@ namespace Data.Migrations.Diamond
                     b.Property<DateTime?>("CertDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CertificateId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Clarity")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClarityCharacteristic")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
