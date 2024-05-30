@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Constants;
 using Common.Requests;
+using Common.Responses;
 using Data.Repositories;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using SWP391_Project.Common.Requests;
@@ -191,8 +192,13 @@ namespace Business.Services
                 {
                     return new ServiceResult(404, "Cannot find service detail");
                 }
-                var rs = detail.Price + (length - detail.MinRange) * detail.ExtraPricePerMM;
-                if (rs <= 0)
+                var price = detail.Price + (length - detail.MinRange) * detail.ExtraPricePerMM;
+                var rs = new GetServiceDetailPriceResponse
+                {
+                    Price = price,
+                    ServiceDetailID = detail.ServiceDetailID,
+                };
+                if (rs.Price <= 0)
                 {
                     return new ServiceResult(404, "Cannot find price");
                 }
