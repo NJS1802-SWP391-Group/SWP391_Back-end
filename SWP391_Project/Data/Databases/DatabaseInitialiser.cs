@@ -425,7 +425,7 @@ namespace SWP391_Project.Data.Databases
                     {
                         Code = GenerateCode.OrderDetailCode(orders[1].OrderID),
                         EstimateLength = 2.5,
-                        ServiceDetail = serviceDetails[4],
+                        Service = services[3],
                         Price = serviceDetails[4].Price,
                         isDiamond = true,
                         Status = "Active",
@@ -437,7 +437,7 @@ namespace SWP391_Project.Data.Databases
                     {
                         Code = GenerateCode.OrderDetailCode(orders[1].OrderID),
                         EstimateLength = 1.8,
-                        ServiceDetail = serviceDetails[4],
+                        Service = services[3],
                         Price = serviceDetails[4].Price,
                         isDiamond = true,
                         Status = "Active",
@@ -449,7 +449,7 @@ namespace SWP391_Project.Data.Databases
                     {
                         Code = GenerateCode.OrderDetailCode(orders[0].OrderID),
                         EstimateLength = 2.5,
-                        ServiceDetail = serviceDetails[12],
+                        Service = services[1],
                         Price = serviceDetails[12].Price,
                         isDiamond = false,
                         Status = "Active",
@@ -461,7 +461,7 @@ namespace SWP391_Project.Data.Databases
                     {
                         Code = GenerateCode.OrderDetailCode(orders[2].OrderID),
                         EstimateLength = 3.5,
-                        ServiceDetail = serviceDetails[13],
+                        Service = services[0],
                         Price = serviceDetails[13].Price,
                         isDiamond = true,
                         Status = "Active",
@@ -571,7 +571,8 @@ namespace SWP391_Project.Data.Databases
                 {
                     BlogName = "This is a blog",
                     Content = "Hello world",
-                    Admin = accounts[1],
+                    CreatedBy = "Admin",
+                    CreatedDate = DateTime.Now,
                     Status = "Active"
                 }
             };
@@ -663,7 +664,7 @@ namespace SWP391_Project.Data.Databases
                 {
                                 new DiamondCheck
             {
-                Code = "DC001",
+                CertificateId = "DC001",
                 Origin = "South Africa",
                 Shape = "Round",
                 Carat = "1.0",
@@ -683,7 +684,7 @@ namespace SWP391_Project.Data.Databases
             },
             new DiamondCheck
             {
-                Code = "DC002",
+                CertificateId = "DC002",
                 Origin = "Russia",
                 Shape = "Princess",
                 Carat = "1.5",
@@ -703,7 +704,7 @@ namespace SWP391_Project.Data.Databases
             },
             new DiamondCheck
             {
-                Code = "DC003",
+                CertificateId = "DC003",
                 Origin = "Canada",
                 Shape = "Oval",
                 Carat = "2.0",

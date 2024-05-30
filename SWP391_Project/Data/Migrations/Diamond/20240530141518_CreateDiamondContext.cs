@@ -40,7 +40,7 @@ namespace Data.Migrations.Diamond
                 {
                     DiamondCheckId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CertificateId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Shape = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Carat = table.Column<string>(type: "nvarchar(max)", nullable: true),
