@@ -24,12 +24,18 @@ namespace API.Controllers
             return StatusCode(500, result.Message);
         }
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("Request")]
         public async Task<IActionResult> CreateOrder([FromBody]CreateOrderReq createOrderReq)
         {
             var result = await _orderService.CreateOrder(createOrderReq);
-            if (result.Status == 1) { return StatusCode(200, result.Data); }
-            return StatusCode(500, result.Message);
+            return StatusCode(result.Status,result.Status != 200?result.Message:result.Data);
+        }
+        [AllowAnonymous]
+        [HttpPost("Update")]
+        public async Task<IActionResult> UpdateOrder([FromBody]UpdateOrderConsult updateOrderConsult)
+        {
+            var result = await _orderService.UpdateOrder(updateOrderConsult);
+            return StatusCode(result.Status, result.Status!=200?result.Message:result.Data);
         }
     }
 }

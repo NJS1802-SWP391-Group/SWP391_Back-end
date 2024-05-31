@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Constants;
+using Common.Enums;
 using Common.Requests;
 using Common.Responses;
 using Data.Helpers;
@@ -48,7 +49,9 @@ namespace Business.Services
                 if (check == null) throw new Exception("Can't not find the customer");
                 var obj = _mapper.Map<Order>(createOrderReq);
                 obj.Code = GenerateCode.OrderCode();
-                var result = _unitOfWork.OrderRepository.CreateAsync(obj);
+                obj.Status = OrderStatusEnum.Pending.ToString();
+                var reqOrder = await _unitOfWork.OrderRepository.CreateAsync(obj);
+                var result = _mapper.Map<ViewOrderResponse>(reqOrder);
                 return new ServiceResult(200, "Successful", result);
             }
             catch (Exception ex)
@@ -56,9 +59,37 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
-        //public async Task<ServiceResult> UpdateOrder(CreateOrder createOrder)
-        //{
-
-        //}
+        public async Task<ServiceResult> UpdateOrder(UpdateOrderConsult UpdateOrder)
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(UpdateOrder.OrderID);
+                order = _mapper.Map<Order>(UpdateOrder);
+                var listDetail = _mapper.Map<List<OrderDetail>>(UpdateOrder.DetailValuations);
+                foreach (var item in listDetail)
+                {
+                    item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId,item.EstimateLength)).Price;
+                    if (item.Price <= 0) throw new Exception("Can not find Service");
+                    item.OrderId = UpdateOrder.OrderID;
+                    item.Code = GenerateCode.OrderDetailCode(UpdateOrder.OrderID);
+                    item.Status = ValuationDetailStatusEnum.Assigning.ToString();
+                    await _unitOfWork.OrderDetailRepository.CreateAsync(item);
+                    order.TotalPay = order.TotalPay + item.Price;
+                }
+                order.Quantity = listDetail.Count();
+                _unitOfWork.OrderRepository.Update(order);
+                await _unitOfWork.OrderRepository.SaveAsync();
+                await _unitOfWork.CommitTransactionAsync();
+                var result = _mapper.Map<ViewOrderDetailResult>(order);
+                return new ServiceResult(200, "Successful", order);
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.RollbackTransactionAsync();
+                return new ServiceResult(500, ex.Message);
+                
+            }
+        }
     }
 }

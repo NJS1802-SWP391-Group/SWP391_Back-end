@@ -13,8 +13,6 @@ namespace Common.Responses
         public int CustomerId {  get; set; }
         public int? Quantity { set; get; }
         public DateTime Time { set; get; }
-        public string? Payment { get; set; }
-        public string? StatusPayment { get; set; }
         public string? Status { set; get; }
     }
 }
