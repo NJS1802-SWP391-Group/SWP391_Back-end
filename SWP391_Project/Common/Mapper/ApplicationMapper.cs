@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.DTOs;
 using Common.Requests;
 using Common.Responses;
 using SWP391_Project.Domain.DiavanEntities;
@@ -15,6 +16,10 @@ namespace SWP391_Project.Common.Mapper
             CreateMap<ServiceModel, Service>().ReverseMap();
             CreateMap<ServiceDetailModel, ServiceDetail>().ReverseMap();
             CreateMap<ViewOrderResponse,Order>().ReverseMap();
+            CreateMap<ResultModel, Result>().ReverseMap();
+            CreateMap<CreateResultReq, Result>()
+                .ForMember(x => x.Status, opt => opt.MapFrom(x => "Pending")).ReverseMap();
+            CreateMap<UpdateResultReq, Result>().ReverseMap();
             CreateMap<GetServiceDetailPriceResponse, ServiceDetail>()
                 .ForMember(x => x.ServiceDetailID, opt => opt.MapFrom(x => x.ServiceDetailID))
                 .ForMember(x => x.Price, opt => opt.MapFrom(x => x.Price)).ReverseMap();
