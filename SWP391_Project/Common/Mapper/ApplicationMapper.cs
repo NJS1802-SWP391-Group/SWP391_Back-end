@@ -23,6 +23,16 @@ namespace SWP391_Project.Common.Mapper
             CreateMap<GetServiceDetailPriceResponse, ServiceDetail>()
                 .ForMember(x => x.ServiceDetailID, opt => opt.MapFrom(x => x.ServiceDetailID))
                 .ForMember(x => x.Price, opt => opt.MapFrom(x => x.Price)).ReverseMap();
+            CreateMap<CreateOrderReq, Order>().ReverseMap();
+            CreateMap<UpdateOrderConsult, Order>()
+                //.ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations))
+                .ReverseMap();
+            CreateMap<OrderDetail, OrderDetailCreate>()
+                .ReverseMap();
+            CreateMap<ViewOrderResult, Order>()
+                .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.Details))
+                .ReverseMap();
+            CreateMap<OrderDetail,ViewOrderDetailResult>().ReverseMap();
         }
     }
 }

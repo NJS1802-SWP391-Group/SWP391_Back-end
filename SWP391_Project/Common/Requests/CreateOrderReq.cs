@@ -13,7 +13,5 @@ namespace Common.Requests
         public int CustomerId { get; set; }
         public DateTime Time { get; set; }
         public int? Quantity { get; set; }
-        public string? StatusPayment { get; set; }
-        public string? Status { get; set; }
     }
 }

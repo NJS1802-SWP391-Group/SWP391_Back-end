@@ -1,4 +1,5 @@
 ﻿using Data.Repositories.DiavanRepo;
+using Microsoft.EntityFrameworkCore.Storage;
 using SWP391_Project.Data.Databases.DiavanSystem;
 using SWP391_Project.Data.Repositories.Interfaces;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
-    public class UnitOfWork
+    public class UnitOfWork: IDisposable
     {
-        private readonly AppDbContext _context;
+        private AppDbContext _context;
         private BlogRepository _blogRepository;
         private CustomerRepository _customerRepository;
         private DiamondRepository _diamondRepository;
@@ -21,8 +22,12 @@ namespace Data.Repositories
         private ServiceDetailRepository _serviceDetailRepository;
         private ServiceRepository _serviceRepository;
         private UserRepository _userRepository;
+        private IDbContextTransaction _transaction;
 
         public UnitOfWork() { }
+        public UnitOfWork(AppDbContext context) {
+            _context = context;
+        }
 
         public UnitOfWork(AppDbContext context, BlogRepository blogRepository, CustomerRepository customerRepository, DiamondRepository diamondRepository, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, 
             ResultRepository resultRepository, ServiceDetailRepository serviceDetailRepository, ServiceRepository serviceRepository, UserRepository userRepository)
@@ -109,6 +114,40 @@ namespace Data.Repositories
             {
                 return _serviceRepository ??= new Repositories.DiavanRepo.ServiceRepository();
             }
+        }
+
+        public async Task BeginTransactionAsync()
+        {
+            _transaction = await _context.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitTransactionAsync()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                await _transaction.CommitAsync();
+            }
+            catch
+            {
+                await RollbackTransactionAsync();
+                throw;
+            }
+            finally
+            {
+                await _transaction.DisposeAsync();
+            }
+        }
+
+        public async Task RollbackTransactionAsync()
+        {
+            await _transaction.RollbackAsync();
+            await _transaction.DisposeAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
     }
 }
