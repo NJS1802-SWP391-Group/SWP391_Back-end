@@ -23,7 +23,8 @@ namespace SWP391_Project
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(new DateTimeHelper("yyyy-MM-ddTHH:mm:ss"));
+              //  options.JsonSerializerOptions.Converters.Add(new DateTimeHelper("yyyy-MM-ddTHH:mm:ss"));
+                options.JsonSerializerOptions.Converters.Add(new DateTimeHelper("MM/dd/yyyy H:mm:ss"));
             });
 
             builder.Services.AddSwaggerGen(option =>
@@ -52,11 +53,11 @@ namespace SWP391_Project
                         new string[]{}
                     }
                 });
-                option.MapType<DateTime>(() => new OpenApiSchema { 
-                    Type = "string", 
-                    Format = "string",
-                    Pattern = @"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$" 
-                });
+                //option.MapType<DateTime>(() => new OpenApiSchema { 
+                //    Type = "string", 
+                //    Format = "string",
+                //    Pattern = @"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$" 
+                //});
 /*                option.MapType<DateTime>(() => new OpenApiSchema
                 {
                     Type = "string",

@@ -20,7 +20,7 @@ namespace Data.Helpers
             Random random = new Random();
             int randomPart = random.Next(100, 999);
             var result = id.ToString("D3");
-            return $"O{result}{randomPart}";
+            return $"OD{result}{randomPart}";
         }
     }
 }

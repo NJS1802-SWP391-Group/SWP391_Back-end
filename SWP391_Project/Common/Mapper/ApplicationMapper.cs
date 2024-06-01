@@ -10,12 +10,15 @@ namespace SWP391_Project.Common.Mapper
 {
     public class ApplicationMapper : Profile
     {
-        public ApplicationMapper() 
+        public ApplicationMapper()
         {
             CreateMap<AccountModel, Account>().ReverseMap();
             CreateMap<ServiceModel, Service>().ReverseMap();
             CreateMap<ServiceDetailModel, ServiceDetail>().ReverseMap();
-            CreateMap<ViewOrderResponse,Order>().ReverseMap();
+            CreateMap<ViewOrderResponse, Order>().
+                ForPath(x => x.Customer.FirstName, opt => opt.MapFrom(x => x.FirstName)).
+                ForPath(x => x.Customer.LastName, opt => opt.MapFrom(x => x.LastName))
+                .ReverseMap();
             CreateMap<ResultModel, Result>().ReverseMap();
             CreateMap<CreateResultReq, Result>()
                 .ForMember(x => x.Status, opt => opt.MapFrom(x => "Pending")).ReverseMap();
@@ -25,14 +28,17 @@ namespace SWP391_Project.Common.Mapper
                 .ForMember(x => x.Price, opt => opt.MapFrom(x => x.Price)).ReverseMap();
             CreateMap<CreateOrderReq, Order>().ReverseMap();
             CreateMap<UpdateOrderConsult, Order>()
-                //.ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations))
+                .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations))
                 .ReverseMap();
             CreateMap<OrderDetail, OrderDetailCreate>()
                 .ReverseMap();
             CreateMap<ViewOrderResult, Order>()
-                .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.Details))
+                .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations))
                 .ReverseMap();
-            CreateMap<OrderDetail,ViewOrderDetailResult>().ReverseMap();
+            CreateMap<OrderDetail, ViewOrderDetailResult>()
+                .ForMember(x => x.ServiceName, opt => opt.MapFrom(x => x.Service.Name))
+                .ReverseMap();
+
         }
     }
 }
