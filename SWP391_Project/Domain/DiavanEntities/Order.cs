@@ -19,6 +19,6 @@ namespace SWP391_Project.Domain.DiavanEntities
         public string? Payment {  get; set; }
         public string? StatusPayment { get; set; }
         public string? Status { get; set; }
-        public List<OrderDetail>? DetailValuations { get; set; }
+        public virtual List<OrderDetail>? DetailValuations { get; set; }
     }
 }

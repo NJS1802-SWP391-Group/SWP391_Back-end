@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Text.Json.Serialization;
 
 namespace SWP391_Project.Domain.DiavanEntities
 {
@@ -20,6 +20,7 @@ namespace SWP391_Project.Domain.DiavanEntities
         public bool? isDiamond { get; set; }
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]
+        [JsonIgnore]
         public Order Order { get; set; }
         public int? ValuationStaffId { get; set; }
         [ForeignKey("ValuationStaffId")]

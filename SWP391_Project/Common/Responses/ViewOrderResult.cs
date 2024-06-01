@@ -14,15 +14,15 @@ namespace Common.Responses
         public int Quantity { set; get; }
         public DateTime Time { set; get; }
         public string Status { set; get; }
-        public double Price { set; get; }
-        public List<ViewOrderDetailResult> Details { set; get; }
+        public double TotalPay { set; get; }
+        public List<ViewOrderDetailResult> DetailValuations { set; get; }
     }
     public class ViewOrderDetailResult
     {
-        public int Id { get; set; }
-        public string Code { set; get; }
-        public int ServiceName { set; get; }
-        public double Size { set; get; }
+        public int OrderDetailId{ get; set; }
+        public string Code{set; get;}
+        public string ServiceName{ set; get; }
+        public double EstimateLength{ set; get; }
         public double Price { set; get; }
     }
 }
