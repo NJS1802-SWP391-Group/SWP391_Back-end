@@ -31,7 +31,7 @@ namespace API.Controllers
             return StatusCode(result.Status,result.Status != 200?result.Message:result.Data);
         }
         [AllowAnonymous]
-        [HttpPost("Update")]
+        [HttpPost("Submit")]
         public async Task<IActionResult> UpdateOrder([FromBody]UpdateOrderConsult updateOrderConsult)
         {
             var result = await _orderService.UpdateOrder(updateOrderConsult);
