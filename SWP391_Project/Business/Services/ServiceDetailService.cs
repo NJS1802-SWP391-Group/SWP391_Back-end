@@ -187,12 +187,11 @@ namespace Business.Services
         {
             try
             {
-                var detail = await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(serviceID, length);
+                var (detail, price) = await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(serviceID, length);
                 if (detail is null)
                 {
                     return new ServiceResult(404, "Cannot find service detail");
                 }
-                var price = detail.Price + (length - detail.MinRange) * detail.ExtraPricePerMM;
                 var rs = new GetServiceDetailPriceResponse
                 {
                     Price = price,
