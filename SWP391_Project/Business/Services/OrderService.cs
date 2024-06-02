@@ -70,7 +70,7 @@ namespace Business.Services
                 if(order.TotalPay ==null||order.TotalPay==0) order.TotalPay = 0;
                 foreach (var item in order.DetailValuations)
                 {
-                    item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId,item.EstimateLength)).Price;
+                    item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId,item.EstimateLength)).price;
                     if (item.Price <= 0) throw new Exception("Can not find Service");
                     item.OrderId = UpdateOrder.OrderID;
                     item.Code = GenerateCode.OrderDetailCode(UpdateOrder.OrderID);
