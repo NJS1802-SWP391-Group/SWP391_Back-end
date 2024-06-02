@@ -22,5 +22,10 @@ namespace SWP391_Project.Domain.Helpers
         {
             writer.WriteStringValue(value.ToString(_format));
         }
+        public static DateTime ParseDate(string value)
+        {
+            var format = "MM/dd/yyyy HH:mm:ss";
+            return DateTime.ParseExact(value, format, null);
+        }
     }
 }

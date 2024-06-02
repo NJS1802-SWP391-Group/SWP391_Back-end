@@ -13,7 +13,20 @@ namespace Data.Repositories.DiavanRepo
     public class OrderDetailRepository : GenericRepository<OrderDetail>
     {
         public OrderDetailRepository() { }
-
+        public async Task<bool> UpdateListDetail(List<OrderDetail> orderDetails,int OrderId){
+            var result = true;
+            var list = await this.GetDetailByOrderId(OrderId);
+            foreach (var item in list)
+            {
+                if (item.OrderId == null) { }
+            }
+            return result;
+        }
+        public async Task<List<OrderDetail>> GetDetailByOrderId(int OrderId)
+        {
+            var result = await _dbSet.Where(x => x.OrderId == OrderId).ToListAsync();
+            return result;
+        }
         public async Task<List<OrderDetail>> GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff()
         {
             return await _dbSet.Include(_ => _.Order).Include(_ => _.Service).Include(_ => _.Result).Include(_ => _.ValuationStaff).ToListAsync();

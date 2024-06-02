@@ -5,8 +5,10 @@ using Common.Requests;
 using Common.Responses;
 using Data.Helpers;
 using Data.Repositories;
+using Microsoft.AspNetCore.Http;
 using OpenQA.Selenium.DevTools.V123.CSS;
 using SWP391_Project.Domain.DiavanEntities;
+using SWP391_Project.Domain.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +52,7 @@ namespace Business.Services
                 var obj = _mapper.Map<Order>(createOrderReq);
                 obj.Code = GenerateCode.OrderCode();
                 obj.Status = OrderStatusEnum.Pending.ToString();
+                obj.Time = DateTimeHelper.ParseDate(createOrderReq.Time);
                 var reqOrder = await _unitOfWork.OrderRepository.CreateAsync(obj);
                 var flag = await _unitOfWork.OrderRepository.GetOrderInforById(reqOrder.OrderID);
                 var result = _mapper.Map<ViewOrderResponse>(reqOrder);
@@ -67,7 +70,8 @@ namespace Business.Services
             {
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(UpdateOrder.OrderID);
                 _mapper.Map(UpdateOrder, order);
-                if(order.TotalPay ==null||order.TotalPay==0) order.TotalPay = 0;
+                order.Time = DateTimeHelper.ParseDate(UpdateOrder.Time);
+                if (order.TotalPay ==null||order.TotalPay==0) order.TotalPay = 0;
                 foreach (var item in order.DetailValuations)
                 {
                     item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId,item.EstimateLength)).price;
