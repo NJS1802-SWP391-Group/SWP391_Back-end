@@ -68,35 +68,40 @@ namespace SWP391_Project.Data.Databases
                     UserName ="rootCT",
                     Password = SecurityUtil.Hash("12345"),
                     RoleName ="Customer",
-                    Status = "Active"
+                    Status = "Active",
+                    CustomerId = 1
                 },
                 new Account
                 {
                     UserName ="baoCT",
                     Password = SecurityUtil.Hash("12345"),
                     RoleName ="Customer",
-                    Status = "Active"
+                    Status = "Active",
+                    CustomerId = 2
                 },
                 new Account
                 {
                     UserName ="huyCT",
                     Password = SecurityUtil.Hash("12345"),
                     RoleName ="Customer",
-                    Status = "Active"
+                    Status = "Active",
+                    CustomerId = 3
                 },
                 new Account
                 {
                     UserName ="luanCT",
                     Password = SecurityUtil.Hash("12345"),
                     RoleName ="Customer",
-                    Status = "Active"
+                    Status = "Active",
+                    CustomerId = 4
                 },
                 new Account
                 {
                     UserName ="tuanCT",
                     Password = SecurityUtil.Hash("12345"),
                     RoleName ="Customer",
-                    Status = "Active"
+                    Status = "Active",
+                    CustomerId = 5
                 },
                 new Account
                 {
@@ -117,6 +122,13 @@ namespace SWP391_Project.Data.Databases
                     UserName ="rootCS",
                     Password =SecurityUtil.Hash("12345"),
                     RoleName="ConsultingStaff",
+                    Status = "Active"
+                },
+                new Account
+                {
+                    UserName ="rootMN",
+                    Password =SecurityUtil.Hash("12345"),
+                    RoleName="Manager",
                     Status = "Active"
                 }
             };
