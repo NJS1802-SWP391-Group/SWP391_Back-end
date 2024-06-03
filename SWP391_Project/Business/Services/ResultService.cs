@@ -74,7 +74,7 @@ namespace Business.Services
             try
             {
                 var service = await _unitOfWork.ResultRepository.GetByIdAsync(id);
-                var rs = _mapper.Map<ServiceDetailModel>(service);
+                var rs = _mapper.Map<ResultModel>(service);
                 if (service is null)
                 {
                     return new ServiceResult(404, "Cannot find result");

@@ -40,6 +40,5 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
-
     }
 }

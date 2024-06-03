@@ -28,7 +28,8 @@ namespace Business.Services
         }
         public async Task<ServiceResult> GetAllOrders()
         {
-            try {
+            try
+            {
                 var list = await _unitOfWork.OrderRepository.GetAllOrder();
                 if (list != null)
                 {
@@ -39,9 +40,9 @@ namespace Business.Services
             }
             catch (Exception ex)
             {
-                return new ServiceResult(-1,ex.Message);
+                return new ServiceResult(-1, ex.Message);
             }
-           
+
         }
         public async Task<ServiceResult> CreateOrder(CreateOrderReq createOrderReq)
         {
@@ -71,10 +72,10 @@ namespace Business.Services
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(UpdateOrder.OrderID);
                 _mapper.Map(UpdateOrder, order);
                 order.Time = DateTimeHelper.ParseDate(UpdateOrder.Time);
-                if (order.TotalPay ==null||order.TotalPay==0) order.TotalPay = 0;
+                if (order.TotalPay == null || order.TotalPay == 0) order.TotalPay = 0;
                 foreach (var item in order.DetailValuations)
                 {
-                    item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId,item.EstimateLength)).price;
+                    item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price;
                     if (item.Price <= 0) throw new Exception("Can not find Service");
                     item.OrderId = UpdateOrder.OrderID;
                     item.Code = GenerateCode.OrderDetailCode(UpdateOrder.OrderID);
@@ -94,7 +95,67 @@ namespace Business.Services
             {
                 _unitOfWork.RollbackTransactionAsync();
                 return new ServiceResult(500, ex.Message);
-                
+
+            }
+        }
+        public async Task<ServiceResult> PayOrder(int id, string payment, string status)
+        {
+            try
+            {
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(id);
+                order.Payment = payment;
+                order.StatusPayment = status;
+                order.Status = OrderStatusEnum.Processing.ToString();
+                var updateOrder = await _unitOfWork.OrderRepository.UpdateAsync(order);
+                var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
+                var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
+                return new ServiceResult(200, "Successful", result);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+        public async Task<ServiceResult> GetOrderFullInfoByCode(string Code)
+        {
+            try
+            {
+                var obj = await _unitOfWork.OrderRepository.GetOrderByCode(Code);
+                if (obj == null) throw new Exception("Don't have any Order has this code");
+                var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
+                return new ServiceResult(200, "Successful", result);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+        public async Task<ServiceResult> GetOrderFullInfoById(int id)
+        {
+            try
+            {
+                var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(id);
+                if (obj == null) throw new Exception("Don't have any Order has this Id");
+                var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
+                return new ServiceResult(200, "Successful", result);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+        public async Task<ServiceResult> GetOrderInfoByCustomerId(int id)
+        {
+            try
+            {
+                var obj = await _unitOfWork.OrderRepository.GetOrdersByCustomerId(id);
+                if (obj == null) throw new Exception("User don't have any order");
+                var result = _mapper.Map<List<ViewFullInfomaionOrder>>(obj);
+                return new ServiceResult(200, "Successful", result);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
             }
         }
     }

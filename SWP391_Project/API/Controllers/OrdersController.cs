@@ -37,5 +37,33 @@ namespace API.Controllers
             var result = await _orderService.UpdateOrder(updateOrderConsult);
             return StatusCode(result.Status, result.Status!=200?result.Message:result.Data);
         }
+        [AllowAnonymous]
+        [HttpPut("Pay/Id={id}/Payment={payment}")]
+        public async Task<IActionResult> PayOrder([FromRoute] string payment , [FromBody] string status, [FromRoute] int id)
+        {
+            var result = await _orderService.PayOrder(id,payment,status);
+            return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
+        }
+        [AllowAnonymous]
+        [HttpGet("View/Code={code}")]
+        public async Task<IActionResult> ViewOrderByCode([FromRoute] string code)
+        {
+            var result = await _orderService.GetOrderFullInfoByCode(code);
+            return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
+        }
+        [AllowAnonymous]
+        [HttpGet("View/Id={id}")]
+        public async Task<IActionResult> ViewOrderById([FromRoute] int id)
+        {
+            var result = await _orderService.GetOrderFullInfoById(id);
+            return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
+        }
+        [AllowAnonymous]
+        [HttpGet("View/CustomerId={id}")]
+        public async Task<IActionResult> ViewOrdersByCustomerId([FromRoute] int id)
+        {
+            var result = await _orderService.GetOrderInfoByCustomerId(id);
+            return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
+        }
     }
 }

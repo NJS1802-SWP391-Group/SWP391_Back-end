@@ -5,6 +5,7 @@ using Common.Responses;
 using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Dtos;
 using SWP391_Project.DTOs;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SWP391_Project.Common.Mapper
 {
@@ -46,6 +47,9 @@ namespace SWP391_Project.Common.Mapper
                 .ForMember(_ => _.ValuationStaffName, opt => opt.MapFrom(_ => _.ValuationStaff.UserName))
                 .ForMember(_ => _.ResultPrice, opt => opt.MapFrom(_ => _.Result.DiamondValue))
                 .ReverseMap();
+            CreateMap<Order, ViewFullInfomaionOrder>()
+                .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations));
+            CreateMap<OrderDetail, ViewOrderDetail>();
         }
     }
 }
