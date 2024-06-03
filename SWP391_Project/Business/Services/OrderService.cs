@@ -84,6 +84,7 @@ namespace Business.Services
                     order.TotalPay = order.TotalPay + item.Price;
                 }
                 order.Quantity = order.DetailValuations.Count();
+                order.Status = OrderStatusEnum.Received.ToString();
                 _unitOfWork.OrderRepository.Update(order);
                 await _unitOfWork.OrderRepository.SaveAsync();
                 await _unitOfWork.CommitTransactionAsync();
@@ -98,13 +99,22 @@ namespace Business.Services
 
             }
         }
-        public async Task<ServiceResult> PayOrder(int id, string payment, string status)
+        public async Task<ServiceResult> PayOrder(int id, string payment)
         {
             try
             {
-                var order = await _unitOfWork.OrderRepository.GetByIdAsync(id);
-                order.Payment = payment;
-                order.StatusPayment = status;
+                if (payment == null || payment == "") { throw new Exception("Payment can not null"); }
+                var order = await _unitOfWork.OrderRepository.GetOrderByIdAsync(id);
+                if (order == null) { throw new Exception("Can't not find this Order"); }
+                if (order.TotalPay == 0 || order.TotalPay == null) { throw new Exception("The total pay can not be Zero"); }
+                if (order.StatusPayment == null || order.StatusPayment.ToLower() != PaymentStatusEnum.successful.ToString())
+                {
+                    order.StatusPayment = PaymentStatusEnum.successful.ToString();
+                    order.Payment = payment.ToLower();
+                }
+                //else 
+                //{ throw new Exception("Fail. This transaction has been settled"); }
+                foreach (var item in order.DetailValuations) { item.Status = OrderStatusEnum.Processing.ToString();}
                 order.Status = OrderStatusEnum.Processing.ToString();
                 var updateOrder = await _unitOfWork.OrderRepository.UpdateAsync(order);
                 var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
@@ -159,4 +169,6 @@ namespace Business.Services
             }
         }
     }
+
+
 }

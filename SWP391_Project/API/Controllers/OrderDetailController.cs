@@ -28,7 +28,7 @@ namespace API.Controllers
         [HttpPut("Assign-Staff-To-Order-Detail")]
         public async Task<IActionResult> AssignStaffToOrderDetail([FromBody] AssignStaffReq req)
         {
-            if (req.OrderDetailID < 0 || req.ValuationStaffID < 0)
+            if (req.OrderDetailID <= 0 || req.ValuationStaffID <= 0)
             {
                 return StatusCode(500, "Invalid id");
             }
