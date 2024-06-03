@@ -43,7 +43,6 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
-
         public async Task<IServiceResult>  AssignStaffToOrderDetail(AssignStaffReq req)
         {
             try
@@ -74,6 +73,5 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
-
     }
 }
