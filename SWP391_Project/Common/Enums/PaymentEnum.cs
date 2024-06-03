@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace Common.Enums
 {
-    public enum OrderStatusEnum
+    public enum PaymentEnum
     {
-        Pending,
-        Processing,
-        Completed,
-        Cancelled,
-        Sealed,
-        Returned,
-        Received
+        momo,banking,zalopay,viettelpay
+    }
+    public enum PaymentStatusEnum
+    {
+        successful, fail
     }
 }

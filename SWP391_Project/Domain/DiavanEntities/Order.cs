@@ -15,7 +15,7 @@ namespace SWP391_Project.Domain.DiavanEntities
         public Customer Customer { get; set; }
         public DateTime Time {  get; set; }
         public int? Quantity { get; set; }
-        public double? TotalPay { get; set; }
+        public double? TotalPay { get; set; } = 0;
         public string? Payment {  get; set; }
         public string? StatusPayment { get; set; }
         public string? Status { get; set; }

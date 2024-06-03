@@ -15,6 +15,8 @@ namespace Common.Responses
             public DateTime Time { set; get; }
             public string Status { set; get; }
             public double TotalPay { set; get; }
+            public string Payment { get; set; }
+            public string StatusPayment { get; set; }
             public List<ViewOrderDetail> DetailValuations { set; get; }
     }
         public class ViewOrderDetail

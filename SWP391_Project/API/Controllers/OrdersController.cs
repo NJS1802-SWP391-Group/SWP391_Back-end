@@ -38,10 +38,10 @@ namespace API.Controllers
             return StatusCode(result.Status, result.Status!=200?result.Message:result.Data);
         }
         [AllowAnonymous]
-        [HttpPut("Pay/Id={id}/Payment={payment}")]
-        public async Task<IActionResult> PayOrder([FromRoute] string payment , [FromBody] string status, [FromRoute] int id)
+        [HttpPut("Pay/Id={id}")]
+        public async Task<IActionResult> PayOrder([FromBody] string payment, [FromRoute] int id)
         {
-            var result = await _orderService.PayOrder(id,payment,status);
+            var result = await _orderService.PayOrder(id,payment);
             return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
         }
         [AllowAnonymous]
