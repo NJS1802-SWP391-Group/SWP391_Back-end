@@ -8,6 +8,7 @@ using SWP391_Project.Common.Responses;
 using SWP391_Project.Services;
 using API.Auth;
 using Domain.Exceptions;
+using SWP391_Project.Domain.DiavanEntities;
 
 namespace SWP391_Project.API.Auth;
 
@@ -28,21 +29,8 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Signup([FromBody] SignupRequest req)
     {
-        var res = await _identityService.Signup(req);
-        if (!res)
-        {
-            var resultFail = new SignupResponse
-            {
-                Messages = "Sign up fail"
-            };
-            return BadRequest(ApiResult<SignupResponse>.Error(resultFail));
-        }
-        var result = new SignupResponse
-        {
-            Messages = "Sign up success"
-        };
-
-        return Ok(ApiResult<SignupResponse>.Succeed(result));
+        var result = await _identityService.Signup(req);
+        return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
     }
 
     [AllowAnonymous]
