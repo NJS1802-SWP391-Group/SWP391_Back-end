@@ -8,6 +8,7 @@ namespace Common.Responses
 {
     public class OrderDetailGeneralResponse
     {
+        public int OrderDetailID { get; set; }
         public string OrderCode { get; set; }
         public string OrderDetailCode { get; set; }
         public string ServiceName { get; set; }
