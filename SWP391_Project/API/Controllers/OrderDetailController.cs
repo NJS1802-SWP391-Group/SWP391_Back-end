@@ -18,7 +18,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpGet("Get-Order-Details")]
-        public async Task<IActionResult> GetOrderDetails() 
+        public async Task<IActionResult> GetOrderDetails()
         {
             var result = await _orderDetailService.GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff();
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
@@ -35,5 +35,28 @@ namespace API.Controllers
             var result = await _orderDetailService.AssignStaffToOrderDetail(req);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
+        [AllowAnonymous]
+        [HttpPost("Create/OrderId={orderid}")]
+        public async Task<IActionResult> CreateOrderDetail([FromRoute] int orderid, [FromBody] OrderDetailCreate orderDetailCreate)
+        {
+            var result = await _orderDetailService.AddOrderDetail(orderid, orderDetailCreate);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
+        [AllowAnonymous]
+        [HttpDelete("Delete/OrderDetailId={orderDetailid}")]
+        public async Task<IActionResult> DeleteOrderDetail([FromRoute] int orderDetailid)
+        {
+            var result = await _orderDetailService.DeleteOrderDetail(orderDetailid);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
+        [AllowAnonymous]
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateOrderDetail([FromBody]UpdateOrderDetail updateOrderDetail)
+        {
+            var result = await _orderDetailService.UpdateOrderDetail(updateOrderDetail);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
+
+
     }
 }

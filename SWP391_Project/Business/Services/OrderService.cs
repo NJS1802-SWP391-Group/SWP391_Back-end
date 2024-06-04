@@ -66,7 +66,6 @@ namespace Business.Services
         }
         public async Task<ServiceResult> UpdateOrder(UpdateOrderConsult UpdateOrder)
         {
-            await _unitOfWork.BeginTransactionAsync();
             try
             {
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(UpdateOrder.OrderID);
@@ -87,14 +86,12 @@ namespace Business.Services
                 order.Status = OrderStatusEnum.Received.ToString();
                 _unitOfWork.OrderRepository.Update(order);
                 await _unitOfWork.OrderRepository.SaveAsync();
-                await _unitOfWork.CommitTransactionAsync();
                 var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(UpdateOrder.OrderID);
                 var result = _mapper.Map<ViewOrderResult>(obj);
                 return new ServiceResult(200, "Successful", result);
             }
             catch (Exception ex)
             {
-                _unitOfWork.RollbackTransactionAsync();
                 return new ServiceResult(500, ex.Message);
 
             }
