@@ -19,6 +19,7 @@ namespace Business.Services
         public Task<IServiceResult> GetAll();
         public Task<IServiceResult> GetAllActive();
         public Task<IServiceResult> GetById(int id);
+        public Task<IServiceResult> GetByOrderDetailId(int id);
         public Task<IServiceResult> Create(CreateResultReq req);
         public Task<IServiceResult> Update(int id, UpdateResultReq req);
         public Task<IServiceResult> ChangeStatus(int id, ChangeStatusReq req);
@@ -74,6 +75,27 @@ namespace Business.Services
             try
             {
                 var service = await _unitOfWork.ResultRepository.GetByIdAsync(id);
+                var rs = _mapper.Map<ResultModel>(service);
+                if (service is null)
+                {
+                    return new ServiceResult(404, "Cannot find result");
+                }
+                else
+                {
+                    return new ServiceResult(200, "Get result by id", rs);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+
+        public async Task<IServiceResult> GetByOrderDetailId(int id)
+        {
+            try
+            {
+                var service = await _unitOfWork.ResultRepository.GetByOrderDetailIdAsync(id);
                 var rs = _mapper.Map<ResultModel>(service);
                 if (service is null)
                 {

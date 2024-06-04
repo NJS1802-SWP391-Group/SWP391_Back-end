@@ -35,13 +35,25 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpGet("Get-Result-By-Id/{id}")]
-        public async Task<IActionResult> GetServiceById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             if (id <= 0)
             {
                 return StatusCode(500, "Invalid ID");
             }
             var result = await _resultService.GetById(id);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("Get-Result-By-Order-Detail-Id/{id}")]
+        public async Task<IActionResult> GetByOrderDetailId(int id)
+        {
+            if (id <= 0)
+            {
+                return StatusCode(500, "Invalid ID");
+            }
+            var result = await _resultService.GetByOrderDetailId(id);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
 

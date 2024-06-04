@@ -18,5 +18,10 @@ namespace Data.Repositories.DiavanRepo
         {
             return await _dbSet.Where(_ => _.Status.ToLower().Trim() == "active").ToListAsync();
         }
+
+        public async Task<Result> GetByOrderDetailIdAsync(int id)
+        {
+            return await _dbSet.Where(_ => _.OrderDetailId == id).FirstOrDefaultAsync();
+        }
     }
 }
