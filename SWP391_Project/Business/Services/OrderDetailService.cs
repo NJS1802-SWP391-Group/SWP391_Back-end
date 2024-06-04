@@ -66,6 +66,7 @@ namespace Business.Services
                     return new ServiceResult(500, "Order detail already assigned");
                 }
                 orderDetail.ValuationStaffId = req.ValuationStaffID;
+                orderDetail.Status = ValuationDetailStatusEnum.Valuating.ToString();
                 var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orderDetail);
                 if (rs < 1)
                 {
