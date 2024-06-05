@@ -81,6 +81,7 @@ namespace SWP391_Project.Services
             {
                 return new LoginResult
                 {
+                    RoleName = null,
                     Authenticated = false,
                     Token = null,
                 };
@@ -91,6 +92,7 @@ namespace SWP391_Project.Services
             {
                 return new LoginResult
                 {
+                    RoleName = null,
                     Authenticated = false,
                     Token = null,
                 };
@@ -98,6 +100,7 @@ namespace SWP391_Project.Services
 
             return new LoginResult
             {
+                RoleName = user.RoleName,
                 Authenticated = true,
                 Token = CreateJwtToken(user),
             };
