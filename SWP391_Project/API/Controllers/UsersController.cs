@@ -8,7 +8,7 @@ using System.Net;
 using SWP391_Project.Dtos;
 using SWP391_Project.Domain.DiavanEntities;
 
-namespace SWP391_Project.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -26,7 +26,7 @@ namespace SWP391_Project.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await _userService.GetAll();
-            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
 
         [AllowAnonymous]
@@ -34,7 +34,7 @@ namespace SWP391_Project.Controllers
         public async Task<IActionResult> GetAllActiveValuationStaff()
         {
             var result = await _userService.GetAllValuationStaff();
-            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
     }
 }

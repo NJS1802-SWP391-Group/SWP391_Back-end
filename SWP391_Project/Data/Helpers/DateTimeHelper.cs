@@ -36,12 +36,11 @@ namespace SWP391_Project.Helpers
             var format = "MM/dd/yyyy HH:mm:ss";
             return DateTime.ParseExact(value, format, null);
         }
-
         public static DateTime ChangeDateToDateTime(string day)
         {
             DateTime date = DateTime.ParseExact(day, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             string formattedDate = date.ToString("MM/dd/yyyy HH:mm:ss");
-            return ParseDay(formattedDate);
-        }
+            return ParseDay(formattedDate); 
+        }   
     }
 }

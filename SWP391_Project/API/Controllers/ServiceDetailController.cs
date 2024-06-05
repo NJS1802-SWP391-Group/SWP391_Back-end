@@ -4,7 +4,7 @@ using SWP391_Project.Common.Requests;
 using Business.Services;
 using Common.Requests;
 
-namespace SWP391_Project.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -22,7 +22,7 @@ namespace SWP391_Project.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await _serviceDetailService.GetAll();
-            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
 
         [AllowAnonymous]
@@ -30,7 +30,7 @@ namespace SWP391_Project.Controllers
         public async Task<IActionResult> GetAllActiveService()
         {
             var result = await _serviceDetailService.GetAllActive();
-            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
 
         [AllowAnonymous]
@@ -42,7 +42,7 @@ namespace SWP391_Project.Controllers
                 return StatusCode(500, "Invalid ID");
             }
             var result = await _serviceDetailService.GetById(id);
-            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
 
         [AllowAnonymous]
@@ -66,7 +66,7 @@ namespace SWP391_Project.Controllers
                 return StatusCode(500, "Invalid service id");
             }
             var result = await _serviceDetailService.Create(req);
-            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
 
         [AllowAnonymous]
@@ -90,7 +90,7 @@ namespace SWP391_Project.Controllers
                 return StatusCode(500, "Invalid extra price");
             }
             var result = await _serviceDetailService.Update(id, req);
-            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
 
         [AllowAnonymous]
@@ -102,7 +102,7 @@ namespace SWP391_Project.Controllers
                 return StatusCode(500, "Invalid ID");
             }
             var result = await _serviceDetailService.ChangeStatus(id, req);
-            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
 
         [AllowAnonymous]
@@ -118,7 +118,7 @@ namespace SWP391_Project.Controllers
                 return StatusCode(500, "Invalid length");
             }
             var result = await _serviceDetailService.GetPriceByServiceAndLength(serviceId, length);
-            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Common.Enums
 {
     public enum PaymentEnum
     {
-        momo,banking,zalopay,viettelpay
+        momo,banking,zalopay,viettelpay,NCB
     }
     public enum PaymentStatusEnum
     {
