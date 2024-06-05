@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Business.Constants;
 using Data.Repositories;
+using Data.Repositories.DiavanRepo;
+using Domain.Exceptions;
 using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Dtos;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace SWP391_Project.Services
 {
@@ -21,6 +24,31 @@ namespace SWP391_Project.Services
         {
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
+        }
+
+        public async Task<AccountModel> GetUserInToken(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                throw new BadRequestException("Authorization header is missing or invalid.");
+            }
+            // Decode the JWT token
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            // Check if the token is expired
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                throw new BadRequestException("Token has expired.");
+            }
+            string userName = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+
+            var user = _unitOfWork.UserRepository.GetAll().Where(x => x.UserName == userName).FirstOrDefault();
+            if (user is null)
+            {
+                throw new BadRequestException("Can not found User");
+            }
+            return _mapper.Map<AccountModel>(user);
         }
 
         public async Task<IServiceResult> GetAll()
