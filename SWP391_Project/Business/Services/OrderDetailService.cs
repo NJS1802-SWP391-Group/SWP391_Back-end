@@ -18,6 +18,7 @@ namespace Business.Services
     public interface IOrderDetailService
     {
         public Task<IServiceResult> GetAssigningOrderDetails();
+        public Task<IServiceResult> GetOrderDetailsByValuStaff(int staffId);
         public Task<IServiceResult> AssignStaffToOrderDetail(AssignStaffReq req);
         Task<IServiceResult> AddOrderDetail(int orderId, OrderDetailCreate item);
         Task<IServiceResult> DeleteOrderDetail(int orderDetailId);
@@ -48,6 +49,21 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
+
+        public async Task<IServiceResult> GetOrderDetailsByValuStaff(int staffId)
+        {
+            try
+            {
+                var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsByValuStaff(staffId, ValuationDetailStatusEnum.Valuating.ToString());
+                var rs = _mapper.Map<List<StaffOrderDetailsResponse>>(results);
+                return new ServiceResult(200, "Get order details", rs);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+
         public async Task<IServiceResult>  AssignStaffToOrderDetail(AssignStaffReq req)
         {
             try
