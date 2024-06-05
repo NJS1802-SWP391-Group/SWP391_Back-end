@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient.Server;
 using System;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -28,5 +29,11 @@ namespace SWP391_Project.Helpers
             var format = "MM/dd/yyyy HH:mm:ss";
             return DateTime.ParseExact(value, format, null);
         }
+        public static DateTime ChangeDateToDateTime(string day)
+        {
+            DateTime date = DateTime.ParseExact(day, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            string formattedDate = date.ToString("MM/dd/yyyy HH:mm:ss");
+            return ParseDay(formattedDate); 
+        }   
     }
 }

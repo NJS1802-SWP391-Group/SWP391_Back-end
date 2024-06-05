@@ -88,7 +88,7 @@ public static class ServicesExtensions
         services.AddScoped<ServiceService>();
         services.AddScoped<ResultService>();
         services.AddScoped<OrderDetailService>();
-
+        services.AddScoped<PaymentService>();
 
         return services;
     }
