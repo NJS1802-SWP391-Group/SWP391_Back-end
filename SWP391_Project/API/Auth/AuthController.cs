@@ -47,6 +47,7 @@ public class AuthController : ControllerBase
         var handler = new JwtSecurityTokenHandler();
         var res = new LoginResponse
         {
+            RoleName = loginResult.RoleName,
             AccessToken = handler.WriteToken(loginResult.Token),
         };
         return Ok(ApiResult<LoginResponse>.Succeed(res));
