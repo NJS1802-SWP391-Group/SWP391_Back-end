@@ -4,6 +4,7 @@ using Common.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SWP391_Project.Services;
 
 namespace API.Controllers
 {
@@ -13,10 +14,12 @@ namespace API.Controllers
     {
         private readonly OrderService _orderService;
         private readonly PaymentService _paymentService;
-        public OrdersController(OrderService orderService, PaymentService paymentService)
+        private readonly UserService _userService;
+        public OrdersController(OrderService orderService, PaymentService paymentService, UserService userService)
         {
             _orderService = orderService;
             _paymentService = paymentService;
+            _userService = userService;
         }
         [AllowAnonymous]
         [HttpGet("All")]
@@ -30,6 +33,16 @@ namespace API.Controllers
         [HttpPost("Request")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderReq createOrderReq)
         {
+            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                return StatusCode(404, "Cannot find user");
+            }
+            token = token.ToString().Split()[1];
+            var currentUser = await _userService.GetUserInToken(token);
+            if (currentUser == null)
+            {
+                return StatusCode(404, "Cannot find user");
+            }
             var result = await _orderService.CreateOrder(createOrderReq);
             return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
         }
