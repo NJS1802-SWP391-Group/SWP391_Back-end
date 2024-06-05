@@ -100,6 +100,7 @@ namespace SWP391_Project.Services
 
             return new LoginResult
             {
+                CustomerId = user.CustomerId,
                 RoleName = user.RoleName,
                 Authenticated = true,
                 Token = CreateJwtToken(user),

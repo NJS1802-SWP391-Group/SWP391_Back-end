@@ -4,6 +4,7 @@ using Common.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SWP391_Project.Common.Responses;
 using SWP391_Project.Services;
 
 namespace API.Controllers
@@ -29,10 +30,12 @@ namespace API.Controllers
             if (result.Status == 1) { return StatusCode(200, result.Data); }
             return StatusCode(500, result.Message);
         }
-        [AllowAnonymous]
+        // [AllowAnonymous]
+        [Authorize]
         [HttpPost("Request")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderReq createOrderReq)
         {
+
             if (!Request.Headers.TryGetValue("Authorization", out var token))
             {
                 return StatusCode(404, "Cannot find user");
