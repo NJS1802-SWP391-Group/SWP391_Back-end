@@ -9,6 +9,7 @@ using SWP391_Project.Common.Requests;
 using SWP391_Project.Dtos.Auth;
 using Data.Repositories;
 using SWP391_Project.Domain.DiavanEntities;
+using Business.Constants;
 
 namespace SWP391_Project.Services
 {
@@ -23,41 +24,53 @@ namespace SWP391_Project.Services
             _jwtSettings = jwtSettingsOptions.Value;
         }
 
-        public async Task<bool> Signup(SignupRequest req)
+        public async Task<IServiceResult> Signup(SignupRequest req)
         {
-            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == req.Username).FirstOrDefault();
-            if (user is not null)
+            try
             {
-                throw new Exception("username or email already exists");
+                var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == req.Username).FirstOrDefault();
+                if (user is not null)
+                {
+                    return new ServiceResult(500, "username or email already exists");
+                }
+
+                var account = new Account
+                {
+                    UserName = req.Username,
+                    Password = SecurityUtil.Hash(req.Password),
+                    Status = "Active",
+                    RoleName = "Customer"
+                };
+
+                var customer = new Customer
+                {
+                    AccountId = account.AccountId,
+                    Account = account,
+                    Address = req.Address,
+                    CCCD = req.CCCD,
+                    Dob = DateTimeHelper.ParseDay(req.Dob),
+                    Email = req.Email,
+                    FirstName = req.FirstName,
+                    LastName = req.LastName,
+                    PhoneNumber = req.PhoneNumber,
+                    Status = "Active"
+                };
+
+                _unitOfWork.CustomerRepository.PrepareCreate(customer);
+
+                var cusRes = await _unitOfWork.CustomerRepository.SaveAsync();
+
+                if (cusRes > 0)
+                {
+                    return new ServiceResult(200, "Sign up complete");
+
+                }
+                return new ServiceResult(500, "Sign up fail");
             }
-
-            var account = new Account
+            catch (Exception ex)
             {
-                UserName = req.Username,
-                Password = SecurityUtil.Hash(req.Password),
-                Status = "Active",
-                RoleName = "Customer"
-            };
-
-            _unitOfWork.UserRepository.PrepareCreate(account);
-
-            _unitOfWork.CustomerRepository.PrepareCreate(new Customer
-            {
-                Account = account,
-                Address = req.Address,
-                CCCD = req.CCCD,
-                Dob = DateTimeHelper.ChangeDateToDateTime(req.Dob),
-                Email = req.Email,
-                FirstName = req.FirstName,
-                LastName = req.LastName,
-                PhoneNumber = req.PhoneNumber,
-                Status = "Active"
-            });
-            var res = await _unitOfWork.UserRepository.SaveAsync();
-
-            var cusRes = await _unitOfWork.CustomerRepository.SaveAsync();
-
-            return (res > 0 && cusRes > 0);
+                return new ServiceResult(500, ex.Message);
+            }
         }
 
         public LoginResult Login(string userName, string password)
@@ -68,6 +81,7 @@ namespace SWP391_Project.Services
             {
                 return new LoginResult
                 {
+                    RoleName = null,
                     Authenticated = false,
                     Token = null,
                 };
@@ -78,6 +92,7 @@ namespace SWP391_Project.Services
             {
                 return new LoginResult
                 {
+                    RoleName = null,
                     Authenticated = false,
                     Token = null,
                 };
@@ -85,6 +100,7 @@ namespace SWP391_Project.Services
 
             return new LoginResult
             {
+                RoleName = user.RoleName,
                 Authenticated = true,
                 Token = CreateJwtToken(user),
             };

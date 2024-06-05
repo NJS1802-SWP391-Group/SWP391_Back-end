@@ -24,7 +24,10 @@ namespace Data.Repositories
         private UserRepository _userRepository;
         private IDbContextTransaction _transaction;
 
-        public UnitOfWork() { }
+        public UnitOfWork() 
+        {
+            _context = new AppDbContext();
+        }
         public UnitOfWork(AppDbContext context) {
             _context = context;
         }

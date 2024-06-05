@@ -17,7 +17,14 @@ namespace SWP391_Project.Helpers
 
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return DateTime.ParseExact(reader.GetString(), _format, null);
+            if (DateTime.TryParseExact(reader.GetString(), _format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime value))
+            {
+                return DateTime.ParseExact(reader.GetString(), _format, null);
+            }
+            else
+            {
+                return ChangeDateToDateTime(reader.GetString());
+            }
         }
 
         public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
