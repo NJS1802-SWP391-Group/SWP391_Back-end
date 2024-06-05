@@ -30,8 +30,8 @@ namespace API.Controllers
             if (result.Status == 1) { return StatusCode(200, result.Data); }
             return StatusCode(500, result.Message);
         }
-        // [AllowAnonymous]
-        [Authorize]
+        [AllowAnonymous]
+        //[Authorize]
         [HttpPost("Request")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderReq createOrderReq)
         {
