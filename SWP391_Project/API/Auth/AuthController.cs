@@ -49,6 +49,7 @@ public class AuthController : ControllerBase
         {
             RoleName = loginResult.RoleName,
             AccessToken = handler.WriteToken(loginResult.Token),
+            customerId = loginResult.CustomerId,
         };
         return Ok(ApiResult<LoginResponse>.Succeed(res));
     }

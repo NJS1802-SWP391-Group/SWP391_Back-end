@@ -48,6 +48,7 @@ namespace Business.Services
         {
             try
             {
+
                 var check = await _unitOfWork.CustomerRepository.GetByIdAsync(createOrderReq.CustomerId);
                 if (check == null) throw new Exception("Can't not find the customer");
                 var obj = _mapper.Map<Order>(createOrderReq);
