@@ -25,6 +25,14 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("Get-Order-Details-By-Valuating-Staff/{staffId}")]
+        public async Task<IActionResult> GetOrderDetailsByValuStaff([FromRoute] int staffId)
+        {
+            var result = await _orderDetailService.GetOrderDetailsByValuStaff(staffId);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
+
+        [AllowAnonymous]
         [HttpPut("Assign-Staff-To-Order-Detail")]
         public async Task<IActionResult> AssignStaffToOrderDetail([FromBody] AssignStaffReq req)
         {
