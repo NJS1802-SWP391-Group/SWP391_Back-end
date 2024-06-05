@@ -44,8 +44,6 @@ namespace SWP391_Project.Common.Mapper
                 .ForMember(_ => _.OrderDetailCode, opt => opt.MapFrom(_ => _.Code))
                 .ForMember(_ => _.ServiceName, opt => opt.MapFrom(_ => _.Service.Name))
                 .ForMember(_ => _.ServicePrice, opt => opt.MapFrom(_ => _.Price))
-                .ForMember(_ => _.ValuationStaffName, opt => opt.MapFrom(_ => _.ValuationStaff.UserName))
-                .ForMember(_ => _.ResultPrice, opt => opt.MapFrom(_ => _.Result.DiamondValue))
                 .ReverseMap();
             CreateMap<Order, ViewFullInfomaionOrder>()
                 .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations));

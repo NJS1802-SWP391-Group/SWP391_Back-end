@@ -17,10 +17,10 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("Get-Order-Details")]
-        public async Task<IActionResult> GetOrderDetails()
+        [HttpGet("Get-Assigning-Order-Details")]
+        public async Task<IActionResult> GetAssigningOrderDetails()
         {
-            var result = await _orderDetailService.GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff();
+            var result = await _orderDetailService.GetAssigningOrderDetails();
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
 
