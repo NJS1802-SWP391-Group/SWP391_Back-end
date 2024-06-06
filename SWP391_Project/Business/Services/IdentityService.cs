@@ -48,7 +48,7 @@ namespace SWP391_Project.Services
                     Account = account,
                     Address = req.Address,
                     CCCD = req.CCCD,
-                    Dob = DateTimeHelper.ParseDay(req.Dob),
+                    Dob = req.Dob,
                     Email = req.Email,
                     FirstName = req.FirstName,
                     LastName = req.LastName,
