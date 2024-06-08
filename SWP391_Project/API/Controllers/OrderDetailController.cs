@@ -44,14 +44,14 @@ namespace API.Controllers
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
         [AllowAnonymous]
-        [HttpPost("Create/OrderId={orderid}")]
+        [HttpPost("Create/OrderId{orderid}")]
         public async Task<IActionResult> CreateOrderDetail([FromRoute] int orderid, [FromBody] OrderDetailCreate orderDetailCreate)
         {
             var result = await _orderDetailService.AddOrderDetail(orderid, orderDetailCreate);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
         [AllowAnonymous]
-        [HttpDelete("Delete/OrderDetailId={orderDetailid}")]
+        [HttpDelete("Delete/OrderDetailId{orderDetailid}")]
         public async Task<IActionResult> DeleteOrderDetail([FromRoute] int orderDetailid)
         {
             var result = await _orderDetailService.DeleteOrderDetail(orderDetailid);

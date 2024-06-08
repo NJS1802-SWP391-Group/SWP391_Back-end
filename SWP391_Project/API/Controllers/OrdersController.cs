@@ -57,35 +57,35 @@ namespace API.Controllers
             return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
         }
         [AllowAnonymous]
-        [HttpPut("Pay/Id={id}")]
+        [HttpPut("Pay/Id{id}")]
         public async Task<IActionResult> PayOrder([FromBody] string payment, [FromRoute] int id)
         {
             var result = await _orderService.PayOrder(id, payment);
             return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
         }
         [AllowAnonymous]
-        [HttpGet("View/Code={code}")]
+        [HttpGet("View/Code{code}")]
         public async Task<IActionResult> ViewOrderByCode([FromRoute] string code)
         {
             var result = await _orderService.GetOrderFullInfoByCode(code);
             return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
         }
         [AllowAnonymous]
-        [HttpGet("View/Id={id}")]
+        [HttpGet("View/Id{id}")]
         public async Task<IActionResult> ViewOrderById([FromRoute] int id)
         {
             var result = await _orderService.GetOrderFullInfoById(id);
             return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
         }
         [AllowAnonymous]
-        [HttpGet("View/CustomerId={id}")]
+        [HttpGet("View/CustomerId{id}")]
         public async Task<IActionResult> ViewOrdersByCustomerId([FromRoute] int id)
         {
             var result = await _orderService.GetOrderInfoByCustomerId(id);
             return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
         }
         [AllowAnonymous]
-        [HttpGet("PayOnline/UserId={userid}/OrderId={orderid}")]
+        [HttpGet("PayOnline/UserId{userid}/OrderId{orderid}")]
         public async Task<IActionResult> PayOrderOnline([FromRoute] int userid, [FromRoute] int orderid)
         {
             var result = await _paymentService.CallAPIPayByUserId(userid, orderid);
