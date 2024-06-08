@@ -48,12 +48,13 @@ namespace Business.Services
         {
             try
             {
+
                 var check = await _unitOfWork.CustomerRepository.GetByIdAsync(createOrderReq.CustomerId);
                 if (check == null) throw new Exception("Can't not find the customer");
                 var obj = _mapper.Map<Order>(createOrderReq);
                 obj.Code = GenerateCode.OrderCode();
                 obj.Status = OrderStatusEnum.Pending.ToString();
-                obj.Time = DateTimeHelper.ParseDate(createOrderReq.Time);
+                obj.Time = createOrderReq.Time;
                 var reqOrder = await _unitOfWork.OrderRepository.CreateAsync(obj);
                 var flag = await _unitOfWork.OrderRepository.GetOrderInforById(reqOrder.OrderID);
                 var result = _mapper.Map<ViewOrderResponse>(reqOrder);

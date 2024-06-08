@@ -48,7 +48,7 @@ namespace SWP391_Project.Services
                     Account = account,
                     Address = req.Address,
                     CCCD = req.CCCD,
-                    Dob = DateTimeHelper.ParseDay(req.Dob),
+                    Dob = req.Dob,
                     Email = req.Email,
                     FirstName = req.FirstName,
                     LastName = req.LastName,
@@ -100,6 +100,7 @@ namespace SWP391_Project.Services
 
             return new LoginResult
             {
+                CustomerId = user.CustomerId,
                 RoleName = user.RoleName,
                 Authenticated = true,
                 Token = CreateJwtToken(user),

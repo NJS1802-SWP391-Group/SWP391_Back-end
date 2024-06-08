@@ -11,7 +11,7 @@ namespace Common.Requests
     public class CreateOrderReq
     {
         public int CustomerId { get; set; }
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
         public int? Quantity { get; set; }
     }
 }
