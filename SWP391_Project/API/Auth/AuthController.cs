@@ -49,6 +49,7 @@ public class AuthController : ControllerBase
         {
             RoleName = loginResult.RoleName,
             AccessToken = handler.WriteToken(loginResult.Token),
+            CustomerId = loginResult.CustomerId,
         };
         return Ok(ApiResult<LoginResponse>.Succeed(res));
     }
@@ -56,8 +57,16 @@ public class AuthController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> CheckToken()
     {
-        Request.Headers.TryGetValue("Authorization", out var token);
+       if (!Request.Headers.TryGetValue("Authorization", out var token))
+        {
+            return StatusCode(404, "Cannot find user");
+        }
         token = token.ToString().Split()[1];
+        var currentUser = await _userService.GetUserInToken(token);
+        if (currentUser == null)
+        {
+            return StatusCode(404, "Cannot find user");
+        }
         // Here goes your token validation logic
         if (string.IsNullOrWhiteSpace(token))
         {

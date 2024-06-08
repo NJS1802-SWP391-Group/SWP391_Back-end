@@ -11,5 +11,6 @@ namespace SWP391_Project.Dtos
         public string Password { get; set; }
         public string Status { get; set; }
         public string RoleName { get; set; }
+        public int CustomerId { get; set; }
     }
 }
