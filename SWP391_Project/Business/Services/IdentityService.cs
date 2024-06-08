@@ -34,6 +34,38 @@ namespace SWP391_Project.Services
                     return new ServiceResult(500, "username or email already exists");
                 }
 
+                /*                var account = new Account
+                                {
+                                    UserName = req.Username,
+                                    Password = SecurityUtil.Hash(req.Password),
+                                    Status = "Active",
+                                    RoleName = "Customer"
+                                };
+
+                                var customer = new Customer
+                                {
+                                    AccountId = account.AccountId,
+                                    Account = account,
+                                    Address = req.Address,
+                                    CCCD = req.CCCD,
+                                    Dob = req.Dob,
+                                    Email = req.Email,
+                                    FirstName = req.FirstName,
+                                    LastName = req.LastName,
+                                    PhoneNumber = req.PhoneNumber,
+                                    Status = "Active"
+                                };
+
+                                _unitOfWork.CustomerRepository.PrepareCreate(customer);
+
+                                var cusRes = await _unitOfWork.CustomerRepository.SaveAsync();
+
+                                if (cusRes > 0)
+                                {
+                                    return new ServiceResult(200, "Sign up complete");
+
+                                }*/
+
                 var account = new Account
                 {
                     UserName = req.Username,
@@ -42,10 +74,12 @@ namespace SWP391_Project.Services
                     RoleName = "Customer"
                 };
 
+                _unitOfWork.UserRepository.PrepareCreate(account);
+                var res = await _unitOfWork.UserRepository.SaveAsync();
+
                 var customer = new Customer
                 {
                     AccountId = account.AccountId,
-                    Account = account,
                     Address = req.Address,
                     CCCD = req.CCCD,
                     Dob = req.Dob,
@@ -60,11 +94,14 @@ namespace SWP391_Project.Services
 
                 var cusRes = await _unitOfWork.CustomerRepository.SaveAsync();
 
-                if (cusRes > 0)
-                {
-                    return new ServiceResult(200, "Sign up complete");
+                account.CustomerId = customer.CustomerId;
+                var rs = await _unitOfWork.UserRepository.UpdateAsync(account);
 
+                if (rs > 0)
+                {
+                    return new ServiceResult(202, "Sign up successfully");
                 }
+
                 return new ServiceResult(500, "Sign up fail");
             }
             catch (Exception ex)
