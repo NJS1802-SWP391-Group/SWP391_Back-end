@@ -39,7 +39,7 @@ namespace API.Controllers
         {
             if (id <= 0)
             {
-                return StatusCode(500, "Invalid ID");
+                return StatusCode(400, "Invalid ID");
             }
             var result = await _resultService.GetById(id);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
@@ -51,7 +51,7 @@ namespace API.Controllers
         {
             if (id <= 0)
             {
-                return StatusCode(500, "Invalid ID");
+                return StatusCode(400, "Invalid ID");
             }
             var result = await _resultService.GetByOrderDetailId(id);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
@@ -61,6 +61,14 @@ namespace API.Controllers
         [HttpPost("Create-Result")]
         public async Task<IActionResult> Create([FromBody] CreateResultReq req)
         {
+            if (req.DiamondValue <= 0)
+            {
+                return StatusCode(400, "Diamond value should > 0");
+            }
+            if (req.OrderDetailId <= 0)
+            {
+                return StatusCode(400, "Invalid ID");
+            }
             var result = await _resultService.Create(req);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
@@ -71,7 +79,7 @@ namespace API.Controllers
         {
             if (id <= 0)
             {
-                return StatusCode(500, "Invalid ID");
+                return StatusCode(400, "Invalid ID");
             }
             var result = await _resultService.Update(id, req);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
@@ -83,7 +91,7 @@ namespace API.Controllers
         {
             if (id <= 0)
             {
-                return StatusCode(500, "Invalid ID");
+                return StatusCode(400, "Invalid ID");
             }
             var result = await _resultService.ChangeStatus(id, req);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
