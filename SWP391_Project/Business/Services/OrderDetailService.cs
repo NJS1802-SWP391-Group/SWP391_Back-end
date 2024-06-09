@@ -19,6 +19,8 @@ namespace Business.Services
     {
         public Task<IServiceResult> GetAssigningOrderDetails();
         public Task<IServiceResult> GetOrderDetailsByValuStaff(int staffId);
+        public Task<IServiceResult> GetCompletedOrderDetails();
+        public Task<IServiceResult> ValuaStaffCompleteValuate(int orDetailId);
         public Task<IServiceResult> AssignStaffToOrderDetail(AssignStaffReq req);
         Task<IServiceResult> AddOrderDetail(int orderId, OrderDetailCreate item);
         Task<IServiceResult> DeleteOrderDetail(int orderDetailId);
@@ -50,6 +52,20 @@ namespace Business.Services
             }
         }
 
+        public async Task<IServiceResult> GetCompletedOrderDetails()
+        {
+            try
+            {
+                var results = await _unitOfWork.OrderDetailRepository.GetCompletedOrderDetails(ValuationDetailStatusEnum.Completed.ToString());
+                var rs = _mapper.Map<List<GetDoneOrderDetailsResponse>>(results);
+                return new ServiceResult(200, "Get done order details", rs);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+
         public async Task<IServiceResult> GetOrderDetailsByValuStaff(int staffId)
         {
             try
@@ -57,6 +73,33 @@ namespace Business.Services
                 var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsByValuStaff(staffId, ValuationDetailStatusEnum.Valuating.ToString());
                 var rs = _mapper.Map<List<StaffOrderDetailsResponse>>(results);
                 return new ServiceResult(200, "Get order details", rs);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+
+        public async Task<IServiceResult> ValuaStaffCompleteValuate(int orDetailId)
+        {
+            try
+            {
+                var orDetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsValuatingAndHasResult(orDetailId, ValuationDetailStatusEnum.Valuating.ToString());
+                
+                if (orDetail == null)
+                {
+                    return new ServiceResult(404, "Cannot find order detail");
+                }
+
+                orDetail.Status = ValuationDetailStatusEnum.Completed.ToString();
+                var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orDetail);
+
+                if (rs < 1)
+                {
+                    return new ServiceResult(400, "Submit failed");
+                }
+
+                return new ServiceResult(200, "Submitted");
             }
             catch (Exception ex)
             {

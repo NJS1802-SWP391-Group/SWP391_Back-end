@@ -33,6 +33,14 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("Get-Completed-Order-Details")]
+        public async Task<IActionResult> GetCompletedOrderDetails()
+        {
+            var result = await _orderDetailService.GetCompletedOrderDetails();
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
+
+        [AllowAnonymous]
         [HttpPut("Assign-Staff-To-Order-Detail")]
         public async Task<IActionResult> AssignStaffToOrderDetail([FromBody] AssignStaffReq req)
         {
@@ -43,6 +51,19 @@ namespace API.Controllers
             var result = await _orderDetailService.AssignStaffToOrderDetail(req);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
+
+        [AllowAnonymous]
+        [HttpPut("Complete-Valuate/{orderDetailId}")]
+        public async Task<IActionResult> ValuaStaffCompleteValuate([FromRoute] int orderDetailId)
+        {
+            if (orderDetailId <= 0)
+            {
+                return StatusCode(500, "Invalid id");
+            }
+            var result = await _orderDetailService.ValuaStaffCompleteValuate(orderDetailId);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
+
         [AllowAnonymous]
         [HttpPost("Create/OrderId{orderid}")]
         public async Task<IActionResult> CreateOrderDetail([FromRoute] int orderid, [FromBody] OrderDetailCreate orderDetailCreate)

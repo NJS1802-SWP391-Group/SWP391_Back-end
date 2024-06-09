@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Constants;
 using Common.DTOs;
+using Common.Enums;
 using Common.Requests;
 using Data.Repositories;
 using SWP391_Project.Common.Requests;
@@ -116,15 +117,36 @@ namespace Business.Services
         {
             try
             {
+                var orDetail = _unitOfWork.OrderDetailRepository.GetAll().Where(_ => _.OrderDetailId == req.OrderDetailId && _.Status.Equals(ValuationDetailStatusEnum.Valuating.ToString())).FirstOrDefault();
+
+                if (orDetail is null)
+                {
+                    return new ServiceResult(404, "Cannot find order detail");
+                }
+
+                if (orDetail.ResultId != null)
+                {
+                    return new ServiceResult(400, "Fail");
+                }
+
                 var createObj = _mapper.Map<Result>(req);
                 var rs = await _unitOfWork.ResultRepository.CreateAsync(createObj);
+                
                 if (rs != null)
                 {
+                    orDetail.ResultId = rs.ResultId;
+                    var rsUpdate = await _unitOfWork.OrderDetailRepository.UpdateAsync(orDetail);
+
+                    if (rsUpdate < 1)
+                    {
+                        return new ServiceResult(500, "Create failed");
+                    }
+
                     return new ServiceResult(200, "Create successfully");
                 }
                 else
                 {
-                    return new ServiceResult(500, "Create fail");
+                    return new ServiceResult(500, "Create failed");
                 }
             }
             catch (Exception ex)
