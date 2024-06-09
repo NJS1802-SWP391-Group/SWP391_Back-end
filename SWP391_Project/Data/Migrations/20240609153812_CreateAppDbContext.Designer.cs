@@ -12,7 +12,7 @@ using SWP391_Project.Data.Databases.DiavanSystem;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240530141332_CreateAppDbContext")]
+    [Migration("20240609153812_CreateAppDbContext")]
     partial class CreateAppDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -349,10 +349,6 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Symmetry")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ValueStatus")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ResultId");
