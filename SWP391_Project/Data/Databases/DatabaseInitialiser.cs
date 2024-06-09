@@ -505,7 +505,6 @@ namespace SWP391_Project.Data.Databases
                         IssueDate = DateTime.Now,
                         ExpireDate = DateTime.Now,
                         OrderDetail = orderDetails[3],
-                        ValueStatus = "Active"
                     }
                 };
 

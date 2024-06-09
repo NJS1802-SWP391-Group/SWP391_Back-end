@@ -9,7 +9,6 @@ namespace Common.Requests
     public class CreateResultReq
     {
         public bool IsDiamond { get; set; }
-        public string? Code { get; set; }
         public string? Origin { get; set; }
         public string? Shape { get; set; }
         public string? Carat { get; set; }
@@ -19,12 +18,10 @@ namespace Common.Requests
         public string? Symmetry { get; set; }
         public string? Polish { get; set; }
         public string? CutGrade { get; set; }
-        public string ValueStatus { get; set; }
         public string? Description { get; set; }
         public double? DiamondValue { get; set; }
         public int OrderDetailId { get; set; }
         public DateTime? IssueDate { get; set; }
         public DateTime? ExpireDate { get; set; }
-        public string? CertificateStatus { get; set; }
     }
 }

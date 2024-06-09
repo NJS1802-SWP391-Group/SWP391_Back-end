@@ -20,7 +20,6 @@ namespace SWP391_Project.Domain.DiavanEntities
         public string? Symmetry { get; set; }
         public string? Polish { get; set; }
         public string? CutGrade { get; set; }
-        public string ValueStatus { get; set; }
         public string? Description { get; set; }
         public double? DiamondValue  { get; set; }
         public string Status { get; set; }

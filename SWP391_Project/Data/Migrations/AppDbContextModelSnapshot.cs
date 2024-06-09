@@ -349,10 +349,6 @@ namespace Data.Migrations
                     b.Property<string>("Symmetry")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ValueStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ResultId");
 
                     b.HasIndex("OrderDetailId")

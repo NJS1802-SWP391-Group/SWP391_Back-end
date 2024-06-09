@@ -219,7 +219,6 @@ namespace Data.Migrations
                     Symmetry = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Polish = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CutGrade = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ValueStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DiamondValue = table.Column<double>(type: "float", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
