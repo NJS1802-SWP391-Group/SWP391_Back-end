@@ -19,6 +19,7 @@ namespace Business.Services
     {
         public Task<IServiceResult> GetAssigningOrderDetails();
         public Task<IServiceResult> GetOrderDetailsByValuStaff(int staffId);
+        public Task<IServiceResult> GetCompletedOrderDetails();
         public Task<IServiceResult> AssignStaffToOrderDetail(AssignStaffReq req);
         Task<IServiceResult> AddOrderDetail(int orderId, OrderDetailCreate item);
         Task<IServiceResult> DeleteOrderDetail(int orderDetailId);
@@ -43,6 +44,20 @@ namespace Business.Services
                 var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff(ValuationDetailStatusEnum.Assigning.ToString());
                 var rs = _mapper.Map<List<OrderDetailGeneralResponse>>(results);
                 return new ServiceResult(200, "Get order details", rs);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+
+        public async Task<IServiceResult> GetCompletedOrderDetails()
+        {
+            try
+            {
+                var results = await _unitOfWork.OrderDetailRepository.GetCompletedOrderDetails(ValuationDetailStatusEnum.Completed.ToString());
+                var rs = _mapper.Map<List<GetDoneOrderDetailsResponse>>(results);
+                return new ServiceResult(200, "Get done order details", rs);
             }
             catch (Exception ex)
             {

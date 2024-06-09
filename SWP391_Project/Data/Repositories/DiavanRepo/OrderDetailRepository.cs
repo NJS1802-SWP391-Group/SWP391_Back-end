@@ -42,5 +42,10 @@ namespace Data.Repositories.DiavanRepo
             var rs = await _dbSet.Where(_ => _.OrderDetailId == orderDetailId && _.Status == status).FirstOrDefaultAsync();
             return rs;
         }
+
+        public async Task<List<OrderDetail>> GetCompletedOrderDetails(string status)
+        {
+            return await _dbSet.Include(_ => _.Service).Include(_ => _.Order).Include(_ => _.Result).Include(_ => _.ValuationStaff).Where(_ => _.Status == status).ToListAsync();
+        }
     }
 }

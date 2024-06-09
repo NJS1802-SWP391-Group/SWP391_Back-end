@@ -33,6 +33,14 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("Get-Completed-Order-Details")]
+        public async Task<IActionResult> GetCompletedOrderDetails()
+        {
+            var result = await _orderDetailService.GetCompletedOrderDetails();
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
+
+        [AllowAnonymous]
         [HttpPut("Assign-Staff-To-Order-Detail")]
         public async Task<IActionResult> AssignStaffToOrderDetail([FromBody] AssignStaffReq req)
         {
