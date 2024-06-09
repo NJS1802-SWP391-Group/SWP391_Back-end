@@ -112,7 +112,7 @@ namespace Business.Services
                 }
                 //else 
                 //{ throw new Exception("Fail. This transaction has been settled"); }
-                foreach (var item in order.DetailValuations) { item.Status = OrderStatusEnum.Processing.ToString();}
+                foreach (var item in order.DetailValuations) { item.Status = ValuationDetailStatusEnum.Assigning.ToString();}
                 order.Status = OrderStatusEnum.Processing.ToString();
                 var updateOrder = await _unitOfWork.OrderRepository.UpdateAsync(order);
                 var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
