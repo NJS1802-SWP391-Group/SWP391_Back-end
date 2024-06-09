@@ -9,6 +9,7 @@ using Data.Repositories;
 using SWP391_Project.Domain.DiavanEntities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace Business.Services
         Task<IServiceResult> AddOrderDetail(int orderId, OrderDetailCreate item);
         Task<IServiceResult> DeleteOrderDetail(int orderDetailId);
         Task<IServiceResult> UpdateOrderDetail(UpdateOrderDetail orderDetailUpdate);
+        Task<IServiceResult> ManagerRejectOrderDetails(OrderDetailReject orderDetailReject);
     }
 
     public class OrderDetailService : IOrderDetailService
@@ -138,6 +140,7 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
+
         public async Task<IServiceResult> AddOrderDetail(int orderId, OrderDetailCreate item)
         {
             try
@@ -211,6 +214,23 @@ namespace Business.Services
 
             }
             catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+        public async Task<IServiceResult> ManagerRejectOrderDetails(OrderDetailReject orderDetailReject)
+        {
+            try
+            {
+                var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(orderDetailReject.OrderId);
+                var checkAccount = await _unitOfWork.UserRepository.GetByIdAsync(orderDetailReject.AccountId);
+                if (checkAccount == null) { throw new Exception("Don't have this staff"); }
+                orderdetail.Status = ValuationDetailStatusEnum.ReValuating.ToString();
+                orderdetail.ValuationStaffId = checkAccount.AccountId;
+                await _unitOfWork.OrderDetailRepository.SaveAsync();
+                return new ServiceResult(200, "Successful");
+            }
+            catch(Exception ex)
             {
                 return new ServiceResult(500, ex.Message);
             }

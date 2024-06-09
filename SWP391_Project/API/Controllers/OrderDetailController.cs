@@ -85,7 +85,17 @@ namespace API.Controllers
             var result = await _orderDetailService.UpdateOrderDetail(updateOrderDetail);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
-
+        [AllowAnonymous]
+        [HttpPut("Reject-Valuate")]
+        public async Task<IActionResult> ManagerRejectValuate([FromBody] OrderDetailReject orderDetail)
+        {
+            if (orderDetail.OrderId <= 0)
+            {
+                return StatusCode(500, "Invalid id");
+            }
+            var result = await _orderDetailService.ManagerRejectOrderDetails(orderDetail);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
 
     }
 }
