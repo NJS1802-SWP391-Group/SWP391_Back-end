@@ -135,7 +135,6 @@ namespace Business.Services
                 if (rs != null)
                 {
                     orDetail.ResultId = rs.ResultId;
-                    orDetail.Status = ValuationDetailStatusEnum.Completed.ToString();
                     var rsUpdate = await _unitOfWork.OrderDetailRepository.UpdateAsync(orDetail);
 
                     if (rsUpdate < 1)
