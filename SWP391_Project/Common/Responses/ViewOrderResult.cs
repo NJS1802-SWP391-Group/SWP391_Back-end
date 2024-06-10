@@ -10,7 +10,8 @@ namespace Common.Responses
     {
         public int OrderID { get; set; }
         public string Code { get; set; }
-        public int CustomerId { get; set; }
+        public string FirstName {  get; set; }
+        public string LastName { get; set; }
         public int Quantity { set; get; }
         public DateTime Time { set; get; }
         public string Status { set; get; }

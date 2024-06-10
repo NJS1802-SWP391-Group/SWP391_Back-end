@@ -35,6 +35,8 @@ namespace SWP391_Project.Common.Mapper
                 .ReverseMap();
             CreateMap<ViewOrderResult, Order>()
                 .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations))
+                .ForPath(x => x.Customer.FirstName, opt => opt.MapFrom(x => x.FirstName)).
+                 ForPath(x => x.Customer.LastName, opt => opt.MapFrom(x => x.LastName))
                 .ReverseMap();
             CreateMap<OrderDetail, ViewOrderDetailResult>()
                 .ForMember(x => x.ServiceName, opt => opt.MapFrom(x => x.Service.Name))
@@ -60,8 +62,12 @@ namespace SWP391_Project.Common.Mapper
                 .ForMember(_ => _.Status, opt => opt.MapFrom(_ => _.Status))
                 .ReverseMap();
             CreateMap<Order, ViewFullInfomaionOrder>()
-                .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations));
+                .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations))
+                 .ForPath(x => x.FirstName, opt => opt.MapFrom(x => x.Customer.FirstName)).
+                 ForPath(x => x.LastName, opt => opt.MapFrom(x => x.Customer.LastName))
+                 .ReverseMap();
             CreateMap<OrderDetail, ViewOrderDetail>();
+
         }
     }
 }
