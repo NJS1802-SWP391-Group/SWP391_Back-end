@@ -174,14 +174,15 @@ namespace Business.Services
             try
             {
                 var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(orderdetailId);
+
                 if (orderDetail == null) throw new Exception("Can not found OrderDetail");
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderDetail.OrderId);
                 if (order == null) throw new Exception("Can not found Order");
                 var flag= _unitOfWork.OrderDetailRepository.Remove(orderDetail);
                 if (flag)
                 {
-                    order.TotalPay = order.TotalPay - orderDetail.Price;
-                    order.Quantity  = order.Quantity - 1;
+                    order.Quantity = await _unitOfWork.OrderDetailRepository.GetTotalQuantity(orderDetail.OrderId);
+                    order.TotalPay = await _unitOfWork.OrderDetailRepository.GetTotalPrice(orderDetail.OrderId);
                     _unitOfWork.OrderRepository.Update(order);
                     var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
                     var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
@@ -204,12 +205,12 @@ namespace Business.Services
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderDetail.OrderId);
                 if (order == null) throw new Exception("Can not found Order");
                 orderDetail.ServiceId = orderDetailUpdate.ServiceId;
-                order.TotalPay = order.TotalPay - orderDetail.Price;
                 orderDetail.EstimateLength = orderDetailUpdate.EstimateLength;
                 orderDetail.Price =(await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(orderDetailUpdate.ServiceId, orderDetailUpdate.EstimateLength)).price;
-                order.TotalPay = order.TotalPay + orderDetail.Price;
                 _unitOfWork.OrderDetailRepository.Update(orderDetail);
                 _unitOfWork.OrderRepository.Update(order);
+                order.Quantity = await _unitOfWork.OrderDetailRepository.GetTotalQuantity(orderDetail.OrderId);
+                order.TotalPay = await _unitOfWork.OrderDetailRepository.GetTotalPrice(orderDetail.OrderId);
                 var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
                 var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
                 return new ServiceResult(200, "Successful", result);
