@@ -53,5 +53,15 @@ namespace Data.Repositories.DiavanRepo
         {
             return await _dbSet.Include(_ => _.Service).Include(_ => _.Order).Include(_ => _.Result).Include(_ => _.ValuationStaff).Where(_ => _.Status == status).ToListAsync();
         }
+        public async Task<int> GetTotalQuantity(int orderid)
+        {
+            var rs = (await _dbSet.Where(x=>x.OrderId == orderid).ToListAsync()).Count;
+            return rs;
+        }
+        public async Task<double> GetTotalPrice(int orderid)
+        {
+            var rs = await _dbSet.Where(x => x.OrderId == orderid).SumAsync(x => x.Price);
+            return rs;
+        }
     }
 }
