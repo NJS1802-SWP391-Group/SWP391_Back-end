@@ -14,6 +14,7 @@ namespace Common.Responses
         public string ServiceName { get; set; }
         public double EstimateLength { get; set; }
         public double ServicePrice { get; set; }
+        public string ValuatingStaffName { get; set; }
         public string Status { get; set; }
     }
 }

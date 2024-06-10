@@ -85,15 +85,28 @@ namespace API.Controllers
             var result = await _orderDetailService.UpdateOrderDetail(updateOrderDetail);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
+
         [AllowAnonymous]
-        [HttpPut("Reject-Valuate")]
-        public async Task<IActionResult> ManagerRejectValuate([FromBody] OrderDetailReject orderDetail)
+        [HttpPut("Approve-Valuate/{orderDetailId}")]
+        public async Task<IActionResult> ManagerApproveValuate([FromRoute] int orderDetailId)
         {
-            if (orderDetail.OrderId <= 0)
+            if (orderDetailId <= 0)
             {
-                return StatusCode(500, "Invalid id");
+                return StatusCode(400, "Invalid id");
             }
-            var result = await _orderDetailService.ManagerRejectOrderDetails(orderDetail);
+            var result = await _orderDetailService.ManagerApproveOrderDetails(orderDetailId);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }
+
+        [AllowAnonymous]
+        [HttpPut("Reject-Valuate/{orderDetailId}")]
+        public async Task<IActionResult> ManagerRejectValuate([FromRoute] int orderDetailId)
+        {
+            if (orderDetailId <= 0)
+            {
+                return StatusCode(400, "Invalid id");
+            }
+            var result = await _orderDetailService.ManagerRejectOrderDetails(orderDetailId);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
 
