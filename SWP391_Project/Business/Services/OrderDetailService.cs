@@ -151,7 +151,7 @@ namespace Business.Services
                 detail.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price;
                 detail.Code = GenerateCode.OrderDetailCode(orderId);
                 detail.OrderId = orderId;
-                detail.Status = ValuationDetailStatusEnum.Assigning.ToString();
+                detail.Status = ValuationDetailStatusEnum.Pending.ToString();
                 await _unitOfWork.OrderDetailRepository.CreateAsync(detail);
                 if (order.Quantity == null || order.Quantity == 0) order.Quantity = 0;
                 order.Quantity = order.Quantity + 1;
@@ -159,7 +159,7 @@ namespace Business.Services
                 order.TotalPay = order.TotalPay + detail.Price;
                 await _unitOfWork.OrderRepository.UpdateAsync(order);
                 var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(orderId);
-                var result = _mapper.Map<ViewOrderResult>(obj);
+                var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
                 return new ServiceResult(200, "Successful", result);
             }
             catch(Exception ex)
@@ -182,7 +182,7 @@ namespace Business.Services
                     order.Quantity  = order.Quantity - 1;
                     _unitOfWork.OrderRepository.Update(order);
                     var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
-                    var result = _mapper.Map<ViewOrderResult>(obj);
+                    var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
                     return new ServiceResult(200, "Successful", result);
                 }
                 throw new Exception("Can not delete orderDetail");
@@ -209,7 +209,7 @@ namespace Business.Services
                 _unitOfWork.OrderDetailRepository.Update(orderDetail);
                 _unitOfWork.OrderRepository.Update(order);
                 var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
-                var result = _mapper.Map<ViewOrderResult>(obj);
+                var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
                 return new ServiceResult(200, "Successful", result);
 
             }
