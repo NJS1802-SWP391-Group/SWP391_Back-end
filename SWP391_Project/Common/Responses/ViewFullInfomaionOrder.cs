@@ -9,6 +9,7 @@ namespace Common.Responses
     public class ViewFullInfomaionOrder
     {
             public int OrderID { get; set; }
+            public string CustomerName {  get; set; }
             public string Code { get; set; }
             public int CustomerId { get; set; }
             public int Quantity { set; get; }

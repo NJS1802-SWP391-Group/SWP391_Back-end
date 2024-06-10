@@ -79,7 +79,7 @@ namespace Business.Services
                     if (item.Price <= 0) throw new Exception("Can not find Service");
                     item.OrderId = UpdateOrder.OrderID;
                     item.Code = GenerateCode.OrderDetailCode(UpdateOrder.OrderID);
-                    item.Status = ValuationDetailStatusEnum.Assigning.ToString();
+                    item.Status = ValuationDetailStatusEnum.Pending.ToString();
                     await _unitOfWork.OrderDetailRepository.CreateAsync(item);
                     order.TotalPay = order.TotalPay + item.Price;
                 }
