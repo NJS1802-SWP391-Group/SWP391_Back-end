@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Common.Enums
 {
-    public enum ValuationDetailStatusEnum
+    public enum ResultStatusEnum
     {
-        Assigning, Valuating, Completed, ReAssigning, Fail, Certificated, Pending
+        Pending, Rejected, Approved, Final
     }
 }

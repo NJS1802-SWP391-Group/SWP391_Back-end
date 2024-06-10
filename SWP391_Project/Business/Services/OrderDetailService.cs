@@ -26,7 +26,8 @@ namespace Business.Services
         Task<IServiceResult> AddOrderDetail(int orderId, OrderDetailCreate item);
         Task<IServiceResult> DeleteOrderDetail(int orderDetailId);
         Task<IServiceResult> UpdateOrderDetail(UpdateOrderDetail orderDetailUpdate);
-        Task<IServiceResult> ManagerRejectOrderDetails(OrderDetailReject orderDetailReject);
+        public Task<IServiceResult> ManagerApproveOrderDetails(int orderDetailId);
+        Task<IServiceResult> ManagerRejectOrderDetails(int orderDetailId);
     }
 
     public class OrderDetailService : IOrderDetailService
@@ -44,7 +45,7 @@ namespace Business.Services
         {
             try
             {
-                var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff(ValuationDetailStatusEnum.Assigning.ToString());
+                var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff(ValuationDetailStatusEnum.Assigning.ToString(), ValuationDetailStatusEnum.ReAssigning.ToString());
                 var rs = _mapper.Map<List<OrderDetailGeneralResponse>>(results);
                 return new ServiceResult(200, "Get order details", rs);
             }
@@ -117,12 +118,12 @@ namespace Business.Services
                 {
                     return new ServiceResult(404, "Cannot find valuation staff");
                 }
-                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsAssigning(req.OrderDetailID, ValuationDetailStatusEnum.Assigning.ToString());
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsAssigning(req.OrderDetailID, ValuationDetailStatusEnum.Assigning.ToString(), ValuationDetailStatusEnum.ReAssigning.ToString());
                 if (orderDetail == null)
                 {
                     return new ServiceResult(404, "Cannot find order detail");
                 }
-                if (orderDetail.ValuationStaffId != null)
+                if (orderDetail.Status.Equals(ValuationDetailStatusEnum.Assigning.ToString()) && orderDetail.ValuationStaffId != null)
                 {
                     return new ServiceResult(500, "Order detail already assigned");
                 }
@@ -221,16 +222,73 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
-        public async Task<IServiceResult> ManagerRejectOrderDetails(OrderDetailReject orderDetailReject)
+
+        public async Task<IServiceResult> ManagerApproveOrderDetails(int orderDetailId)
         {
             try
             {
-                var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(orderDetailReject.OrderId);
-                var checkAccount = await _unitOfWork.UserRepository.GetByIdAsync(orderDetailReject.AccountId);
-                if (checkAccount == null) { throw new Exception("Don't have this staff"); }
-                orderdetail.Status = ValuationDetailStatusEnum.ReValuating.ToString();
-                orderdetail.ValuationStaffId = checkAccount.AccountId;
-                await _unitOfWork.OrderDetailRepository.SaveAsync();
+                var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString());
+                if (orderdetail == null) { throw new Exception("Cannot find order detail"); }
+                orderdetail.Status = ValuationDetailStatusEnum.Certificated.ToString();
+
+                var result = await _unitOfWork.ResultRepository.GetByIdAsync(orderdetail.ResultId.Value);
+
+                if (result == null)
+                {
+                    return new ServiceResult(400, "Fail to find result");
+                }
+
+                result.Status = ResultStatusEnum.Approved.ToString();
+                var updateRs = await _unitOfWork.ResultRepository.UpdateAsync(result);
+                if (updateRs < 1)
+                {
+                    return new ServiceResult(400, "Failed");
+                }
+
+                var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orderdetail);
+                if (rs < 1)
+                {
+                    return new ServiceResult(400, "Failed");
+                }
+
+                return new ServiceResult(200, "Successful");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+
+        public async Task<IServiceResult> ManagerRejectOrderDetails(int orderDetailId)
+        {
+            try
+            {
+                var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString());
+                if (orderdetail == null) { throw new Exception("Cannot find order detail"); }
+                orderdetail.Status = ValuationDetailStatusEnum.ReAssigning.ToString();
+
+                var result = await _unitOfWork.ResultRepository.GetByIdAsync(orderdetail.ResultId.Value);
+                
+                if (result == null)
+                {
+                    return new ServiceResult(400, "Fail to find result");
+                }
+
+                result.Status = ResultStatusEnum.Rejected.ToString();
+                var updateRs = await _unitOfWork.ResultRepository.UpdateAsync(result);
+                if (updateRs < 1)
+                {
+                    return new ServiceResult(400, "Failed");
+                }
+
+                orderdetail.Result = null;
+                orderdetail.ResultId = null;           
+                var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orderdetail);
+                if (rs < 1)
+                {
+                    return new ServiceResult(400, "Failed");
+                }
+
                 return new ServiceResult(200, "Successful");
             }
             catch(Exception ex)

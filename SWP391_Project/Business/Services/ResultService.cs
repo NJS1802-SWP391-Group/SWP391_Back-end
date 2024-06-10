@@ -130,6 +130,7 @@ namespace Business.Services
                 }
 
                 var createObj = _mapper.Map<Result>(req);
+                createObj.Status = ResultStatusEnum.Pending.ToString();
                 var rs = await _unitOfWork.ResultRepository.CreateAsync(createObj);
                 
                 if (rs != null)

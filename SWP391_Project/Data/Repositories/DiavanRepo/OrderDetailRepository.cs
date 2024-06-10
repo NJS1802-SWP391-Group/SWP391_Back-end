@@ -27,9 +27,9 @@ namespace Data.Repositories.DiavanRepo
             var result = await _dbSet.Where(x => x.OrderId == OrderId).ToListAsync();
             return result;
         }
-        public async Task<List<OrderDetail>> GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff(string status)
+        public async Task<List<OrderDetail>> GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff(string statusAssigning, string statusReassigning)
         {
-            return await _dbSet.Include(_ => _.Order).Include(_ => _.Service).Where(_ => _.Status == status).ToListAsync();
+            return await _dbSet.Include(_ => _.Order).Include(_ => _.Service).Include(_ => _.ValuationStaff).Where(_ => _.Status == statusAssigning || _.Status == statusReassigning).ToListAsync();
         }
 
         public async Task<List<OrderDetail>> GetOrderDetailsByValuStaff(int staffId, string status)
@@ -37,13 +37,19 @@ namespace Data.Repositories.DiavanRepo
             return await _dbSet.Include(_ => _.Service).Where(_ => _.ValuationStaffId == staffId && _.Status == status).ToListAsync();
         }
 
-        public async Task<OrderDetail> GetByIdAndIsAssigning(int orderDetailId, string status)
+        public async Task<OrderDetail> GetByIdAndIsAssigning(int orderDetailId, string statusAssigning, string statusReassigning)
         {
-            var rs = await _dbSet.Where(_ => _.OrderDetailId == orderDetailId && _.Status == status).FirstOrDefaultAsync();
+            var rs = await _dbSet.Where(_ => _.OrderDetailId == orderDetailId && (_.Status == statusAssigning || _.Status == statusReassigning)).FirstOrDefaultAsync();
             return rs;
         }
 
         public async Task<OrderDetail> GetByIdAndIsValuatingAndHasResult(int orderDetailId, string status)
+        {
+            var rs = await _dbSet.Where(_ => _.OrderDetailId == orderDetailId && _.Status == status && _.ResultId != null).FirstOrDefaultAsync();
+            return rs;
+        }
+
+        public async Task<OrderDetail> GetByIdAndIsCompletedAndHasResult(int orderDetailId, string status)
         {
             var rs = await _dbSet.Where(_ => _.OrderDetailId == orderDetailId && _.Status == status && _.ResultId != null).FirstOrDefaultAsync();
             return rs;
