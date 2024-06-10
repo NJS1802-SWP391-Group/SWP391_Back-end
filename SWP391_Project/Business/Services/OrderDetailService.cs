@@ -146,6 +146,8 @@ namespace Business.Services
             try
             {
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
+                order.Quantity = await _unitOfWork.OrderDetailRepository.GetTotalQuantity(orderId);
+                order.TotalPay = await _unitOfWork.OrderDetailRepository.GetTotalPrice(orderId);
                 if (order == null) throw new Exception("Can not found Order");
                 var detail = _mapper.Map<OrderDetail>(item);
                 detail.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price;
