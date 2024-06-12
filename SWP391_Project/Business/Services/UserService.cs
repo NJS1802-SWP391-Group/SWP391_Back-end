@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Constants;
+using Common.DTOs;
 using Data.Repositories;
 using Data.Repositories.DiavanRepo;
 using Domain.Exceptions;
@@ -88,6 +89,19 @@ namespace SWP391_Project.Services
             catch (Exception ex)
             {
                 return new ServiceResult(-1, ex.Message);
+            }
+        }
+
+        public async Task<CustomerModel> GetCustomerByEmail(string email)
+        {
+            try
+            {
+                var result = _mapper.Map<CustomerModel>(await _unitOfWork.CustomerRepository.GetCustomerByEmail(email));
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }
