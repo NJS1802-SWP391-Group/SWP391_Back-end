@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Services;
+using System.Net.Mail;
 using static System.Net.WebRequestMethods;
 
 namespace API.Controllers
@@ -51,94 +52,147 @@ namespace API.Controllers
             }
         }
 
-        private string GenerateEmailBody(string fullName, string otp)
+        private string GenerateEmailBody(string fullName, string imgPath)
         {
             return $@"
-   <body style=""display: flex; justify-content: center; align-items: center"">
-    <div>
-      <div
-        style=""
-          color: #536e88;
-          width: fit-content;
-          box-shadow: 0 2px 8px rgba(8, 120, 211, 0.2);
-          padding: 10px;
-          border-radius: 5px;
-        ""
-      >
-        <div
+   <body style=""color: black; display: flex; justify-content: center; align-items: center"">
+<div
           style=""
-            display: flex;
-            justify-content: center;
             align-items: center;
-            height: 10px;
-            margin-top: 0px;
-            background-color: #3498db;
-            font-size: 0.875rem;
-            font-weight: bold;
-            color: #ffffff;
-          ""
-        ></div>
-
-        <h1 style=""text-align: center; color: #3498db"">
-          Chào mừng đến với
-          <span style=""color: #f99f41"">trạm của chúng tôi!</span>
-        </h1>
-
-        <div style=""text-align: center"">
-          <img
-            src=""https://img.freepik.com/free-vector/students-bus-transportation_24877-83765.jpg?size=338&ext=jpg&ga=GA1.1.553209589.1715040000&semt=ais""
-            alt=""logo""
-            width=""70""
-          />
-        </div>
-
-        <p style=""text-align: center; font-weight: bold; margin-top: 0"">
-          <span style=""color: #f99f41"">THE BUS </span
-          ><span style=""color: #3498db"">JOURNEY</span>
-        </p>
-
-        <div
-          style=""
-            width: fit-content;
-            margin: auto;
-            box-shadow: 0 2px 8px rgba(8, 120, 211, 0.2);
-            padding-top: 10px;
-            border-radius: 10px;
+            border-radius: 25px;
+            border: 1px solid black;
+            box-shadow: inherit;
           ""
         >
-          <p>
-            Xin chào,
-            <span style=""font-weight: bold; color: #0d1226"">{fullName}</span>
-          </p>
-          <p>
-            <span style=""font-weight: bold"">THE BUS JOURNEY </span>xin thông báo
-            tài khoản của bạn đã được đăng kí thành công. <span></span>
-          </p>
-          <p>
-            <span>Mã xác thực của bạn là: </span
-            ><span style=""color: #0d1226; font-weight: bold"">{otp}</span>
-          </p>
-          <p>Xin chân thành cảm ơn vì bạn đã sử dụng dịch vụ của chúng tôi!</p>
-          <p>Hân hạnh,</p>
-          <p style=""font-weight: 700; color: #0d1226"">THE BUS JOURNEY</p>
-        </div>
+          <div
+            style=""
+              display: flex;
+              justify-content: center;
+              align-items: center;
+                text-align: center;
+            ""
+          >
+            <div style=""text-align: center; padding: 10px 10px "">
+                <img alt="""" src=""https://scontent.xx.fbcdn.net/v/t1.15752-9/441924933_974480357477832_8469075819425755363_n.png?stp=dst-png_p206x206&_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGZC1zDQLT8WB4LD3WNzYYEjWsTHp6-zjuNaxMenr7OO1J5NG2Kig2e8Zzrlwfv_ysTloLyyYtLmy_zgGqLU0Ee&_nc_ohc=JO852HsoP1gQ7kNvgEE2Hrk&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QHy3APhmVQWBciW02SZ5JXt-h_6VWcp5FVM1Eo1iTnQig&oe=669146F6""
+                        width=""60px""  height=""60px""/>
+            </div>
+            <h1 style=""text-align: center;"">Diavan</h1>
+          </div>
 
-        <div
-          style=""
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 40px;
-            background-color: #3498db;
-            font-size: 0.875rem;
-            font-weight: bold;
-            color: #ffffff;
-          ""
-        >
-          © 2024 | Bản quyền thuộc về THE BUS JOURNEY.
+          <br />
+          <div style="" padding: 0 5% "">
+            <div style="" margin: 10px 0 "">
+              Xin chào VoMongLuan,
+              <br />
+              Đơn hàng{{"" ""}}
+              <span style="" font-weight: bold; color: green; "">
+                #240528GYY423E0
+              </span>{{"" ""}}
+              của bạn đã được giao thành công ngày{{"" ""}}
+              <span style="" font-weight: bold; color: green; "">
+                31/05/2024
+              </span>
+              . Vui lòng đăng nhập Diavan để xác nhận bạn đã nhận hàng và hài
+              lòng với sản phẩm trong vòng 3 ngày. Sau khi bạn xác nhận, chúng
+              tôi sẽ thanh toán cho Người bán vietcomtechnology.jsc. Nếu bạn
+              không xác nhận trong khoảng thời gian này, Shopee cũng sẽ thanh
+              toán cho Người bán.
+            </div>
+            <div style="" margin: 10px 0 "">
+              <p style="" font-weight: bold "">
+                Thông tin đơn hàng
+              </p>
+              <div
+                style=""
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 0 200px;
+                ""
+              >
+                <div>
+                  <ul style="" list-style: none "">
+                    <li>Mã đơn hàng:</li>
+                    <li>Số viên :</li>
+                    <li>Ngày đặt hàng:</li>
+                  </ul>
+                </div>
+                <div>
+                  <ul style="" list-style: none "">
+                    <li>
+                      <span
+                        style=""
+                          text-decoration-line: underline;
+                          color: green;
+                        ""
+                      >
+                        #240528GYY423E0
+                      </span>
+                    </li>
+
+                    <li>2</li>
+                    <li
+                      style=""
+                        text-decoration-line: underline;
+                        color: green;
+                      ""
+                    >
+                      28/05/2024 15:28:07
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div style="" padding: 0 200px; margin: 10px 0 "">
+                </br>
+                <p>1. Viên kim cương 1</p>
+                <div
+                  style="" display: flex; justify-content: space-between ""
+                >
+                  <div>
+                    <ul style="" list-style: none "">
+                      <li>Mã kim cương:</li>
+                      <li>Loại dịch vụ:</li>
+                      <li>Kích cỡ:</li>
+                      <li>Giá dịch vụ:</li>
+                      <li>Giá trị kim cương:</li>
+                    </ul>
+                  </div>
+                  <div style="" margin-right: 15px "">
+                    <ul style="" list-style: none "">
+                      <li>123</li>
+                      <li>Standard Valuation</li>
+                      <li>10(mm)</li>
+                      <li>100$</li>
+                      <li>2000$</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div
+                style=""
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 0 200px;
+                  margin: 10px 0;
+                ""
+              >
+                <p>Tổng thanh toán:</p>
+                <p style="" margin-right: 115px "">100$</p>
+              </div>
+              <div style="" padding: 0 200px; margin: 10px 0 "">
+                <p style="" font-weight: bold "">Bước tiếp theo</p>
+                <p style="" font-style: italic "">
+                  Vui lòng đến Diavan Componay để nhận lại kim cương và giấy
+                  thẩm định. <br /> Chúc bạn luôn có những trải nghiệm tuyệt vời
+                  khi trải nghiệm dịch vụ của Diavan.
+                </p>
+              </div>
+              <div style="" padding: 0 200px; margin: 10px 0 "">
+                Trân trọng, <br />
+                Đội ngũ Diavan
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
   </body>
 
     ";
