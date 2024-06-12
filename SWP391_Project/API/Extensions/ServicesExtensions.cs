@@ -16,6 +16,8 @@ using SWP391_Project.Middlewares;
 using Data.Repositories;
 using SWP391_Project.Domain.DiavanEntities;
 using Business.Services;
+using Business.Services.Email;
+using Common.Settings;
 
 namespace SWP391_Project.Extensions;
 
@@ -73,6 +75,12 @@ public static class ServicesExtensions
             options.UseSqlServer(configuration.GetConnectionString("DiamondConnection"));
         });
 
+        //services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
+
+        var firebaseConfigSection = configuration.GetSection("MailSettings");
+        var firebaseConfig = firebaseConfigSection.Get<MailSettings>();
+        services.Configure<MailSettings>(firebaseConfigSection);
+        services.AddSingleton(firebaseConfig);
 
         AppContext.SetSwitch("System.Globalization.Invariant", true);
         CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
@@ -89,6 +97,7 @@ public static class ServicesExtensions
         services.AddScoped<ResultService>();
         services.AddScoped<OrderDetailService>();
         services.AddScoped<PaymentService>();
+        services.AddScoped<EmailService>();
 
         return services;
     }

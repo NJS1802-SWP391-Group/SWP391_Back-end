@@ -10,6 +10,7 @@ using SWP391_Project.Extensions;
 using SWP391_Project.Helpers;
 using SWP391_Project.Data.Databases;
 using SWP391_Project.Middlewares;
+using Common.Settings;
 
 namespace SWP391_Project
 {
@@ -20,6 +21,8 @@ namespace SWP391_Project
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddInfrastructure(builder.Configuration);
+
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
