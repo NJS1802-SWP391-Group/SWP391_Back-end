@@ -14,6 +14,7 @@ namespace SWP391_Project.Common.Mapper
         public ApplicationMapper()
         {
             CreateMap<AccountModel, Account>().ReverseMap();
+            CreateMap<CustomerModel, Customer>().ReverseMap();
             CreateMap<ServiceModel, Service>().ReverseMap();
             CreateMap<ServiceDetailModel, ServiceDetail>().ReverseMap();
             CreateMap<ViewOrderResponse, Order>().
