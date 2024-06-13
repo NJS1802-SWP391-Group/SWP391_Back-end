@@ -143,7 +143,7 @@ namespace Business.Services
         {
             try
             {
-                var obj = await _unitOfWork.OrderRepository.GetOrderInforById(id);
+                var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(id);
                 if (obj == null) throw new Exception("Don't have any Order has this Id");
                 var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
                 return new ServiceResult(200, "Successful", result);
