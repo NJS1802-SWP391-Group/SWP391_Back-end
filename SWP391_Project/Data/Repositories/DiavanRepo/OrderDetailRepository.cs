@@ -24,7 +24,7 @@ namespace Data.Repositories.DiavanRepo
         }
         public async Task<List<OrderDetail>> GetDetailByOrderId(int OrderId)
         {
-            var result = await _dbSet.Where(x => x.OrderId == OrderId).ToListAsync();
+            var result = await _dbSet.Include(_ => _.Service).Include(_ => _.Result).Where(x => x.OrderId == OrderId).ToListAsync();
             return result;
         }
         public async Task<List<OrderDetail>> GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff(string statusAssigning, string statusReassigning)

@@ -103,6 +103,19 @@ namespace SWP391_Project.Services
             {
                 throw new Exception(ex.Message);
             }
+        }        
+
+        public async Task<CustomerModel> GetCustomerById(int customerId)
+        {
+            try
+            {
+                var result = _mapper.Map<CustomerModel>(await _unitOfWork.CustomerRepository.GetByIdAsync(customerId));
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

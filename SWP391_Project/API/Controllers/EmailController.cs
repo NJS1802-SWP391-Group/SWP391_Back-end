@@ -1,11 +1,14 @@
-﻿using Business.Services.Email;
+﻿using Business.Services;
+using Business.Services.Email;
 using Common.Requests;
+using Common.Responses;
 using Data.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Services;
 using System.Net.Mail;
+using System.Text;
 using static System.Net.WebRequestMethods;
 
 namespace API.Controllers
@@ -16,11 +19,13 @@ namespace API.Controllers
     {
         private readonly EmailService _emailService;
         private readonly UserService _userService;
+        private readonly OrderService _orderService;
 
-        public EmailController(EmailService emailService, UserService userService)
+        public EmailController(EmailService emailService, UserService userService, OrderService orderService)
         {
             _emailService = emailService;
             _userService = userService;
+            _orderService = orderService;
         }
 
         [HttpPost("Send-Email-Result")]
@@ -28,18 +33,31 @@ namespace API.Controllers
         {
             try
             {
-                var cus = await _userService.GetCustomerByEmail(req.Email);
+                var rs = await _orderService.GetOrderByIdIncludeCustomer(req.OrderID);
 
-                if (cus == null )
+                var ord = rs.Data as GetOrderToSendMail;
+
+                if (ord == null )
+                {
+                    return StatusCode(400, "Order does not exist");
+                }
+
+                var cus = await _userService.GetCustomerById(ord.CustomerId);
+
+                if (cus == null)
+                {
+                    return StatusCode(400, "Customer does not exist");
+                }
+                else if (cus.Email == null)
                 {
                     return StatusCode(400, "Customer email does not exist");
                 }
 
                 var mailData = new MailData()
                 {
-                    EmailToId = req.Email,
+                    EmailToId = cus.Email,
                     EmailToName = "DiavanWebsite",
-                    EmailBody = GenerateEmailBody($"{cus.FirstName} {cus.LastName}", cus.Email),
+                    EmailBody = GenerateEmailBody($"{cus.FirstName} {cus.LastName}", ord),
                     EmailSubject = "YOUR DIAMOND VALUATION RESULT"
                 };
 
@@ -52,12 +70,16 @@ namespace API.Controllers
             }
         }
 
-        private string GenerateEmailBody(string fullName, string imgPath)
+        private string GenerateEmailBody(string fullName, GetOrderToSendMail order)
         {
-            return $@"
-   <body style=""color: black; display: flex; justify-content: center; align-items: center"">
+            StringBuilder emailBody = new StringBuilder();
+            int i = 1;
+            double totalServicePrice = 0;
+            emailBody.Append($@"
+           <body style=""color: black; display: flex; justify-content: center; align-items: center"">
 <div
           style=""
+color: black;
             align-items: center;
             border-radius: 25px;
             border: 1px solid black;
@@ -82,25 +104,21 @@ namespace API.Controllers
           <br />
           <div style="" padding: 0 5% "">
             <div style="" margin: 10px 0 "">
-              Xin chào VoMongLuan,
+              Xin chào {fullName},
               <br />
-              Đơn hàng{{"" ""}}
+              Đơn nhận định giá 
               <span style="" font-weight: bold; color: green; "">
-                #240528GYY423E0
-              </span>{{"" ""}}
-              của bạn đã được giao thành công ngày{{"" ""}}
+                {order.Code}
+              </span> 
+              của bạn đã được hoàn thành vào ngày 
               <span style="" font-weight: bold; color: green; "">
-                31/05/2024
+                {order.CompleteDate}
               </span>
-              . Vui lòng đăng nhập Diavan để xác nhận bạn đã nhận hàng và hài
-              lòng với sản phẩm trong vòng 3 ngày. Sau khi bạn xác nhận, chúng
-              tôi sẽ thanh toán cho Người bán vietcomtechnology.jsc. Nếu bạn
-              không xác nhận trong khoảng thời gian này, Shopee cũng sẽ thanh
-              toán cho Người bán.
+              . Vui lòng đến Diavan để làm các thủ tục nhận lại sản phẩm. Nếu sau 30 ngày mà quý khách vẫn chưa đến làm thủ tục nhận lại, Diavan sẽ tiến hành niêm phong đơn định giá theo quy định của công ty.
             </div>
             <div style="" margin: 10px 0 "">
               <p style="" font-weight: bold "">
-                Thông tin đơn hàng
+                Thông tin đơn nhận định giá
               </p>
               <div
                 style=""
@@ -111,9 +129,10 @@ namespace API.Controllers
               >
                 <div>
                   <ul style="" list-style: none "">
-                    <li>Mã đơn hàng:</li>
-                    <li>Số viên :</li>
-                    <li>Ngày đặt hàng:</li>
+                    <li>Mã đơn nhận:</li>
+                    <li>Số lượng:</li>
+                    <li>Ngày thanh toán:</li>
+                    <li>Ngày hoàn thành:</li>
                   </ul>
                 </div>
                 <div>
@@ -125,31 +144,45 @@ namespace API.Controllers
                           color: green;
                         ""
                       >
-                        #240528GYY423E0
+                        {order.Code}
                       </span>
                     </li>
 
-                    <li>2</li>
+                    <li>{order.Quantity}</li>
                     <li
                       style=""
                         text-decoration-line: underline;
                         color: green;
                       ""
                     >
-                      28/05/2024 15:28:07
+                      {order.Time}
+                    </li>                   
+                    <li
+                      style=""
+                        text-decoration-line: underline;
+                        color: green;
+                      ""
+                    >
+                      {order.CompleteDate}
                     </li>
                   </ul>
                 </div>
               </div>
-              <div style="" padding: 0 200px; margin: 10px 0 "">
-                </br>
-                <p>1. Viên kim cương 1</p>
+
+            ");
+
+            foreach (var orderDetail in order.DetailValuations)
+            {
+        emailBody.Append($@"
+              <div style=""color: black; padding: 0 200px; margin: 10px 0 "">
+                <br/>
+                <p>{i}. Chi tiết đơn hàng {i}</p>
                 <div
                   style="" display: flex; justify-content: space-between ""
                 >
                   <div>
                     <ul style="" list-style: none "">
-                      <li>Mã kim cương:</li>
+                      <li>Mã đơn:</li>
                       <li>Loại dịch vụ:</li>
                       <li>Kích cỡ:</li>
                       <li>Giá dịch vụ:</li>
@@ -158,31 +191,39 @@ namespace API.Controllers
                   </div>
                   <div style="" margin-right: 15px "">
                     <ul style="" list-style: none "">
-                      <li>123</li>
-                      <li>Standard Valuation</li>
-                      <li>10(mm)</li>
-                      <li>100$</li>
-                      <li>2000$</li>
+                      <li>{orderDetail.Code}</li>
+                      <li>{orderDetail.ServiceName}</li>
+                      <li>{orderDetail.EstimateLength} (mm)</li>
+                      <li>{orderDetail.ServicePrice}$</li>
+                      <li>{orderDetail.Price}$</li>
                     </ul>
                   </div>
                 </div>
               </div>
+");
+                i++;
+                totalServicePrice += orderDetail.ServicePrice;
+            }
+
+    emailBody.Append($@"
+
               <div
                 style=""
+color: black;
                   display: flex;
                   justify-content: space-between;
                   padding: 0 200px;
                   margin: 10px 0;
                 ""
               >
-                <p>Tổng thanh toán:</p>
-                <p style="" margin-right: 115px "">100$</p>
+                <p>Tổng thanh toán: </p>
+                <p style="" margin-right: 115px "">{totalServicePrice}$</p>
               </div>
               <div style="" padding: 0 200px; margin: 10px 0 "">
                 <p style="" font-weight: bold "">Bước tiếp theo</p>
                 <p style="" font-style: italic "">
-                  Vui lòng đến Diavan Componay để nhận lại kim cương và giấy
-                  thẩm định. <br /> Chúc bạn luôn có những trải nghiệm tuyệt vời
+                  Vui lòng đến Diavan để nhận lại kim cương và giấy
+                  chứng chỉ định giá. <br /> Chúc bạn luôn có những trải nghiệm tuyệt vời
                   khi trải nghiệm dịch vụ của Diavan.
                 </p>
               </div>
@@ -195,7 +236,9 @@ namespace API.Controllers
         </div>
   </body>
 
-    ";
+    ");
+
+            return emailBody.ToString();
         }
     }
 }
