@@ -128,9 +128,28 @@ namespace Business.Services
                 {
                     return new ServiceResult(400, "Fail");
                 }
-
                 var createObj = _mapper.Map<Result>(req);
-                createObj.Status = ResultStatusEnum.Pending.ToString();
+                createObj.Code = orDetail.Code;
+                if (!createObj.IsDiamond)
+                {
+                    createObj.Status = ResultStatusEnum.IsNotDiamond.ToString();
+                    orDetail.Status = ValuationDetailStatusEnum.Fail.ToString();
+                    createObj.Carat = "NaN";
+                    createObj.Clarity = "NaN";
+                    createObj.Symmetry = "NaN";
+                    createObj.Origin = "NaN";
+                    createObj.Color = "NaN";
+                    createObj.CutGrade = "NaN";
+                    createObj.Description = "NaN";
+                    createObj.DiamondValue = 0;
+                    createObj.Shape = "NaN";
+                    createObj.Fluorescence = "NaN";
+                    createObj.Polish = "NaN";
+                }
+                else
+                { 
+                    createObj.Status = ResultStatusEnum.Pending.ToString();
+                }
                 var rs = await _unitOfWork.ResultRepository.CreateAsync(createObj);
                 
                 if (rs != null)
@@ -160,10 +179,32 @@ namespace Business.Services
         {
             try
             {
-                var service = await _unitOfWork.ResultRepository.GetByIdAsync(id);
-                if (service != null)
+                var result = await _unitOfWork.ResultRepository.GetByIdAsync(id);
+                if (result != null)
                 {
-                    var updateObj = _mapper.Map(req, service);
+                    var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(result.OrderDetailId);
+                    var updateObj = _mapper.Map(req, result);
+                    if(!updateObj.IsDiamond)
+                    {
+                        updateObj.Status = ResultStatusEnum.IsNotDiamond.ToString();
+                        orderDetail.Status = ValuationDetailStatusEnum.Fail.ToString();
+                        await _unitOfWork.OrderDetailRepository.UpdateAsync(orderDetail);
+                        updateObj.Carat = "NaN";
+                        updateObj.Clarity = "NaN";
+                        updateObj.Symmetry = "NaN";
+                        updateObj.Origin = "NaN";
+                        updateObj.Color = "NaN";
+                        updateObj.CutGrade = "NaN";
+                        updateObj.Description = "NaN";
+                        updateObj.DiamondValue = 0;
+                        updateObj.Shape = "NaN";
+                        updateObj.Fluorescence = "NaN";
+                        updateObj.Polish = "NaN";
+                    }
+                    else
+                    {
+                        updateObj.Status = ResultStatusEnum.Pending.ToString();
+                    }
                     var rs = await _unitOfWork.ResultRepository.UpdateAsync(updateObj);
                     if (rs > 0)
                     {

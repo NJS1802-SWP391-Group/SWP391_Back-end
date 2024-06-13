@@ -85,6 +85,7 @@ namespace Business.Services
                 }
                 order.Quantity = order.DetailValuations.Count();
                 order.Status = OrderStatusEnum.Received.ToString();
+                order.ReceiveDay = DateTime.Now;
                 _unitOfWork.OrderRepository.Update(order);
                 await _unitOfWork.OrderRepository.SaveAsync();
                 var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(UpdateOrder.OrderID);

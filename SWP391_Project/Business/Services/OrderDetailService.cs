@@ -239,6 +239,7 @@ namespace Business.Services
                 }
 
                 result.Status = ResultStatusEnum.Approved.ToString();
+                
                 var updateRs = await _unitOfWork.ResultRepository.UpdateAsync(result);
                 if (updateRs < 1)
                 {
