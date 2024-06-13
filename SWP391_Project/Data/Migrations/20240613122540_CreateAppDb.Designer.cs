@@ -12,8 +12,8 @@ using SWP391_Project.Data.Databases.DiavanSystem;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240609153812_CreateAppDbContext")]
-    partial class CreateAppDbContext
+    [Migration("20240613122540_CreateAppDb")]
+    partial class CreateAppDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,36 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Domain.DiavanEntities.ResultImage", b =>
+                {
+                    b.Property<int>("ResultImageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResultImageID"), 1L, 1);
+
+                    b.Property<Guid>("ImageGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ResultID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ResultImageID");
+
+                    b.HasIndex("ResultID");
+
+                    b.ToTable("ResultImage");
+                });
 
             modelBuilder.Entity("Domain.DiavanEntities.SystemDiamond", b =>
                 {
@@ -212,14 +242,23 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("CompleteDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("ExpireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Payment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("ReceiveDay")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -274,9 +313,6 @@ namespace Data.Migrations
                     b.Property<int?>("ValuationStaffId")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("isDiamond")
-                        .HasColumnType("bit");
-
                     b.HasKey("OrderDetailId");
 
                     b.HasIndex("OrderId");
@@ -299,9 +335,6 @@ namespace Data.Migrations
                     b.Property<string>("Carat")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CertificateStatus")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Clarity")
                         .HasColumnType("nvarchar(max)");
 
@@ -320,17 +353,11 @@ namespace Data.Migrations
                     b.Property<double?>("DiamondValue")
                         .HasColumnType("float");
 
-                    b.Property<DateTime?>("ExpireDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Fluorescence")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDiamond")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("IssueDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("OrderDetailId")
                         .HasColumnType("int");
@@ -420,6 +447,17 @@ namespace Data.Migrations
                     b.HasIndex("ServiceID");
 
                     b.ToTable("ServiceDetail");
+                });
+
+            modelBuilder.Entity("Domain.DiavanEntities.ResultImage", b =>
+                {
+                    b.HasOne("SWP391_Project.Domain.DiavanEntities.Result", "Result")
+                        .WithMany()
+                        .HasForeignKey("ResultID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Result");
                 });
 
             modelBuilder.Entity("SWP391_Project.Domain.DiavanEntities.Customer", b =>

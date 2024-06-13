@@ -22,6 +22,7 @@ namespace SWP391_Project.Data.Databases.DiavanSystem
         public DbSet<Order> Orders { get; set; }
         public DbSet<Result> Results { get; set; }
         public DbSet<ServiceDetail> ServiceDetails { get; set; }
+        public DbSet<ResultImage> ResultImages { get; set; }
 
         #endregion
 

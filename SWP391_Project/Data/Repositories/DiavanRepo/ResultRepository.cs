@@ -22,6 +22,6 @@ namespace Data.Repositories.DiavanRepo
         public async Task<Result> GetByOrderDetailIdAsync(int id)
         {
             return await _dbSet.Where(_ => _.OrderDetailId == id).FirstOrDefaultAsync();
-        }
+        }  
     }
 }

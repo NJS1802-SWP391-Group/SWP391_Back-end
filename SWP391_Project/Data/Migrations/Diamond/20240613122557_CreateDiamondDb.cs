@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations.Diamond
 {
-    public partial class Diamond : Migration
+    public partial class CreateDiamondDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

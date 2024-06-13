@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Business.Constants;
+using Business.Services.Firebase;
 using Common.DTOs;
 using Common.Enums;
 using Common.Requests;
+using Data.Helpers;
 using Data.Repositories;
+using Domain.DiavanEntities;
 using SWP391_Project.Common.Requests;
 using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.DTOs;
@@ -27,13 +30,15 @@ namespace Business.Services
     }
     public class ResultService : IResultService
     {
+        private readonly IFirebaseService _firebaseService;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ResultService(UnitOfWork unitOfWork, IMapper mapper)
+        public ResultService(UnitOfWork unitOfWork, IFirebaseService firebaseService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _firebaseService = firebaseService;
         }
 
         public async Task<IServiceResult> GetAll()
@@ -75,9 +80,11 @@ namespace Business.Services
         {
             try
             {
-                var service = await _unitOfWork.ResultRepository.GetByIdAsync(id);
-                var rs = _mapper.Map<ResultModel>(service);
-                if (service is null)
+                var result = await _unitOfWork.ResultRepository.GetByIdAsync(id);
+                var rs = _mapper.Map<ResultModel>(result);
+                var imageUrls = await _unitOfWork.ResultImageRepository.GetByResultIdAsync(id);
+                rs.ImageUrls = imageUrls.Select(_ => _.ImageUrl).ToList();
+                if (result is null)
                 {
                     return new ServiceResult(404, "Cannot find result");
                 }
@@ -96,9 +103,11 @@ namespace Business.Services
         {
             try
             {
-                var service = await _unitOfWork.ResultRepository.GetByOrderDetailIdAsync(id);
-                var rs = _mapper.Map<ResultModel>(service);
-                if (service is null)
+                var result = await _unitOfWork.ResultRepository.GetByOrderDetailIdAsync(id);
+                var rs = _mapper.Map<ResultModel>(result);
+                var imageUrls = await _unitOfWork.ResultImageRepository.GetByResultIdAsync(result.ResultId);
+                rs.ImageUrls = imageUrls.Select(_ => _.ImageUrl).ToList();
+                if (result is null)
                 {
                     return new ServiceResult(404, "Cannot find result");
                 }
@@ -147,7 +156,7 @@ namespace Business.Services
                     createObj.Polish = "NaN";
                 }
                 else
-                { 
+                {
                     createObj.Status = ResultStatusEnum.Pending.ToString();
                 }
                 var rs = await _unitOfWork.ResultRepository.CreateAsync(createObj);
@@ -156,6 +165,27 @@ namespace Business.Services
                 {
                     orDetail.ResultId = rs.ResultId;
                     var rsUpdate = await _unitOfWork.OrderDetailRepository.UpdateAsync(orDetail);
+
+                    var imageUrls = req.ResultImages;
+                    foreach (var imageUrl in imageUrls)
+                    {
+                        var resultImage = new ResultImage
+                        {
+                            ImageGuid = Guid.NewGuid(),
+                            ResultID = rs.ResultId,
+                            Status = "Active"
+                        };
+                        await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
+                        var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
+                        var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
+                        if (imageUploadResult.Status == 500)
+                        {
+                            return new ServiceResult(500, "Error uploading files to Firebase.");
+                        }
+
+                        resultImage.ImageUrl = (string)imageUploadResult.Data;
+                        _unitOfWork.ResultImageRepository.Update(resultImage);
+                    }
 
                     if (rsUpdate < 1)
                     {
@@ -205,9 +235,40 @@ namespace Business.Services
                     {
                         updateObj.Status = ResultStatusEnum.Pending.ToString();
                     }
+
+                    var resultImages = await _unitOfWork.ResultImageRepository.GetByResultIdAsync(result.ResultId);
+                    if (resultImages.Any())
+                    {
+                        foreach (var image in resultImages)
+                        {
+                            image.Status = "Inactive";
+                            _unitOfWork.ResultImageRepository.Update(image);
+                        }
+                    }
+
                     var rs = await _unitOfWork.ResultRepository.UpdateAsync(updateObj);
                     if (rs > 0)
                     {
+                        var imageUrls = req.ResultImages;
+                        foreach (var imageUrl in imageUrls)
+                        {
+                            var resultImage = new ResultImage
+                            {
+                                ImageGuid = Guid.NewGuid(),
+                                ResultID = id,
+                                Status = "Active"
+                            };
+                            await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
+                            var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
+                            var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
+                            if (imageUploadResult.Status == 500)
+                            {
+                                return new ServiceResult(500, "Error uploading files to Firebase.");
+                            }
+
+                            resultImage.ImageUrl = (string)imageUploadResult.Data;
+                            _unitOfWork.ResultImageRepository.Update(resultImage);
+                        }
                         return new ServiceResult(200, "Update successfully");
                     }
                     else

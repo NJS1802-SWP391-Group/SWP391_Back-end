@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class CreateAppDbContext : Migration
+    public partial class CreateAppDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -151,7 +151,10 @@ namespace Data.Migrations
                     TotalPay = table.Column<double>(type: "float", nullable: true),
                     Payment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StatusPayment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ReceiveDay = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -175,7 +178,6 @@ namespace Data.Migrations
                     ServiceId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    isDiamond = table.Column<bool>(type: "bit", nullable: true),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     ValuationStaffId = table.Column<int>(type: "int", nullable: true),
                     ResultId = table.Column<int>(type: "int", nullable: true)
@@ -222,10 +224,7 @@ namespace Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DiamondValue = table.Column<double>(type: "float", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrderDetailId = table.Column<int>(type: "int", nullable: false),
-                    IssueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CertificateStatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    OrderDetailId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -235,6 +234,28 @@ namespace Data.Migrations
                         column: x => x.OrderDetailId,
                         principalTable: "OrderDetail",
                         principalColumn: "OrderDetailId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ResultImage",
+                columns: table => new
+                {
+                    ResultImageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ResultID = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResultImage", x => x.ResultImageID);
+                    table.ForeignKey(
+                        name: "FK_ResultImage_Result_ResultID",
+                        column: x => x.ResultID,
+                        principalTable: "Result",
+                        principalColumn: "ResultId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -271,6 +292,11 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ResultImage_ResultID",
+                table: "ResultImage",
+                column: "ResultID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ServiceDetail_ServiceID",
                 table: "ServiceDetail",
                 column: "ServiceID");
@@ -285,10 +311,13 @@ namespace Data.Migrations
                 name: "Diamond");
 
             migrationBuilder.DropTable(
-                name: "Result");
+                name: "ResultImage");
 
             migrationBuilder.DropTable(
                 name: "ServiceDetail");
+
+            migrationBuilder.DropTable(
+                name: "Result");
 
             migrationBuilder.DropTable(
                 name: "OrderDetail");
