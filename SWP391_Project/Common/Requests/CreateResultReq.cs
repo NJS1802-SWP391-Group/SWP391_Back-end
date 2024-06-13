@@ -21,7 +21,5 @@ namespace Common.Requests
         public string? Description { get; set; }
         public double? DiamondValue { get; set; }
         public int OrderDetailId { get; set; }
-        public DateTime? IssueDate { get; set; }
-        public DateTime? ExpireDate { get; set; }
     }
 }

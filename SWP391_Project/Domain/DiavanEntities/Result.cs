@@ -26,8 +26,5 @@ namespace SWP391_Project.Domain.DiavanEntities
         public int OrderDetailId { get; set; }
         [ForeignKey("OrderDetailId")]
         public OrderDetail OrderDetail { get; set; }  
-        public DateTime? IssueDate { get; set; }
-        public DateTime? ExpireDate { get; set; }
-        public string? CertificateStatus { get; set; }
     }
 }

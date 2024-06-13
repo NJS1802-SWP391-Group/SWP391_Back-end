@@ -8,6 +8,6 @@ namespace Common.Enums
 {
     public enum ResultStatusEnum
     {
-        Pending, Rejected, Approved, Final
+        Pending, Rejected, Approved, Final, IsNotDiamond
     }
 }

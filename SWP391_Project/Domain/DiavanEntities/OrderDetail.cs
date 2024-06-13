@@ -28,5 +28,7 @@ namespace SWP391_Project.Domain.DiavanEntities
         public int? ResultId { get; set; }
         [ForeignKey("ResultId")]
         public Result? Result { get; set; }
+        public DateTime? IssueDate { get; set; }
+        public DateTime? ExpireDate { get; set; }
     }
 }

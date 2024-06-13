@@ -26,8 +26,8 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("Get-All-Active-Service")]
-        public async Task<IActionResult> GetAllActiveService()
+        [HttpGet("Get-All-Active-Result")]
+        public async Task<IActionResult> GetAllActiveResult()
         {
             var result = await _resultService.GetAllActive();
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
@@ -61,9 +61,9 @@ namespace API.Controllers
         [HttpPost("Create-Result")]
         public async Task<IActionResult> Create([FromBody] CreateResultReq req)
         {
-            if (req.DiamondValue <= 0)
+            if (req.DiamondValue < 0)
             {
-                return StatusCode(400, "Diamond value should > 0");
+                return StatusCode(400, "Diamond value should >= 0");
             }
             if (req.OrderDetailId <= 0)
             {

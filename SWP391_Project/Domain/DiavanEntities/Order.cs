@@ -20,5 +20,8 @@ namespace SWP391_Project.Domain.DiavanEntities
         public string? StatusPayment { get; set; }
         public string? Status { get; set; }
         public virtual List<OrderDetail>? DetailValuations { get; set; }
+        public DateTime? CompleteDate { get; set; }
+        public DateTime? ExpireDate { get; set; }
+        public DateTime? ReceiveDay { get; set; }
     }
 }

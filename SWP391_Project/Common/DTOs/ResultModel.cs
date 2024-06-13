@@ -26,8 +26,5 @@ namespace Common.DTOs
         public double? DiamondValue { get; set; }
         public string Status { get; set; }
         public int OrderDetailId { get; set; }
-        public DateTime? IssueDate { get; set; }
-        public DateTime? ExpireDate { get; set; }
-        public string? CertificateStatus { get; set; }
     }
 }

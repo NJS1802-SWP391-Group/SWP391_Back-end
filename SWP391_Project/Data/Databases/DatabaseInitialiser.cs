@@ -498,12 +498,9 @@ namespace SWP391_Project.Data.Databases
                         Symmetry = "Excellent",
                         Polish = "Excellent",
                         CutGrade = "Excellent",
-                        Status = "Active",
-                        CertificateStatus = "Pending",
+                        Status = "Active",                     
                         DiamondValue = 18000,
                         Description = "",
-                        IssueDate = DateTime.Now,
-                        ExpireDate = DateTime.Now,
                         OrderDetail = orderDetails[3],
                     }
                 };
