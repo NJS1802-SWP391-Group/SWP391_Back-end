@@ -19,5 +19,11 @@ namespace Data.Repositories.DiavanRepo
             var rs = await _dbSet.Where(_ => _.Email.Equals(email)).FirstOrDefaultAsync();
             return rs;
         }
+
+        public async Task<Customer> GetCustomerByIdIncludeOrder(string email)
+        {
+            var rs = await _dbSet.Where(_ => _.Email.Equals(email)).FirstOrDefaultAsync();
+            return rs;
+        }
     }
 }

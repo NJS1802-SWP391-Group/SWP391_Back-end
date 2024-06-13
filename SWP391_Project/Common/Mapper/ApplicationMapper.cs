@@ -68,6 +68,11 @@ namespace SWP391_Project.Common.Mapper
                  .ForPath(x => x.FirstName, opt => opt.MapFrom(x => x.Customer.FirstName)).
                  ForPath(x => x.LastName, opt => opt.MapFrom(x => x.Customer.LastName))
                  .ReverseMap();
+            CreateMap<Order, GetOrderToSendMail>()
+                 .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations))
+                 .ForPath(x => x.FirstName, opt => opt.MapFrom(x => x.Customer.FirstName)).
+                 ForPath(x => x.LastName, opt => opt.MapFrom(x => x.Customer.LastName))
+                 .ReverseMap();
             CreateMap<OrderDetail, ViewOrderDetail>();
 
         }

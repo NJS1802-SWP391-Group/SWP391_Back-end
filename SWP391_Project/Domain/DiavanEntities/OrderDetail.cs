@@ -17,7 +17,6 @@ namespace SWP391_Project.Domain.DiavanEntities
         public Service Service { get; set; }
         public double Price { get; set; }
         public string Status {  get; set; }
-        public bool? isDiamond { get; set; }
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]
         [JsonIgnore]
@@ -28,7 +27,5 @@ namespace SWP391_Project.Domain.DiavanEntities
         public int? ResultId { get; set; }
         [ForeignKey("ResultId")]
         public Result? Result { get; set; }
-        public DateTime? IssueDate { get; set; }
-        public DateTime? ExpireDate { get; set; }
     }
 }

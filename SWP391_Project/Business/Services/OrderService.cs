@@ -139,7 +139,7 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
-        public async Task<ServiceResult> GetOrderFullInfoById(int id)
+        public async Task<IServiceResult> GetOrderFullInfoById(int id)
         {
             try
             {
@@ -160,6 +160,51 @@ namespace Business.Services
                 var obj = await _unitOfWork.OrderRepository.GetOrdersByCustomerId(id);
                 if (obj == null) throw new Exception("User don't have any order");
                 var result = _mapper.Map<List<ViewFullInfomaionOrder>>(obj);
+                return new ServiceResult(200, "Successful", result);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+
+        public async Task<IServiceResult> GetOrderByIdIncludeCustomer(int orderId)
+        {
+            try
+            {
+                var obj = await _unitOfWork.OrderRepository.GetOrderInforById(orderId);
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetDetailByOrderId(obj.OrderID);
+                var list = new List<ViewOrderDetailModel>();
+                foreach (var item in orderDetail)
+                {
+                    list.Add(new ViewOrderDetailModel
+                    {
+                        Code = item.Code,
+                        EstimateLength = item.EstimateLength,
+                        OrderDetailId = item.OrderDetailId,
+                        Price = (double)item.Result.DiamondValue,
+                        ServiceName = item.Service.Name,
+                        ServicePrice = item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price,
+                        Status = item.Status,
+                });
+                }
+                if (obj == null) throw new Exception("User don't have any order");
+                var result = new GetOrderToSendMail
+                {
+                    OrderID = obj.OrderID,
+                    FirstName = obj.Customer.FirstName,
+                    LastName = obj.Customer.LastName,
+                    Code = obj.Code,
+                    CustomerId = obj.CustomerId,
+                    Quantity = (int)obj.Quantity,
+                    Time = obj.Time,
+                    Status = obj.Status,
+                    TotalPay = (double)obj.TotalPay,
+                    Payment = obj.Payment,
+                    StatusPayment = obj.StatusPayment,
+                    CompleteDate = (DateTime)obj.CompleteDate,
+                    DetailValuations = list
+                };
                 return new ServiceResult(200, "Successful", result);
             }
             catch (Exception ex)

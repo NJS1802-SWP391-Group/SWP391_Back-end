@@ -8,6 +8,6 @@ namespace Common.Requests
 {
     public class SendEmailRequest
     {
-        public string Email { get; set; }
+        public int OrderID { get; set; }
     }
 }
