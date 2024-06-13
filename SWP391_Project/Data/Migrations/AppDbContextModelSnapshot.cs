@@ -22,6 +22,36 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Domain.DiavanEntities.ResultImage", b =>
+                {
+                    b.Property<int>("ResultImageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResultImageID"), 1L, 1);
+
+                    b.Property<Guid>("ImageGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ResultID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ResultImageID");
+
+                    b.HasIndex("ResultID");
+
+                    b.ToTable("ResultImage");
+                });
+
             modelBuilder.Entity("Domain.DiavanEntities.SystemDiamond", b =>
                 {
                     b.Property<int>("DiamondId")
@@ -281,9 +311,6 @@ namespace Data.Migrations
                     b.Property<int?>("ValuationStaffId")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("isDiamond")
-                        .HasColumnType("bit");
-
                     b.HasKey("OrderDetailId");
 
                     b.HasIndex("OrderId");
@@ -418,6 +445,17 @@ namespace Data.Migrations
                     b.HasIndex("ServiceID");
 
                     b.ToTable("ServiceDetail");
+                });
+
+            modelBuilder.Entity("Domain.DiavanEntities.ResultImage", b =>
+                {
+                    b.HasOne("SWP391_Project.Domain.DiavanEntities.Result", "Result")
+                        .WithMany()
+                        .HasForeignKey("ResultID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Result");
                 });
 
             modelBuilder.Entity("SWP391_Project.Domain.DiavanEntities.Customer", b =>

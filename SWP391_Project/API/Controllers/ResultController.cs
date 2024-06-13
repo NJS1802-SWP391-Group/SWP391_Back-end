@@ -59,7 +59,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("Create-Result")]
-        public async Task<IActionResult> Create([FromBody] CreateResultReq req)
+        public async Task<IActionResult> Create([FromForm] CreateResultReq req)
         {
             if (req.DiamondValue < 0)
             {
@@ -75,7 +75,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPut("Update-Result/{id}")]
-        public async Task<IActionResult> UpdateService(int id, [FromBody] UpdateResultReq req)
+        public async Task<IActionResult> UpdateService(int id, [FromForm] UpdateResultReq req)
         {
             if (id <= 0)
             {

@@ -26,5 +26,6 @@ namespace Common.DTOs
         public double? DiamondValue { get; set; }
         public string Status { get; set; }
         public int OrderDetailId { get; set; }
+        public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }

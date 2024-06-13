@@ -12,8 +12,8 @@ using SWP391_Project.Data.Databases.DiamondSystem;
 namespace Data.Migrations.Diamond
 {
     [DbContext(typeof(DiamondContext))]
-    [Migration("20240609153842_Diamond")]
-    partial class Diamond
+    [Migration("20240613122557_CreateDiamondDb")]
+    partial class CreateDiamondDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

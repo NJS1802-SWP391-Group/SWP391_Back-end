@@ -22,6 +22,7 @@ namespace Data.Repositories
         private ServiceDetailRepository _serviceDetailRepository;
         private ServiceRepository _serviceRepository;
         private UserRepository _userRepository;
+        private ResultImageRepository _resultImageRepository;
         private IDbContextTransaction _transaction;
 
         public UnitOfWork() 
@@ -33,7 +34,7 @@ namespace Data.Repositories
         }
 
         public UnitOfWork(AppDbContext context, BlogRepository blogRepository, CustomerRepository customerRepository, DiamondRepository diamondRepository, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, 
-            ResultRepository resultRepository, ServiceDetailRepository serviceDetailRepository, ServiceRepository serviceRepository, UserRepository userRepository)
+            ResultRepository resultRepository, ServiceDetailRepository serviceDetailRepository, ServiceRepository serviceRepository, UserRepository userRepository, ResultImageRepository resultImageRepository)
         {
             _context = context;
             _blogRepository = blogRepository;
@@ -45,6 +46,7 @@ namespace Data.Repositories
             _orderDetailRepository = orderDetailRepository;
             _serviceRepository = serviceRepository;
             _resultRepository = resultRepository;
+            _resultImageRepository = resultImageRepository;
         }
 
         public BlogRepository BlogRepository
@@ -116,6 +118,14 @@ namespace Data.Repositories
             get
             {
                 return _serviceRepository ??= new Repositories.DiavanRepo.ServiceRepository();
+            }
+        }        
+        
+        public ResultImageRepository ResultImageRepository 
+        {
+            get
+            {
+                return _resultImageRepository ??= new Repositories.DiavanRepo.ResultImageRepository();
             }
         }
 
