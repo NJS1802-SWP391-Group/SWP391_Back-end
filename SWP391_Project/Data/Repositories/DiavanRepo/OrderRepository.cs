@@ -35,7 +35,7 @@ namespace Data.Repositories.DiavanRepo
         }
         public async Task<List<Order>> GetOrdersByCustomerId(int customerId)
         {
-            var orders = await _dbSet.Where(x=>x.CustomerId==customerId).ToListAsync();
+            var orders = await _dbSet.Where(x=>x.CustomerId==customerId).Include(x=>x.Customer).Include(x=>x.DetailValuations).ThenInclude(y=>y.Service).ToListAsync();
             return orders;
         }
     }
