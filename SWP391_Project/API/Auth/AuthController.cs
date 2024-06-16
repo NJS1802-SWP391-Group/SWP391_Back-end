@@ -85,6 +85,7 @@ public class AuthController : ControllerBase
         string email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
 
         var user = await _userService.GetUserByUserName(email);
+        var customer = await _userService.GetCustomerById(currentUser.CustomerId);
         if (user.Data == null)
         {
             return BadRequest("username is in valid");
@@ -93,7 +94,8 @@ public class AuthController : ControllerBase
         // If token is valid, return success response
         return Ok(ApiResult<CheckTokenResponse>.Succeed(new CheckTokenResponse
         {
-            User = user.Data
+            User = user.Data,
+            Customer = customer
         }));
     }
 }
