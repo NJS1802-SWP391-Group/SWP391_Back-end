@@ -228,8 +228,10 @@ namespace Business.Services
             try
             {
                 var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString());
-                if (orderdetail == null) { throw new Exception("Cannot find order detail"); }
-                orderdetail.Status = ValuationDetailStatusEnum.Certificated.ToString();
+                if (orderdetail == null) 
+                { 
+                    throw new Exception("Cannot find order detail"); 
+                }
 
                 var result = await _unitOfWork.ResultRepository.GetByIdAsync(orderdetail.ResultId.Value);
 
@@ -246,10 +248,38 @@ namespace Business.Services
                     return new ServiceResult(400, "Failed");
                 }
 
+                if (result.IsDiamond)
+                {
+                    orderdetail.Status = ValuationDetailStatusEnum.Failed.ToString();
+                }
+                else
+                {
+                    orderdetail.Status = ValuationDetailStatusEnum.Certificated.ToString();
+                }
+
                 var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orderdetail);
                 if (rs < 1)
                 {
                     return new ServiceResult(400, "Failed");
+                }
+
+                var detailList = await _unitOfWork.OrderDetailRepository.GetDetailByOrderId(orderdetail.OrderDetailId);
+
+                var checkFlag = true;
+
+                foreach ( var detail in detailList )
+                {
+                    if (detail.Status != ValuationDetailStatusEnum.Failed.ToString() && detail.Status != ValuationDetailStatusEnum.Certificated.ToString())
+                    {
+                        checkFlag = false;
+                    }
+                }
+
+                if (!checkFlag)
+                {
+                    var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderdetail.OrderId);
+                    order.Status = OrderStatusEnum.Completed.ToString();
+                    var rsOrder = await _unitOfWork.OrderRepository.UpdateAsync(order);
                 }
 
                 return new ServiceResult(200, "Successful");
