@@ -80,7 +80,12 @@ namespace SWP391_Project.Common.Mapper
                 .ForMember(d => d.DiamondId, opt => opt.Ignore())
                 .ReverseMap()
                 .ForMember(sd => sd.DiamondId, opt => opt.Ignore());
-
+            CreateMap<OrderDetail, ViewOrderDetail>();
+            CreateMap<DimondCheckInformation, DiamondCheck>()
+                .ForMember(x=>x.DiamondCheckValues,opt => opt.MapFrom(x=>x.DiamondCheckValues))
+                .ReverseMap();
+            CreateMap<DiamondCheckValue,DiamondCheckValueDto>()
+                .ReverseMap();
         }
     }
 }

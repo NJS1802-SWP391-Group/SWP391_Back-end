@@ -110,9 +110,6 @@ namespace Data.Migrations.Diamond
                     b.Property<string>("CutScore")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("FairPrice")
-                        .HasColumnType("float");
-
                     b.Property<string>("Fluorescence")
                         .HasColumnType("nvarchar(max)");
 
@@ -138,6 +135,46 @@ namespace Data.Migrations.Diamond
                     b.HasKey("DiamondCheckId");
 
                     b.ToTable("DiamondCheck");
+                });
+
+            modelBuilder.Entity("Domain.DiamondEntities.DiamondCheckValue", b =>
+                {
+                    b.Property<int>("DiamondCheckValueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiamondCheckValueId"), 1L, 1);
+
+                    b.Property<int>("DiamondCheckId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("UpdateDay")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("DiamondCheckValueId");
+
+                    b.HasIndex("DiamondCheckId");
+
+                    b.ToTable("DiamondCheckValue");
+                });
+
+            modelBuilder.Entity("Domain.DiamondEntities.DiamondCheckValue", b =>
+                {
+                    b.HasOne("Domain.DiamondEntities.DiamondCheck", "DiamondCheck")
+                        .WithMany("DiamondCheckValues")
+                        .HasForeignKey("DiamondCheckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DiamondCheck");
+                });
+
+            modelBuilder.Entity("Domain.DiamondEntities.DiamondCheck", b =>
+                {
+                    b.Navigation("DiamondCheckValues");
                 });
 #pragma warning restore 612, 618
         }

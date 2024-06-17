@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations.Diamond
 {
-    public partial class CreateDiamondDb : Migration
+    public partial class createDiamondContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,7 +51,6 @@ namespace Data.Migrations.Diamond
                     Polish = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CutGrade = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CutScore = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FairPrice = table.Column<double>(type: "float", nullable: true),
                     CertDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Measurement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClarityCharacteristic = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -62,12 +61,41 @@ namespace Data.Migrations.Diamond
                 {
                     table.PrimaryKey("PK_DiamondCheck", x => x.DiamondCheckId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "DiamondCheckValue",
+                columns: table => new
+                {
+                    DiamondCheckValueId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UpdateDay = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    DiamondCheckId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiamondCheckValue", x => x.DiamondCheckValueId);
+                    table.ForeignKey(
+                        name: "FK_DiamondCheckValue_DiamondCheck_DiamondCheckId",
+                        column: x => x.DiamondCheckId,
+                        principalTable: "DiamondCheck",
+                        principalColumn: "DiamondCheckId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DiamondCheckValue_DiamondCheckId",
+                table: "DiamondCheckValue",
+                column: "DiamondCheckId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Diamond");
+
+            migrationBuilder.DropTable(
+                name: "DiamondCheckValue");
 
             migrationBuilder.DropTable(
                 name: "DiamondCheck");

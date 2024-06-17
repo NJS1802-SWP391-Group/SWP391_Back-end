@@ -108,6 +108,9 @@ public static class ServicesExtensions
         services.AddScoped<DiamondService>();
         services.AddScoped<IFirebaseService, FirebaseService>();
 
+        services.AddScoped(typeof(IRepository<>), typeof(DiamondGenericRepository<>));
+        services.AddScoped<DiamondCheckService>();
+
         return services;
     }
 }

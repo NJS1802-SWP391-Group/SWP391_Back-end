@@ -679,7 +679,6 @@ namespace SWP391_Project.Data.Databases
                 Polish = "Excellent",
                 CutGrade = "Ideal",
                 CutScore = "9.5",
-                FairPrice = 10000.00,
                 CertDate = new DateTime(2023, 1, 15),
                 Measurement = "6.5 x 6.5 x 4.0 mm",
                 ClarityCharacteristic = "None",
@@ -699,7 +698,6 @@ namespace SWP391_Project.Data.Databases
                 Polish = "Very Good",
                 CutGrade = "Premium",
                 CutScore = "9.0",
-                FairPrice = 15000.00,
                 CertDate = new DateTime(2023, 2, 20),
                 Measurement = "6.0 x 6.0 x 4.5 mm",
                 ClarityCharacteristic = "Feather",
@@ -719,7 +717,6 @@ namespace SWP391_Project.Data.Databases
                 Polish = "Good",
                 CutGrade = "Very Good",
                 CutScore = "8.5",
-                FairPrice = 20000.00,
                 CertDate = new DateTime(2023, 3, 10),
                 Measurement = "7.0 x 5.0 x 3.5 mm",
                 ClarityCharacteristic = "Crystal",
@@ -727,7 +724,82 @@ namespace SWP391_Project.Data.Databases
                 Status = "Sold"
             },
                 };
-
+                var diamondCheckValue = new List<DiamondCheckValue>
+                {
+                    new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[0],
+                        Price = 1031,
+                        UpdateDay = DateTime.Now
+                    },
+                   new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[0],
+                        Price = 1020,
+                        UpdateDay = DateTime.Now.AddDays(-1),
+                    },
+                   new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[0],
+                        Price = 991,
+                        UpdateDay = DateTime.Now.AddDays(-2)
+                    },
+                   new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[0],
+                        Price = 981,
+                        UpdateDay = DateTime.Now.AddHours(-3)
+                    },
+                    new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[1],
+                        Price = 1520,
+                        UpdateDay = DateTime.Now
+                    },
+                   new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[1],
+                        Price = 1420,
+                        UpdateDay = DateTime.Now.AddDays(-1),
+                    },
+                   new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[1],
+                        Price = 1391,
+                        UpdateDay = DateTime.Now.AddDays(-2)
+                    },
+                   new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[1],
+                        Price = 1381,
+                        UpdateDay = DateTime.Now.AddHours(-3)
+                    },
+                    new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[2],
+                        Price = 1031,
+                        UpdateDay = DateTime.Now
+                    },
+                   new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[2],
+                        Price = 1020,
+                        UpdateDay = DateTime.Now.AddDays(-1),
+                    },
+                   new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[2],
+                        Price = 991,
+                        UpdateDay = DateTime.Now.AddDays(-2)
+                    },
+                   new DiamondCheckValue
+                    {
+                        DiamondCheck = diamondChecks[2],
+                        Price = 981,
+                        UpdateDay = DateTime.Now.AddHours(-3)
+                    },
+                };
+                await diamondContext.AddRangeAsync(diamondCheckValue);
                 await diamondContext.AddRangeAsync(diamonds);
                 await diamondContext.AddRangeAsync(diamondChecks);
                 await diamondContext.SaveChangesAsync();
