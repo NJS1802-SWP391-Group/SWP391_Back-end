@@ -1,5 +1,7 @@
-﻿using Data.Repositories.DiavanRepo;
+﻿using Data.Repositories.DiamondRepo;
+using Data.Repositories.DiavanRepo;
 using Microsoft.EntityFrameworkCore.Storage;
+using SWP391_Project.Data.Databases.DiamondSystem;
 using SWP391_Project.Data.Databases.DiavanSystem;
 using SWP391_Project.Data.Repositories.Interfaces;
 using System;
@@ -12,6 +14,8 @@ namespace Data.Repositories
 {
     public class UnitOfWork: IDisposable
     {
+        private DiamondContext _diamondContext;
+        private DiamondCheckRepository _diamondCheckRepository;
         private AppDbContext _context;
         private BlogRepository _blogRepository;
         private CustomerRepository _customerRepository;
@@ -33,9 +37,10 @@ namespace Data.Repositories
             _context = context;
         }
 
-        public UnitOfWork(AppDbContext context, BlogRepository blogRepository, CustomerRepository customerRepository, DiamondRepository diamondRepository, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, 
-            ResultRepository resultRepository, ServiceDetailRepository serviceDetailRepository, ServiceRepository serviceRepository, UserRepository userRepository, ResultImageRepository resultImageRepository)
+        public UnitOfWork(DiamondContext diamondContext, AppDbContext context, BlogRepository blogRepository, CustomerRepository customerRepository, DiamondRepository diamondRepository, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, 
+            ResultRepository resultRepository, ServiceDetailRepository serviceDetailRepository, ServiceRepository serviceRepository, UserRepository userRepository, ResultImageRepository resultImageRepository, DiamondCheckRepository diamondCheckRepository)
         {
+            _diamondContext = diamondContext;
             _context = context;
             _blogRepository = blogRepository;
             _customerRepository = customerRepository;
@@ -47,6 +52,14 @@ namespace Data.Repositories
             _serviceRepository = serviceRepository;
             _resultRepository = resultRepository;
             _resultImageRepository = resultImageRepository;
+            _diamondCheckRepository = diamondCheckRepository;
+        }
+        public DiamondCheckRepository DiamondCheckRepository
+        {
+            get
+            {
+                return _diamondCheckRepository ??= new Repositories.DiamondRepo.DiamondCheckRepository();
+            }
         }
 
         public BlogRepository BlogRepository

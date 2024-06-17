@@ -12,7 +12,7 @@ namespace SWP391_Project.Data.Databases.DiamondSystem
         #region DbSet
         public DbSet<Diamond> Diamonds { get; set; }
         public DbSet<DiamondCheck> DiamondGIAChecks { get; set; }
-
+        public DbSet<DiamondCheckValue> DiamondCheckValues { get; set; }
         #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -21,7 +21,6 @@ namespace SWP391_Project.Data.Databases.DiamondSystem
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
         }
     }
 }

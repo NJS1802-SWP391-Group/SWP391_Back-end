@@ -12,8 +12,8 @@ using SWP391_Project.Data.Databases.DiavanSystem;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240613122540_CreateAppDb")]
-    partial class CreateAppDb
+    [Migration("20240617033814_createAppDB")]
+    partial class createAppDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,7 +40,6 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ResultID")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -453,9 +452,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("SWP391_Project.Domain.DiavanEntities.Result", "Result")
                         .WithMany()
-                        .HasForeignKey("ResultID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ResultID");
 
                     b.Navigation("Result");
                 });

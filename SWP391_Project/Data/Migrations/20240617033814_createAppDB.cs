@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class CreateAppDb : Migration
+    public partial class createAppDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -245,7 +245,7 @@ namespace Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ResultID = table.Column<int>(type: "int", nullable: false),
+                    ResultID = table.Column<int>(type: "int", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -255,8 +255,7 @@ namespace Data.Migrations
                         name: "FK_ResultImage_Result_ResultID",
                         column: x => x.ResultID,
                         principalTable: "Result",
-                        principalColumn: "ResultId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ResultId");
                 });
 
             migrationBuilder.CreateIndex(
