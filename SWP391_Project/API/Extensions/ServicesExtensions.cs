@@ -105,6 +105,7 @@ public static class ServicesExtensions
         services.AddScoped<OrderDetailService>();
         services.AddScoped<PaymentService>();
         services.AddScoped<EmailService>();
+        services.AddScoped<DiamondService>();
         services.AddScoped<IFirebaseService, FirebaseService>();
 
         return services;

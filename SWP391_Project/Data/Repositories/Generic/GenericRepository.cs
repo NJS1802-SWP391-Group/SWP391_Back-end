@@ -78,6 +78,12 @@ namespace Data.Repositories.Generic
            var result = await _dbSet.AddAsync(entity);
            await _context.SaveChangesAsync();
            return result.Entity;
+        }        
+
+        public async Task CreateRangeAsync(List<T> entity)
+        {
+           await _dbSet.AddRangeAsync(entity);
+           await _context.SaveChangesAsync();
         }
 
         public void Update(T entity)
