@@ -1,14 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Domain.DiamondEntities
+namespace Common.Responses
 {
-    [Table("DiamondCheck")]
-    public class DiamondCheck
+    public class DimondCheckInformation
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DiamondCheckId { get; set; }
+        public double FairPrice {  get; set; }
+        public DateTime UpdateDay { get; set; }
+        public double Ratio {  get; set; }
         public string? CertificateId { get; set; }
         public string? Origin { get; set; }
         public string? Shape { get; set; }
@@ -25,6 +28,12 @@ namespace Domain.DiamondEntities
         public string? ClarityCharacteristic { get; set; }
         public string? Comment { get; set; }
         public string Status { get; set; }
-        public List<DiamondCheckValue> DiamondCheckValues { get; set; }
+        public List<DiamondCheckValueDto> DiamondCheckValues { get; set; }
+    }
+    public class DiamondCheckValueDto
+    {
+        public int DiamondCheckValueId { get; set; }
+        public DateTime UpdateDay { get; set; }
+        public double Price { get; set; }
     }
 }

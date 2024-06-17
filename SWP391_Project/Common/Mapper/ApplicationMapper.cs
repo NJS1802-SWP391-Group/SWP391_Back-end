@@ -2,6 +2,7 @@
 using Common.DTOs;
 using Common.Requests;
 using Common.Responses;
+using Domain.DiamondEntities;
 using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Dtos;
 using SWP391_Project.DTOs;
@@ -74,7 +75,11 @@ namespace SWP391_Project.Common.Mapper
                  ForPath(x => x.LastName, opt => opt.MapFrom(x => x.Customer.LastName))
                  .ReverseMap();
             CreateMap<OrderDetail, ViewOrderDetail>();
-
+            CreateMap<DimondCheckInformation, DiamondCheck>()
+                .ForMember(x=>x.DiamondCheckValues,opt => opt.MapFrom(x=>x.DiamondCheckValues))
+                .ReverseMap();
+            CreateMap<DiamondCheckValue,DiamondCheckValueDto>()
+                .ReverseMap();
         }
     }
 }
