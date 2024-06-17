@@ -98,5 +98,13 @@ namespace API.Controllers
             var result = await _paymentService.GetInformationPayment(dto);
              return Ok(result);
         }
+
+        [AllowAnonymous]
+        [HttpPut("Comfirm-Return-Order/{orderId}")]
+        public async Task<IActionResult> ConfirmReturnOrder([FromRoute] int orderId)
+        {
+            var result = await _orderService.ConfirmReturnOrder(orderId);
+            return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
+        }
     }
 }

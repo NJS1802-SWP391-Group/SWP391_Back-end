@@ -142,7 +142,7 @@ namespace Business.Services
                 if (!createObj.IsDiamond)
                 {
                     createObj.Status = ResultStatusEnum.IsNotDiamond.ToString();
-                    orDetail.Status = ValuationDetailStatusEnum.Fail.ToString();
+                    orDetail.Status = ValuationDetailStatusEnum.Failed.ToString();
                     createObj.Carat = "NaN";
                     createObj.Clarity = "NaN";
                     createObj.Symmetry = "NaN";
@@ -217,7 +217,7 @@ namespace Business.Services
                     if(!updateObj.IsDiamond)
                     {
                         updateObj.Status = ResultStatusEnum.IsNotDiamond.ToString();
-                        orderDetail.Status = ValuationDetailStatusEnum.Fail.ToString();
+                        orderDetail.Status = ValuationDetailStatusEnum.Failed.ToString();
                         await _unitOfWork.OrderDetailRepository.UpdateAsync(orderDetail);
                         updateObj.Carat = "NaN";
                         updateObj.Clarity = "NaN";

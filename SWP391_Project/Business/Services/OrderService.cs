@@ -212,6 +212,33 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
+
+        public async Task<IServiceResult> ConfirmReturnOrder(int orderId)
+        {
+            try
+            {
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
+                if (order.Status != OrderStatusEnum.Completed.ToString())
+                {
+                    return new ServiceResult(400, "Order is incompleted");
+                }
+
+                order.Status = OrderStatusEnum.Returned.ToString();
+
+                var rs = await _unitOfWork.OrderRepository.UpdateAsync(order);
+
+                if (rs < 1)
+                {
+                    return new ServiceResult(400, "Cannot update");
+                }
+
+                return new ServiceResult(200, "Returned successfully");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }
     }
 
 
