@@ -669,7 +669,7 @@ namespace SWP391_Project.Data.Databases
                                 new DiamondCheck
             {
                 CertificateId = "DC001",
-                Origin = "South Africa",
+                Origin = "Natural",
                 Shape = "Round",
                 Carat = "1.0",
                 Color = "D",
@@ -688,7 +688,7 @@ namespace SWP391_Project.Data.Databases
             new DiamondCheck
             {
                 CertificateId = "DC002",
-                Origin = "Russia",
+                Origin = "Natural",
                 Shape = "Princess",
                 Carat = "1.5",
                 Color = "E",
@@ -707,7 +707,7 @@ namespace SWP391_Project.Data.Databases
             new DiamondCheck
             {
                 CertificateId = "DC003",
-                Origin = "Canada",
+                Origin = "Lab Grown",
                 Shape = "Oval",
                 Carat = "2.0",
                 Color = "F",
