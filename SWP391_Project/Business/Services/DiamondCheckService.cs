@@ -26,9 +26,17 @@ namespace Business.Services
             try
             {
                 var diamond =await _unitOfWork.DiamondCheckRepository.GetDiamondsByIdCertificate(id);
+                if (diamond == null) { throw new Exception("Not Found"); }
                 var result = _mapper.Map<DimondCheckInformation>(diamond);
-                var fairPrice = 0;
+                double fairPrice = 0;
+                result.MinPrice = diamond.DiamondCheckValues.Min(x => x.Price);
+                result.MaxPrice = diamond.DiamondCheckValues.Max(x => x.Price);
+                fairPrice = diamond.DiamondCheckValues.Sum(x=>x.Price) / (diamond.DiamondCheckValues.Count());
                 result.FairPrice = fairPrice;
+                result.SetLinkImageShape();
+                result.UpdateDay = diamond.DiamondCheckValues.Max(item => item.UpdateDay);
+                var Ratio = (diamond.DiamondCheckValues.OrderByDescending(x => x.UpdateDay).FirstOrDefault().Price-diamond.DiamondCheckValues.OrderBy(x => x.UpdateDay).FirstOrDefault().Price) / diamond.DiamondCheckValues.OrderBy(x => x.UpdateDay).FirstOrDefault().Price;
+                result.Ratio = Math.Round(Ratio * 100, 2);
                 return new ServiceResult(200, "Diamond Check", result); 
             }
             catch (Exception ex)

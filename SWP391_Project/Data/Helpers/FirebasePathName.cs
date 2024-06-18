@@ -12,5 +12,6 @@ namespace Data.Helpers
         public static string RESULT = "RESULT/";
         public static string CERTIFICATE = "CERTIFICATE/";
         public static string AVATAR = "AVATAR/";
+        public static string DIAMOND = "DIAMOND/";
     }
 }
