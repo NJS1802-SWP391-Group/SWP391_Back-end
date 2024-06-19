@@ -33,6 +33,10 @@ namespace Data.Migrations
                     b.Property<Guid>("ImageGuid")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ImageType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

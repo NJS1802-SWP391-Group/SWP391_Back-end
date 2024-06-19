@@ -17,6 +17,7 @@ namespace Domain.DiavanEntities
         public int ResultImageID { get; set; }
         public string ImageUrl { get; set; } = string.Empty;
         public Guid ImageGuid { get; set; }
+        public string ImageType { get; set; }
         public int? ResultID { get; set; }
         [ForeignKey("ResultID")]
         public Result? Result { get; set; }

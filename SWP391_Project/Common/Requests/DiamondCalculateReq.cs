@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Common.Requests
 {
-    public class CreateResultReq
+    public class DiamondCalculateReq
     {
-        public bool IsDiamond { get; set; }
         public string? Origin { get; set; }
         public string? Shape { get; set; }
         public string? Carat { get; set; }
@@ -19,10 +17,5 @@ namespace Common.Requests
         public string? Symmetry { get; set; }
         public string? Polish { get; set; }
         public string? CutGrade { get; set; }
-        public string? Description { get; set; }
-        public double? DiamondValue { get; set; }
-        public List<IFormFile> ProportionImages { get; set; }
-        public List<IFormFile> ClarityImages { get; set; }
-        public int OrderDetailId { get; set; }
     }
 }

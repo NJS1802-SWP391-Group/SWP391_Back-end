@@ -12,8 +12,8 @@ using SWP391_Project.Data.Databases.DiavanSystem;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240617033814_createAppDB")]
-    partial class createAppDB
+    [Migration("20240619113238_CreateAppDb")]
+    partial class CreateAppDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,10 @@ namespace Data.Migrations
 
                     b.Property<Guid>("ImageGuid")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
