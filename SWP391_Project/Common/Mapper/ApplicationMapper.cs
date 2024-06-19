@@ -24,6 +24,8 @@ namespace SWP391_Project.Common.Mapper
                 ForPath(x => x.Customer.LastName, opt => opt.MapFrom(x => x.LastName))
                 .ReverseMap();
             CreateMap<ResultModel, Result>().ReverseMap();
+            CreateMap<GetResultByIdResponse, Result>().ReverseMap();
+            CreateMap<ResultImages, ResultImage>().ReverseMap();
             CreateMap<CreateResultReq, Result>()
                 .ForMember(x => x.Status, opt => opt.MapFrom(x => "Pending")).ReverseMap();
             CreateMap<UpdateResultReq, Result>().ReverseMap();

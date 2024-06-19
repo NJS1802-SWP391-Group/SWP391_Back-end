@@ -4,6 +4,7 @@ using Business.Services.Firebase;
 using Common.DTOs;
 using Common.Enums;
 using Common.Requests;
+using Common.Responses;
 using Data.Helpers;
 using Data.Repositories;
 using Domain.DiavanEntities;
@@ -81,9 +82,10 @@ namespace Business.Services
             try
             {
                 var result = await _unitOfWork.ResultRepository.GetByIdAsync(id);
-                var rs = _mapper.Map<ResultModel>(result);
-                var imageUrls = await _unitOfWork.ResultImageRepository.GetByResultIdAsync(id);
-                rs.ImageUrls = imageUrls.Select(_ => _.ImageUrl).ToList();
+                var rs = _mapper.Map<GetResultByIdResponse>(result);
+                var imageLists = await _unitOfWork.ResultImageRepository.GetByResultIdAsync(id);
+                var rsImages = _mapper.Map<List<ResultImages>>(imageLists);
+                rs.ResultImages = rsImages;
                 if (result is null)
                 {
                     return new ServiceResult(404, "Cannot find result");
