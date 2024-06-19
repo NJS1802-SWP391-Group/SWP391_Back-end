@@ -73,8 +73,12 @@ namespace SWP391_Project.Common.Mapper
                  .ForMember(x => x.DetailValuations, opt => opt.MapFrom(x => x.DetailValuations))
                  .ForPath(x => x.FirstName, opt => opt.MapFrom(x => x.Customer.FirstName)).
                  ForPath(x => x.LastName, opt => opt.MapFrom(x => x.Customer.LastName))
+                 .ForMember(x=>x.DetailValuations,opt =>opt.MapFrom(x=>x.DetailValuations))
                  .ReverseMap();
-            CreateMap<OrderDetail, ViewOrderDetail>();
+            CreateMap<ViewOrderDetailModel,OrderDetail>().
+                ForPath(x=>x.Price,opt =>opt.MapFrom(x=>x.ServicePrice))
+                .ReverseMap();
+            CreateMap<OrderDetail, ViewOrderDetail>().ReverseMap();
             CreateMap<DimondCheckInformation, DiamondCheck>()
                 .ForMember(x=>x.DiamondCheckValues,opt => opt.MapFrom(x=>x.DiamondCheckValues))
                 .ReverseMap();

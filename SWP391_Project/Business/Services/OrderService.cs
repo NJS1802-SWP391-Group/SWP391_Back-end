@@ -212,6 +212,30 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
+        public async Task<IServiceResult> GetOrderToSendMail(int orderId)
+        {
+            try
+            {
+               
+                var order = await _unitOfWork.OrderRepository.GetOrderByIdAsync(orderId);
+                if (order == null) { throw new Exception("Not Found Order");}
+                var result = _mapper.Map<GetOrderToSendMail>(order);
+                foreach ( var item in result.DetailValuations) {
+                var obj = await _unitOfWork.ResultRepository.GetByOrderDetailIdAsync(orderId);
+                    if(obj == null) 
+                    { item.Price = 0; }//sau nay validate
+                    else
+                    item.Price = obj.DiamondValue; 
+                }
+                return new ServiceResult(200, "Infomation", result);
+
+
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500,ex.Message);
+            }
+        }
     }
 
 
