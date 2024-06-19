@@ -216,16 +216,17 @@ namespace Business.Services
         {
             try
             {
-               
+
                 var order = await _unitOfWork.OrderRepository.GetOrderByIdAsync(orderId);
-                if (order == null) { throw new Exception("Not Found Order");}
+                if (order == null) { throw new Exception("Not Found Order"); }
                 var result = _mapper.Map<GetOrderToSendMail>(order);
-                foreach ( var item in result.DetailValuations) {
-                var obj = await _unitOfWork.ResultRepository.GetByOrderDetailIdAsync(orderId);
-                    if(obj == null) 
+                foreach (var item in result.DetailValuations)
+                {
+                    var obj = await _unitOfWork.ResultRepository.GetByOrderDetailIdAsync(orderId);
+                    if (obj == null)
                     { item.Price = 0; }//sau nay validate
                     else
-                    item.Price = obj.DiamondValue; 
+                        item.Price = obj.DiamondValue;
                 }
                 return new ServiceResult(200, "Infomation", result);
 
@@ -233,7 +234,34 @@ namespace Business.Services
             }
             catch (Exception ex)
             {
-                return new ServiceResult(500,ex.Message);
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+
+        public async Task<IServiceResult> ConfirmReturnOrder(int orderId)
+        {
+            try
+            {
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
+                if (order.Status != OrderStatusEnum.Completed.ToString())
+                {
+                    return new ServiceResult(400, "Order is incompleted");
+                }
+
+                order.Status = OrderStatusEnum.Returned.ToString();
+
+                var rs = await _unitOfWork.OrderRepository.UpdateAsync(order);
+
+                if (rs < 1)
+                {
+                    return new ServiceResult(400, "Cannot update");
+                }
+
+                return new ServiceResult(200, "Returned successfully");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
             }
         }
     }

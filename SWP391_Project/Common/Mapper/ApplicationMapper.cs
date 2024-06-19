@@ -3,6 +3,7 @@ using Common.DTOs;
 using Common.Requests;
 using Common.Responses;
 using Domain.DiamondEntities;
+using Domain.DiavanEntities;
 using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Dtos;
 using SWP391_Project.DTOs;
@@ -23,6 +24,8 @@ namespace SWP391_Project.Common.Mapper
                 ForPath(x => x.Customer.LastName, opt => opt.MapFrom(x => x.LastName))
                 .ReverseMap();
             CreateMap<ResultModel, Result>().ReverseMap();
+            CreateMap<GetResultByIdResponse, Result>().ReverseMap();
+            CreateMap<ResultImages, ResultImage>().ReverseMap();
             CreateMap<CreateResultReq, Result>()
                 .ForMember(x => x.Status, opt => opt.MapFrom(x => "Pending")).ReverseMap();
             CreateMap<UpdateResultReq, Result>().ReverseMap();
@@ -79,6 +82,12 @@ namespace SWP391_Project.Common.Mapper
                 ForPath(x=>x.Price,opt =>opt.MapFrom(x=>x.ServicePrice))
                 .ReverseMap();
             CreateMap<OrderDetail, ViewOrderDetail>().ReverseMap();
+            CreateMap<OrderDetail, ViewOrderDetail>().ReverseMap();
+            CreateMap<SystemDiamond, Diamond>()
+                .ForMember(d => d.DiamondId, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(sd => sd.DiamondId, opt => opt.Ignore());
+            CreateMap<OrderDetail, ViewOrderDetail>();
             CreateMap<DimondCheckInformation, DiamondCheck>()
                 .ForMember(x=>x.DiamondCheckValues,opt => opt.MapFrom(x=>x.DiamondCheckValues))
                 .ReverseMap();
