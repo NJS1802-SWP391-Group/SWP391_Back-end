@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class createAppDB : Migration
+    public partial class CreateAppDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -245,6 +245,7 @@ namespace Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ResultID = table.Column<int>(type: "int", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },

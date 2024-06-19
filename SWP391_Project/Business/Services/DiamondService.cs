@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Constants;
 using Common.Enums;
+using Common.Requests;
 using Common.Responses;
 using Data.Repositories;
 using Domain.DiamondEntities;
@@ -43,13 +44,13 @@ namespace Business.Services
             }
         }
 
-        public async Task<IServiceResult> CalculateDiamondPrice()
+        public async Task<IServiceResult> CalculateDiamondPrice(DiamondCalculateReq req)
         {
             try
             {
-                var diamondList = await _diamondContext.Set<Diamond>().Where(_ => _.UpdateDate.Value.Day == DateTime.Now.Day).ToListAsync();
-                var map = _mapper.Map<List<SystemDiamond>>(diamondList);
-                await _unitOfWork.DiamondRepository.CreateRangeAsync(map);
+                var diamond = await _unitOfWork.DiamondRepository.GetDiamondByParameters(req.Origin, req.Shape, req.Carat, req.Color, req.Clarity, req.Fluorescence, req.Symmetry, req.Polish, req.CutGrade);
+                
+
                 return new ServiceResult(200, "Create success");
             }
             catch (Exception ex)
