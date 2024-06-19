@@ -21,6 +21,7 @@ namespace API.Controllers
         private readonly UserService _userService;
         private readonly OrderService _orderService;
 
+
         public EmailController(EmailService emailService, UserService userService, OrderService orderService)
         {
             _emailService = emailService;
@@ -239,6 +240,13 @@ color: black;
     ");
 
             return emailBody.ToString();
+        }
+
+        [HttpGet("Get-Result/{id}")]
+        public async Task<IActionResult> GetInfomationResult([FromRoute]int id)
+        {
+            var result = await _orderService.GetOrderToSendMail(id);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
     }
 }

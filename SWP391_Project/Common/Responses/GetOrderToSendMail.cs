@@ -31,6 +31,6 @@ namespace Common.Responses
         public double ServicePrice { set; get; }
         public double EstimateLength { set; get; }
         public string Status { set; get; }
-        public double Price { set; get; }
+        public double? Price { set; get; }
     }
 }
