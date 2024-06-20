@@ -19,7 +19,7 @@ namespace Common.Responses
         public string? Origin { get; set; }
         public string? Shape { get; set; }
         public string? LinkImageShape { get; set; }
-        public string? Carat { get; set; }
+        public double? Carat { get; set; }
         public string? Color { get; set; }
         public string? Clarity { get; set; }
         public string? Fluorescence { get; set; }

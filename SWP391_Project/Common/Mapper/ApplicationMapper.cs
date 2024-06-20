@@ -88,6 +88,7 @@ namespace SWP391_Project.Common.Mapper
                 .ReverseMap();
             CreateMap<DiamondCheckValue,DiamondCheckValueDto>()
                 .ReverseMap();
+            CreateMap<DiamondModel, SystemDiamond>().ReverseMap();
         }
     }
 }

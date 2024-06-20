@@ -63,8 +63,8 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiamondId"), 1L, 1);
 
-                    b.Property<string>("Carat")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("Carat")
+                        .HasColumnType("float");
 
                     b.Property<string>("Clarity")
                         .HasColumnType("nvarchar(max)");
@@ -97,7 +97,7 @@ namespace Data.Migrations
                     b.Property<string>("Symmetry")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateDate")
+                    b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<double?>("Value")
@@ -333,8 +333,8 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResultId"), 1L, 1);
 
-                    b.Property<string>("Carat")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("Carat")
+                        .HasColumnType("float");
 
                     b.Property<string>("Clarity")
                         .HasColumnType("nvarchar(max)");

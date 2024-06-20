@@ -30,8 +30,8 @@ namespace Data.Migrations.Diamond
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiamondId"), 1L, 1);
 
-                    b.Property<string>("Carat")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("Carat")
+                        .HasColumnType("float");
 
                     b.Property<string>("Clarity")
                         .HasColumnType("nvarchar(max)");
@@ -83,8 +83,8 @@ namespace Data.Migrations.Diamond
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiamondCheckId"), 1L, 1);
 
-                    b.Property<string>("Carat")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("Carat")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("CertDate")
                         .HasColumnType("datetime2");

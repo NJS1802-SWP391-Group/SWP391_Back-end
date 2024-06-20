@@ -1,4 +1,5 @@
 ﻿using Business.Services;
+using Common.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,15 @@ namespace API.Controllers
         {
             var result = await _diamondService.MigrateToSystemDbByDate();
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }        
+        
+        [AllowAnonymous]
+        [HttpPost("calculte-diamond-value")]
+        public async Task<IActionResult> CalculateDiamondPrice(DiamondCalculateReq req)
+        {
+            var result = await _diamondService.CalculateDiamondPrice(req);
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
+
     }
 }
