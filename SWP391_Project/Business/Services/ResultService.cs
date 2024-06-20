@@ -145,7 +145,7 @@ namespace Business.Services
                 {
                     createObj.Status = ResultStatusEnum.IsNotDiamond.ToString();
                     orDetail.Status = ValuationDetailStatusEnum.Failed.ToString();
-                    createObj.Carat = "NaN";
+                    createObj.Carat = 0;
                     createObj.Clarity = "NaN";
                     createObj.Symmetry = "NaN";
                     createObj.Origin = "NaN";
@@ -244,7 +244,7 @@ namespace Business.Services
                         updateObj.Status = ResultStatusEnum.IsNotDiamond.ToString();
                         orderDetail.Status = ValuationDetailStatusEnum.Failed.ToString();
                         await _unitOfWork.OrderDetailRepository.UpdateAsync(orderDetail);
-                        updateObj.Carat = "NaN";
+                        updateObj.Carat = 0;
                         updateObj.Clarity = "NaN";
                         updateObj.Symmetry = "NaN";
                         updateObj.Origin = "NaN";

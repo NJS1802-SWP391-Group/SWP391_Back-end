@@ -105,6 +105,14 @@ namespace API.Controllers
         {
             var result = await _orderService.ConfirmReturnOrder(orderId);
             return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
+        }        
+        
+        [AllowAnonymous]
+        [HttpPut("Comfirm-Seal-Order/{orderId}")]
+        public async Task<IActionResult> SealOrder([FromRoute] int orderId)
+        {
+            var result = await _orderService.SealOrder(orderId);
+            return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
         }
     }
 }

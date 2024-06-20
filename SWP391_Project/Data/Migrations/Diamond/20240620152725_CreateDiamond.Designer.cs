@@ -12,7 +12,7 @@ using SWP391_Project.Data.Databases.DiamondSystem;
 namespace Data.Migrations.Diamond
 {
     [DbContext(typeof(DiamondContext))]
-    [Migration("20240619113255_CreateDiamond")]
+    [Migration("20240620152725_CreateDiamond")]
     partial class CreateDiamond
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,8 +32,8 @@ namespace Data.Migrations.Diamond
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiamondId"), 1L, 1);
 
-                    b.Property<string>("Carat")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("Carat")
+                        .HasColumnType("float");
 
                     b.Property<string>("Clarity")
                         .HasColumnType("nvarchar(max)");
@@ -85,8 +85,8 @@ namespace Data.Migrations.Diamond
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiamondCheckId"), 1L, 1);
 
-                    b.Property<string>("Carat")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("Carat")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("CertDate")
                         .HasColumnType("datetime2");
