@@ -40,7 +40,7 @@ namespace API.Controllers
 
                 if (ord == null )
                 {
-                    return StatusCode(400, "Order does not exist");
+                    return StatusCode(400, rs.Message);
                 }
 
                 var cus = await _userService.GetCustomerById(ord.CustomerId);

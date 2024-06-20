@@ -137,7 +137,7 @@ namespace SWP391_Project.Data.Databases
             {
                 new Customer
                 {
-                    Email = "KhanhKhongKhoc@gmail.com",
+                    Email = "Khanhvhdse173550@fpt.edu.vn",
                     FirstName = "Khanh",
                     LastName = "KhongKhoc",
                     CCCD = "123456879",
@@ -151,7 +151,7 @@ namespace SWP391_Project.Data.Databases
                 {
                     FirstName = "Bao",
                     LastName = "BongBay",
-                    Email = "BaoBongBay@gmail.com",
+                    Email = "baonngse173536@fpt.edu.vn",
                     CCCD = "123456879",
                     Address = "TPHCM",
                     PhoneNumber = "0907080907",
@@ -163,7 +163,7 @@ namespace SWP391_Project.Data.Databases
                 {
                     FirstName = "Huy",
                     LastName = "Le Quang",
-                    Email = "lequanghuy@gmail.com",
+                    Email = "huylqse173543@fpt.edu.vn",
                     CCCD = "123456879",
                     Address = "Dong Nai",
                     PhoneNumber = "0907080907",
@@ -405,7 +405,10 @@ namespace SWP391_Project.Data.Databases
                         TotalPay = 25,
                         Payment = "Cash",
                         StatusPayment = "Paid",
-                        Status = "Active"
+                        Status = "Pending",
+                        CompleteDate = DateTime.Now,
+                        ExpireDate = DateTime.Now,
+                        ReceiveDay = DateTime.Now,
                     },
                     new Order
                     {
@@ -416,7 +419,10 @@ namespace SWP391_Project.Data.Databases
                         TotalPay = 80,
                         Payment = "Cash",
                         StatusPayment = "Paid",
-                        Status = "Active"
+                        Status = "Pending",
+                        CompleteDate = DateTime.Now,
+                        ExpireDate = DateTime.Now,
+                        ReceiveDay = DateTime.Now,
                     },
                     new Order
                     {
@@ -427,7 +433,10 @@ namespace SWP391_Project.Data.Databases
                         TotalPay = 30,
                         Payment = "Cash",
                         StatusPayment = "Paid",
-                        Status = "Active"
+                        Status = "Pending",
+                        CompleteDate = DateTime.Now,
+                        ExpireDate = DateTime.Now,
+                        ReceiveDay = DateTime.Now,
                     },
                 };
 
@@ -439,7 +448,7 @@ namespace SWP391_Project.Data.Databases
                         EstimateLength = 2.5,
                         Service = services[3],
                         Price = serviceDetails[4].Price,
-                        Status = "Active",
+                        Status = "Pending",
                         Order = orders[1],
                         ValuationStaff = null,
                         Result = null
@@ -450,7 +459,7 @@ namespace SWP391_Project.Data.Databases
                         EstimateLength = 1.8,
                         Service = services[3],
                         Price = serviceDetails[4].Price,
-                        Status = "Active",
+                        Status = "Pending",
                         Order = orders[1],
                         ValuationStaff = null,
                         Result = null
@@ -461,7 +470,7 @@ namespace SWP391_Project.Data.Databases
                         EstimateLength = 2.5,
                         Service = services[1],
                         Price = serviceDetails[12].Price,
-                        Status = "Active",
+                        Status = "Pending",
                         Order = orders[0],
                         ValuationStaff = null,
                         Result = null
@@ -472,7 +481,7 @@ namespace SWP391_Project.Data.Databases
                         EstimateLength = 3.5,
                         Service = services[0],
                         Price = serviceDetails[13].Price,
-                        Status = "Active",
+                        Status = "Pending",
                         Order = orders[0],
                         ValuationStaff = null,
                         Result = null
