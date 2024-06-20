@@ -173,10 +173,15 @@ namespace Business.Services
             try
             {
                 var obj = await _unitOfWork.OrderRepository.GetOrderInforById(orderId);
-                var orderDetail = await _unitOfWork.OrderDetailRepository.GetDetailByOrderId(obj.OrderID);
+                if(obj == null) { throw new Exception("Not Found Order"); }
+                if(obj.Customer == null) { throw new Exception("Not Found Customer"); }
+                var orderDetails = await _unitOfWork.OrderDetailRepository.GetDetailByOrderId(obj.OrderID);
+                if (!orderDetails.Any()) { throw new Exception("Not Found OrderDetail"); }
                 var list = new List<ViewOrderDetailModel>();
-                foreach (var item in orderDetail)
+                foreach (var item in orderDetails)
                 {
+                    if (item.Result == null) { throw new Exception("Do not find Result"); }
+                    if (item.Service == null) { throw new Exception("Do not find Service"); }
                     list.Add(new ViewOrderDetailModel
                     {
                         Code = item.Code,
