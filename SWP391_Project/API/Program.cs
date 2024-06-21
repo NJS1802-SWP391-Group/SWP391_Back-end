@@ -72,7 +72,7 @@ namespace SWP391_Project
 
             builder.Services.AddCors(option =>
                 option.AddPolicy("CORS", builder =>
-                    builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed((host) => true)));
+                    builder.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed((host) => true)));
 
             var app = builder.Build();
 
