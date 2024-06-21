@@ -248,7 +248,7 @@ namespace Business.Services
                     return new ServiceResult(400, "Failed");
                 }
 
-                if (result.IsDiamond)
+                if (!result.IsDiamond)
                 {
                     orderdetail.Status = ValuationDetailStatusEnum.Failed.ToString();
                 }
