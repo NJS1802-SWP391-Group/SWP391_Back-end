@@ -250,7 +250,7 @@ namespace Business.Services
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
                 if (order.Status != OrderStatusEnum.Completed.ToString())
                 {
-                    return new ServiceResult(400, "Order is incompleted", false);
+                    return new ServiceResult(400, "Order is incompleted");
                 }
 
                 order.Status = OrderStatusEnum.Returned.ToString();
@@ -259,10 +259,10 @@ namespace Business.Services
 
                 if (rs < 1)
                 {
-                    return new ServiceResult(400, "Cannot update", false);
+                    return new ServiceResult(400, "Cannot update");
                 }
 
-                return new ServiceResult(200, "Returned successfully", true);
+                return new ServiceResult(200, "Returned successfully");
             }
             catch (Exception ex)
             {
@@ -277,7 +277,7 @@ namespace Business.Services
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
                 if (order.Status != OrderStatusEnum.Completed.ToString())
                 {
-                    return new ServiceResult(400, "Order is incompleted", false);
+                    return new ServiceResult(400, "Order is incompleted", new MessageResponse { Message = "Order is incompleted" });
                 }
 
                 order.Status = OrderStatusEnum.Sealed.ToString();
@@ -286,14 +286,14 @@ namespace Business.Services
 
                 if (rs < 1)
                 {
-                    return new ServiceResult(400, "Cannot update", false);
+                    return new ServiceResult(400, "Cannot update", new MessageResponse { Message = "Cannot update" });
                 }
 
-                return new ServiceResult(200, "Sealed successfully", true);
+                return new ServiceResult(200, "Sealed successfully", new MessageResponse { Message = "Sealed successfully" });
             }
             catch (Exception ex)
             {
-                return new ServiceResult(500, ex.Message, false);
+                return new ServiceResult(500, ex.Message, new MessageResponse { Message = ex.Message });
             }
         }
     }
