@@ -279,6 +279,8 @@ namespace Business.Services
                 {
                     var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderdetail.OrderId);
                     order.Status = OrderStatusEnum.Completed.ToString();
+                    order.CompleteDate = DateTime.Now;
+                    order.ExpireDate = DateTime.Now.AddDays(30);
                     var rsOrder = await _unitOfWork.OrderRepository.UpdateAsync(order);
                 }
 
