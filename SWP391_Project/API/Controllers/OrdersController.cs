@@ -104,7 +104,7 @@ namespace API.Controllers
         public async Task<IActionResult> ConfirmReturnOrder([FromRoute] int orderId)
         {
             var result = await _orderService.ConfirmReturnOrder(orderId);
-            return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }        
         
         [AllowAnonymous]
@@ -112,7 +112,7 @@ namespace API.Controllers
         public async Task<IActionResult> SealOrder([FromRoute] int orderId)
         {
             var result = await _orderService.SealOrder(orderId);
-            return StatusCode(result.Status, result.Status != 200 ? result.Message : result.Data);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
     }
 }
