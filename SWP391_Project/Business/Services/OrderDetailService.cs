@@ -263,7 +263,7 @@ namespace Business.Services
                     return new ServiceResult(400, "Failed");
                 }
 
-                var detailList = await _unitOfWork.OrderDetailRepository.GetDetailByOrderId(orderdetail.OrderDetailId);
+                var detailList = await _unitOfWork.OrderDetailRepository.GetDetailByOrderId(orderdetail.OrderId);
 
                 var checkFlag = true;
 
@@ -275,7 +275,7 @@ namespace Business.Services
                     }
                 }
 
-                if (!checkFlag)
+                if (checkFlag)
                 {
                     var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderdetail.OrderId);
                     order.Status = OrderStatusEnum.Completed.ToString();
