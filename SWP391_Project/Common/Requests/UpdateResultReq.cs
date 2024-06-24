@@ -21,7 +21,7 @@ namespace Common.Requests
         public string? CutGrade { get; set; }
         public string? Description { get; set; }
         public double? DiamondValue { get; set; }
-        public List<IFormFile> ProportionImages { get; set; }
-        public List<IFormFile> ClarityImages { get; set; }
+        public List<IFormFile>? ProportionImages { get; set; }
+        public List<IFormFile>? ClarityImages { get; set; }
     }
 }
