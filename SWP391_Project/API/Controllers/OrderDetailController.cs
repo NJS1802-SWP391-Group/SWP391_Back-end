@@ -2,6 +2,7 @@
 using Common.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SWP391_Project.Domain.DiavanEntities;
 
 namespace API.Controllers
 {
@@ -82,6 +83,14 @@ namespace API.Controllers
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateOrderDetail([FromBody]UpdateOrderDetail updateOrderDetail)
         {
+            if (updateOrderDetail.ServiceId <= 0)
+            {
+                return StatusCode(500, "Invalid ID");
+            }
+            if (updateOrderDetail.EstimateLength <= 0)
+            {
+                return StatusCode(500, "Invalid length");
+            }
             var result = await _orderDetailService.UpdateOrderDetail(updateOrderDetail);
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
