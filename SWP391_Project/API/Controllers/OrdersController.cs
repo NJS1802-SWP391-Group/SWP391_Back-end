@@ -100,18 +100,26 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPut("Comfirm-Return-Order/{orderId}")]
+        [HttpPut("Confirm-Return-Order/{orderId}")]
         public async Task<IActionResult> ConfirmReturnOrder([FromRoute] int orderId)
         {
             var result = await _orderService.ConfirmReturnOrder(orderId);
-            return StatusCode(result.Status, result.Data == null? result.Message : result.Data);
+            return StatusCode(result.Status,result.Data == null ? result.Message : result.Data);
         }        
         
         [AllowAnonymous]
-        [HttpPut("Comfirm-Seal-Order/{orderId}")]
+        [HttpPut("Confirm-Seal-Order/{orderId}")]
         public async Task<IActionResult> SealOrder([FromRoute] int orderId)
         {
             var result = await _orderService.SealOrder(orderId);
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
+        }        
+
+        [AllowAnonymous]
+        [HttpPut("Confirm-Unseal-Order/{orderId}")]
+        public async Task<IActionResult> UnSealOrder([FromRoute] int orderId)
+        {
+            var result = await _orderService.UnSealOrder(orderId);
             return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
         }
     }

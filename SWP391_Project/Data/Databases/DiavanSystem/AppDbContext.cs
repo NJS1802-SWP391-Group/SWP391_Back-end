@@ -28,7 +28,7 @@ namespace SWP391_Project.Data.Databases.DiavanSystem
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=34.176.180.127;database=SWP391_DiavanSystem;uid=sa;pwd=<YourStrong@Passw0rd>;TrustServerCertificate=True;MultipleActiveResultSets=True");
+            optionsBuilder.UseSqlServer("server=localhost;database=SWP391_DiavanSystem;uid=sa;pwd=12345;TrustServerCertificate=True;MultipleActiveResultSets=True");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

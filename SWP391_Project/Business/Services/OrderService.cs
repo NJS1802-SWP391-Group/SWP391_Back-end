@@ -266,7 +266,7 @@ namespace Business.Services
             }
             catch (Exception ex)
             {
-                return new ServiceResult(500, ex.Message, false);
+                return new ServiceResult(500, ex.Message);
             }
         }
 
@@ -277,7 +277,11 @@ namespace Business.Services
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
                 if (order.Status != OrderStatusEnum.Completed.ToString())
                 {
-                    return new ServiceResult(400, "Order is incompleted", new MessageResponse { Message = "Order is incompleted" });
+                    return new ServiceResult(400, "Order is incompleted");
+                }
+                if (order.ExpireDate <= DateTime.Now)
+                {
+                    return new ServiceResult(400, "Order is still not expired");
                 }
 
                 order.Status = OrderStatusEnum.Sealed.ToString();
@@ -286,14 +290,41 @@ namespace Business.Services
 
                 if (rs < 1)
                 {
-                    return new ServiceResult(400, "Cannot update", new MessageResponse { Message = "Cannot update" });
+                    return new ServiceResult(400, "Cannot update");
                 }
 
-                return new ServiceResult(200, "Sealed successfully", new MessageResponse { Message = "Sealed successfully" });
+                return new ServiceResult(200, "Sealed successfully");
             }
             catch (Exception ex)
             {
-                return new ServiceResult(500, ex.Message, new MessageResponse { Message = ex.Message });
+                return new ServiceResult(500, ex.Message);
+            }
+        }
+
+        public async Task<IServiceResult> UnSealOrder(int orderId)
+        {
+            try
+            {
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
+                if (order.Status != OrderStatusEnum.Sealed.ToString())
+                {
+                    return new ServiceResult(400, "Order is not sealed");
+                }
+
+                order.Status = OrderStatusEnum.Completed.ToString();
+
+                var rs = await _unitOfWork.OrderRepository.UpdateAsync(order);
+
+                if (rs < 1)
+                {
+                    return new ServiceResult(400, "Cannot update");
+                }
+
+                return new ServiceResult(200, "UnSealed successfully");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
             }
         }
     }
