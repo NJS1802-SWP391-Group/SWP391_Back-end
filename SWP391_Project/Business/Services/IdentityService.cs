@@ -110,9 +110,43 @@ namespace SWP391_Project.Services
             }
         }
 
-        public LoginResult Login(string userName, string password)
+        public LoginResult LoginAsCustomer(string userName, string password)
         {
-            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName).FirstOrDefault();
+            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName && u.RoleName == "Customer" && u.CustomerId != null).FirstOrDefault();
+
+            if (user is null)
+            {
+                return new LoginResult
+                {
+                    RoleName = null,
+                    Authenticated = false,
+                    Token = null,
+                };
+            }
+
+            var hash = SecurityUtil.Hash(password);
+            if (!user.Password.Equals(hash))
+            {
+                return new LoginResult
+                {
+                    RoleName = null,
+                    Authenticated = false,
+                    Token = null,
+                };
+            }
+
+            return new LoginResult
+            {
+                CustomerId = user.CustomerId,
+                RoleName = user.RoleName,
+                Authenticated = true,
+                Token = CreateJwtToken(user),
+            };
+        }
+
+        public LoginResult LoginAsSystem(string userName, string password)
+        {
+            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName && u.RoleName != "Customer" && u.CustomerId == null).FirstOrDefault();
 
             if (user is null)
             {

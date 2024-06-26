@@ -34,10 +34,10 @@ public class AuthController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost]
-    public IActionResult Login([FromBody] LoginRequest req)
+    [HttpPost("login-as-customer")]
+    public IActionResult LoginAsCustomer([FromBody] LoginRequest req)
     {
-        var loginResult = _identityService.Login(req.Username, req.Password);
+        var loginResult = _identityService.LoginAsCustomer(req.Username, req.Password);
         if (!loginResult.Authenticated)
         {
             var result = ApiResult<Dictionary<string, string[]>>.Fail(new Exception("Username or password is invalid"));
@@ -53,6 +53,28 @@ public class AuthController : ControllerBase
         };
         return Ok(ApiResult<LoginResponse>.Succeed(res));
     }
+
+    [AllowAnonymous]
+    [HttpPost("login-as-system")]
+    public IActionResult LoginAsSystem([FromBody] LoginRequest req)
+    {
+        var loginResult = _identityService.LoginAsSystem(req.Username, req.Password);
+        if (!loginResult.Authenticated)
+        {
+            var result = ApiResult<Dictionary<string, string[]>>.Fail(new Exception("Username or password is invalid"));
+            return BadRequest(result);
+        }
+
+        var handler = new JwtSecurityTokenHandler();
+        var res = new LoginResponse
+        {
+            RoleName = loginResult.RoleName,
+            AccessToken = handler.WriteToken(loginResult.Token),
+            CustomerId = loginResult.CustomerId,
+        };
+        return Ok(ApiResult<LoginResponse>.Succeed(res));
+    }
+
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> CheckToken()

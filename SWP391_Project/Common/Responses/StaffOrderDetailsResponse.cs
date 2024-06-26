@@ -12,6 +12,7 @@ namespace Common.Responses
         public string OrderDetailCode { get; set; }
         public string ServiceName {  get; set; }
         public double FinalPrice { get; set; }
+        public int ResultID { get; set; }
         public string Status {  get; set; }
     }
 }
