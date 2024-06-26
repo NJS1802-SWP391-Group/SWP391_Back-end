@@ -34,7 +34,7 @@ namespace Data.Repositories.DiavanRepo
 
         public async Task<List<OrderDetail>> GetOrderDetailsByValuStaff(int staffId, string status)
         {
-            return await _dbSet.Include(_ => _.Service).Where(_ => _.ValuationStaffId == staffId && _.Status == status).ToListAsync();
+            return await _dbSet.Include(_ => _.Service).Include(_ => _.Result).Where(_ => _.ValuationStaffId == staffId && _.Status == status).ToListAsync();
         }
 
         public async Task<OrderDetail> GetByIdAndIsAssigning(int orderDetailId, string statusAssigning, string statusReassigning)
