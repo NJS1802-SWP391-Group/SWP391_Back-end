@@ -13,6 +13,11 @@ namespace Data.Repositories.DiavanRepo
     public class OrderRepository : GenericRepository<Order>
     {
         public OrderRepository() { }
+        public async Task<int> CountOrders()
+        {
+            var count = await _dbSet.CountAsync();
+            return count;
+        }
         public async Task<Order> GetOrderByIdAsync(int id)
         {
             var order = await _dbSet.Include(x=>x.DetailValuations).ThenInclude(y=>y.Service).Include(x=>x.Customer).FirstOrDefaultAsync(x=>x.OrderID==id);

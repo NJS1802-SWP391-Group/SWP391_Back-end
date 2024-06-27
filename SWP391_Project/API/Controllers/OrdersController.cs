@@ -22,6 +22,15 @@ namespace API.Controllers
             _paymentService = paymentService;
             _userService = userService;
         }
+
+        [AllowAnonymous]
+        [HttpGet("Count")]
+        public async Task<IActionResult> CountOrders()
+        {
+            var result = await _orderService.CountOrders();
+            return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
+        }       
+        
         [AllowAnonymous]
         [HttpGet("All")]
         public async Task<IActionResult> GetAllOrder()
@@ -30,6 +39,7 @@ namespace API.Controllers
             if (result.Status == 1) { return StatusCode(200, result.Data); }
             return StatusCode(500, result.Message);
         }
+
         [AllowAnonymous]
         //[Authorize]
         [HttpPost("Request")]

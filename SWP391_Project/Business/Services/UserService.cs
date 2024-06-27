@@ -15,6 +15,12 @@ namespace SWP391_Project.Services
     {
         public Task<IServiceResult> GetAll();
         public Task<IServiceResult> GetUserByUserName(string email);
+        public Task<IServiceResult> CountAccounts();
+        public Task<IServiceResult> CountConsultingStaffs();
+        public Task<IServiceResult> CountValuatingStaffs();
+        public Task<IServiceResult> CountManagers();
+        public Task<IServiceResult> CountAdmins();
+        public Task<IServiceResult> CountCustomers();
     }
 
     public class UserService : IUserService
@@ -64,6 +70,90 @@ namespace SWP391_Project.Services
             {
                 return new ServiceResult(-1, ex.Message);
             }
+        }
+
+        public async Task<IServiceResult> CountAccounts()
+        {
+            try
+            {
+                var count = await _unitOfWork.UserRepository.CountAccounts();
+                return new ServiceResult(200, "Count accounts", count);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(-1, ex.Message);
+            }
+
+        }
+
+        public async Task<IServiceResult> CountConsultingStaffs()
+        {
+            try
+            {
+                var count = await _unitOfWork.UserRepository.CountConsultingStaffs();
+                return new ServiceResult(200, "Count consulting staffs", count);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(-1, ex.Message);
+            }
+
+        }
+
+        public async Task<IServiceResult> CountValuatingStaffs()
+        {
+            try
+            {
+                var count = await _unitOfWork.UserRepository.CountValuatingStaffs();
+                return new ServiceResult(200, "Count valuating staffs", count);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(-1, ex.Message);
+            }
+
+        }
+
+        public async Task<IServiceResult> CountManagers()
+        {
+            try
+            {
+                var count = await _unitOfWork.UserRepository.CountManagers();
+                return new ServiceResult(200, "Count managers", count);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(-1, ex.Message);
+            }
+
+        }        
+        
+        public async Task<IServiceResult> CountAdmins()
+        {
+            try
+            {
+                var count = await _unitOfWork.UserRepository.CountAdmin();
+                return new ServiceResult(200, "Count admins", count);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(-1, ex.Message);
+            }
+
+        }
+
+        public async Task<IServiceResult> CountCustomers()
+        {
+            try
+            {
+                var count = await _unitOfWork.CustomerRepository.CountCustomers();
+                return new ServiceResult(200, "Count customers", count);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(-1, ex.Message);
+            }
+
         }
 
         public async Task<IServiceResult> GetUserByUserName(string username)
