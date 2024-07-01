@@ -202,28 +202,28 @@ namespace SWP391_Project.Data.Databases
                 new Service
                 {
                     Name = "Standard Valuation",
-                    Description = "- The time it takes to send for valuation depends on the time of sending./n" +
+                    Description = "- The time it takes to send for valuation depends on the time of sending." +
                                   "- Service price list according to regulations.",
                     Status = "Active"
                 },
                 new Service
                 {
                     Name = "Quick Valuation 48h",
-                    Description = "- Inspection time is 48 working hours from the time the product is received./n" +
+                    Description = "- Inspection time is 48 working hours from the time the product is received." +
                                   "- Service price list according to regulations.",
                     Status = "Active"
                 },
                 new Service
                 {
                     Name = "Quick Valuation 24h",
-                    Description = "- Inspection time is 24 working hours from the time the product is received./n" +
+                    Description = "- Inspection time is 24 working hours from the time the product is received." +
                                   "- Service price list according to regulations.",
                     Status = "Active"
                 },
                 new Service
                 {
                     Name = "Quick Valuation 6h",
-                    Description = "- Inspection time is 4 working hours from the time the product is received./n" +
+                    Description = "- Inspection time is 4 working hours from the time the product is received." +
                                   "- Service price list according to regulations.",
                     Status = "Active"
                 },

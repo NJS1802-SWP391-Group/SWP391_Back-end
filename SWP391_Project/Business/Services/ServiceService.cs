@@ -46,7 +46,7 @@ namespace Business.Services
         {
             try
             {
-                var services = _unitOfWork.ServiceRepository.GetAllActiveAsync();
+                var services = await _unitOfWork.ServiceRepository.GetAllActiveAsync();
                 var rs = _mapper.Map<List<ServiceModel>>(services);
                 if (rs.Any())
                 {

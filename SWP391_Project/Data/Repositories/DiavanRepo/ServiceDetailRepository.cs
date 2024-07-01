@@ -16,7 +16,7 @@ namespace Data.Repositories.DiavanRepo
 
         public async Task<List<ServiceDetail>> GetAllActiveAsync()
         {
-            return await _dbSet.Where(_ => _.Status.ToLower().Trim() == "active").ToListAsync();
+            return await _dbSet.Where(_ => _.Status.ToLower().Trim() == "active").Include(_ => _.Service).ToListAsync();
         }
 
         public async Task<(ServiceDetail, double price)> GetDetailByServiceIdAndLengthAsync(int serviceID, double length)
