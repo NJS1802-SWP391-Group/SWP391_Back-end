@@ -18,7 +18,9 @@ namespace SWP391_Project.Common.Mapper
             CreateMap<AccountModel, Account>().ReverseMap();
             CreateMap<CustomerModel, Customer>().ReverseMap();
             CreateMap<ServiceModel, Service>().ReverseMap();
-            CreateMap<ServiceDetailModel, ServiceDetail>().ReverseMap();
+            CreateMap<ServiceDetailModel, ServiceDetail>()
+                .ForPath(x => x.Service.Name, opt => opt.MapFrom(x => x.ServiceName))
+                .ReverseMap();
             CreateMap<ViewOrderResponse, Order>().
                 ForPath(x => x.Customer.FirstName, opt => opt.MapFrom(x => x.FirstName)).
                 ForPath(x => x.Customer.LastName, opt => opt.MapFrom(x => x.LastName))

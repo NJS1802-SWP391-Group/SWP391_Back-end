@@ -26,6 +26,21 @@ namespace Business.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
+        public async Task<ServiceResult> CountOrders()
+        {
+            try
+            {
+                var count = await _unitOfWork.OrderRepository.CountOrders();
+                return new ServiceResult(200, "Count orders", count);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(-1, ex.Message);
+            }
+
+        }
+
         public async Task<ServiceResult> GetAllOrders()
         {
             try
