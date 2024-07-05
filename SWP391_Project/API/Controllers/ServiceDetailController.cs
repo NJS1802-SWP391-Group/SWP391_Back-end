@@ -77,7 +77,7 @@ namespace API.Controllers
             {
                 return StatusCode(500, "Invalid ID");
             }
-            if (req.MinRange <= req.MaxRange)
+            if (req.MinRange >= req.MaxRange && req.MaxRange != 0)
             {
                 return StatusCode(500, "Invalid range");
             }
