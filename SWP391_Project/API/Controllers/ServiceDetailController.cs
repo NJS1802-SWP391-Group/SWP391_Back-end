@@ -49,7 +49,7 @@ namespace API.Controllers
         [HttpPost("Create-Service-Detail")]
         public async Task<IActionResult> CreateService([FromBody] CreateServiceDetailReq req)
         {
-            if (req.MinRange <= req.MaxRange)
+            if (req.MinRange >= req.MaxRange && req.MaxRange != 0)
             {
                 return StatusCode(500, "Invalid range");
             }
