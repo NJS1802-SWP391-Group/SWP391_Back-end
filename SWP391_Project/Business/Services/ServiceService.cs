@@ -146,7 +146,7 @@ namespace Business.Services
                 var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
                 if (service != null)
                 {
-                    service.Name = req.Status;
+                    service.Status = req.Status;
                     var rs = await _unitOfWork.ServiceRepository.UpdateAsync(service);
                     if (rs > 0)
                     {
