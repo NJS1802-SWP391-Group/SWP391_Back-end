@@ -61,6 +61,10 @@ namespace API.Controllers
         [HttpPost("Create-Result")]
         public async Task<IActionResult> Create([FromForm] CreateResultReq req)
         {
+            if (req.Carat <= 0)
+            {
+                return StatusCode(400, "Carat should > 0");
+            }
             if (req.DiamondValue < 0)
             {
                 return StatusCode(400, "Diamond value should >= 0");
