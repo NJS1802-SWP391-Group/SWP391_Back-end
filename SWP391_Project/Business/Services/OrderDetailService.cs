@@ -59,7 +59,7 @@ namespace Business.Services
         {
             try
             {
-                var results = await _unitOfWork.OrderDetailRepository.GetCompletedOrderDetails(ValuationDetailStatusEnum.Completed.ToString());
+                var results = await _unitOfWork.OrderDetailRepository.GetCompletedOrderDetails(ValuationDetailStatusEnum.Completed.ToString(), ValuationDetailStatusEnum.Failed.ToString());
                 var rs = _mapper.Map<List<GetDoneOrderDetailsResponse>>(results);
                 return new ServiceResult(200, "Get done order details", rs);
             }
@@ -123,11 +123,22 @@ namespace Business.Services
                 {
                     return new ServiceResult(404, "Cannot find order detail");
                 }
-                if (orderDetail.Status.Equals(ValuationDetailStatusEnum.Assigning.ToString()) && orderDetail.AssigningOrderDetails != null)
+
+                var assigningOrderDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActive(orderDetail.OrderDetailId);
+
+                if (orderDetail.Status.Equals(ValuationDetailStatusEnum.Assigning.ToString()) && assigningOrderDetail != null)
                 {
                     return new ServiceResult(500, "Order detail already assigned");
                 }
-                //orderDetail.AssigningOrderDetails = req.ValuationStaffID;
+
+                var createAssigningOrderDetail = await _unitOfWork.AssigningOrderDetailRepository.CreateAsync(new AssigningOrderDetail
+                {
+                    OrderDetailid = req.OrderDetailID,
+                    ValuationStaffId = req.ValuationStaffID,
+                    DayCreate = DateTime.Now,
+                    Status = "Active"
+                });
+
                 orderDetail.Status = ValuationDetailStatusEnum.Valuating.ToString();
                 var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orderDetail);
                 if (rs < 1)
@@ -227,7 +238,7 @@ namespace Business.Services
         {
             try
             {
-                var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString());
+                var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString(), ValuationDetailStatusEnum.Failed.ToString());
                 if (orderdetail == null) 
                 { 
                     throw new Exception("Cannot find order detail"); 
@@ -296,7 +307,7 @@ namespace Business.Services
         {
             try
             {
-                var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString());
+                var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString(), ValuationDetailStatusEnum.Failed.ToString());
                 if (orderdetail == null) { throw new Exception("Cannot find order detail"); }
                 orderdetail.Status = ValuationDetailStatusEnum.ReAssigning.ToString();
                 // can sua

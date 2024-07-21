@@ -8,6 +8,7 @@ using SWP391_Project.Common.Responses;
 using SWP391_Project.Services;
 using API.Auth;
 using Domain.Exceptions;
+using Common.Requests;
 
 namespace SWP391_Project.API.Auth;
 
@@ -29,6 +30,14 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Signup([FromBody] SignupRequest req)
     {
         var result = await _identityService.Signup(req);
+        return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<IActionResult> SignupForSystem([FromBody] SignupForSystemRequest req)
+    {
+        var result = await _identityService.SignupForSystem(req);
         return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
     }
 

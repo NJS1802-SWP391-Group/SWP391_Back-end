@@ -53,17 +53,18 @@ namespace Data.Repositories.DiavanRepo
             return rs;
         }
 
-        public async Task<OrderDetail> GetByIdAndIsCompletedAndHasResult(int orderDetailId, string status)
+        public async Task<OrderDetail> GetByIdAndIsCompletedAndHasResult(int orderDetailId, string statusCompleted, string statusFailed)
         {
             // Ham can sua
-            var rs = await _dbSet.Where(_ => _.OrderDetailId == orderDetailId && _.Status == status && _.OrderDetailId != null).FirstOrDefaultAsync();
+            var rs = await _dbSet.Where(_ => _.OrderDetailId == orderDetailId && (_.Status.Equals(statusCompleted) || _.Status.Equals(statusFailed)) && _.OrderDetailId != null).FirstOrDefaultAsync();
             return rs;
         }
 
-        public async Task<List<OrderDetail>> GetCompletedOrderDetails(string status)
+        public async Task<List<OrderDetail>> GetCompletedOrderDetails(string statusCompleted, string statusFailed)
         {
             // Ham can sua
-            return await _dbSet.Include(_ => _.ServiceDetail).Include(_ => _.Order).Include(_ => _.AssigningOrderDetails).ThenInclude(_ => _.ValuationStaff).Where(_ => _.Status == status).ToListAsync();
+            return await _dbSet.Include(_ => _.ServiceDetail).Include(_ => _.Order).Include(_ => _.AssigningOrderDetails).ThenInclude(_ => _.ValuationStaff)
+                               .Where(_ => _.Status.Equals(statusCompleted) || _.Status.Equals(statusFailed)).ToListAsync();
         }
         public async Task<int> GetTotalQuantity(int orderid)
         {

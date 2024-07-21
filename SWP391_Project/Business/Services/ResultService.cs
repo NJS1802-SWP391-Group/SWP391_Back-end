@@ -134,7 +134,9 @@ namespace Business.Services
                     return new ServiceResult(404, "Cannot find order detail");
                 }
 
-                if (orDetail.OrderId != null)
+                var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActive(orDetail.OrderDetailId);
+
+                if (assigningOrDetail.ResultId != null)
                 {
                     return new ServiceResult(400, "Fail");
                 }
