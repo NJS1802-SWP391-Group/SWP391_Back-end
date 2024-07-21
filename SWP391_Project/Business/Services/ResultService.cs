@@ -144,8 +144,7 @@ namespace Business.Services
                 createObj.Code = orDetail.Code;
                 if (!createObj.IsDiamond)
                 {
-                    createObj.Status = ResultStatusEnum.IsNotDiamond.ToString();
-                    orDetail.Status = ValuationDetailStatusEnum.Failed.ToString();
+                    createObj.Status = ResultStatusEnum.Pending.ToString();
                     createObj.Carat = 0;
                     createObj.Clarity = "NaN";
                     createObj.Symmetry = "NaN";
@@ -166,15 +165,16 @@ namespace Business.Services
                 
                 if (rs != null)
                 {
-                    orDetail.OrderId = rs.ResultId;
+                    assigningOrDetail.ResultId = rs.ResultId;
                     var rsUpdate = await _unitOfWork.OrderDetailRepository.UpdateAsync(orDetail);
+                    var update = await _unitOfWork.AssigningOrderDetailRepository.UpdateAsync(assigningOrDetail);
 
                     if (rs.IsDiamond && req.ClarityImages.Any() &&req.ProportionImages.Any())
                     {
                         var proportionImageUrls = req.ProportionImages;
                         foreach (var imageUrl in proportionImageUrls)
                         {
-                            var resultImage = new ResultImage
+                            var resultImage = new Data.DiavanModels.ResultImage
                             {
                                 ImageGuid = Guid.NewGuid(),
                                 ResultId = rs.ResultId,

@@ -128,4 +128,50 @@ public class AuthController : ControllerBase
             Customer = customer
         }));
     }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> CheckTokenCustomer()
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var token))
+        {
+            return StatusCode(404, "Cannot find user");
+        }
+        token = token.ToString().Split()[1];
+        var currentUser = await _userService.GetCustomerInToken(token);
+        if (currentUser == null)
+        {
+            return StatusCode(404, "Cannot find user");
+        }
+        // Here goes your token validation logic
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            throw new BadRequestException("Authorization header is missing or invalid.");
+        }
+        // Decode the JWT token
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+
+        // Check if the token is expired
+        if (jwtToken.ValidTo < DateTime.UtcNow)
+        {
+            throw new BadRequestException("Token has expired.");
+        }
+
+        string email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+
+        var user = await _userService.GetCustomerByUserName(email);
+        var customer = await _userService.GetCustomerById(currentUser.CustomerId);
+        if (user.Data == null)
+        {
+            return BadRequest("username is in valid");
+        }
+
+        // If token is valid, return success response
+        return Ok(ApiResult<CheckTokenResponse>.Succeed(new CheckTokenResponse
+        {
+            User = user.Data,
+            Customer = customer
+        }));
+    }
 }

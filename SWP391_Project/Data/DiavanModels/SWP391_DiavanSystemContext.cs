@@ -52,8 +52,6 @@ namespace Data.DiavanModels
             {
                 entity.ToTable("AssigningOrderDetail");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Status)
                     .IsRequired()
                     .HasMaxLength(50)

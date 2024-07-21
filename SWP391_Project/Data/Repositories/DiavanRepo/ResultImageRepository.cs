@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories.DiavanRepo
 {
-    public class ResultImageRepository : GenericRepository<ResultImage>
+    public class ResultImageRepository : GenericRepository<Data.DiavanModels.ResultImage>
     {
         public ResultImageRepository() { }
 
