@@ -3,11 +3,10 @@ using Business.Constants;
 using Common.Enums;
 using Common.Requests;
 using Common.Responses;
+using Data.DiamondModels;
+using Data.DiavanModels;
 using Data.Repositories;
-using Domain.DiamondEntities;
-using Domain.DiavanEntities;
 using Microsoft.EntityFrameworkCore;
-using SWP391_Project.Data.Databases.DiamondSystem;
 using SWP391_Project.DTOs;
 using System;
 using System.Collections.Generic;
@@ -19,11 +18,11 @@ namespace Business.Services
 {
     public class DiamondService
     {
-        private readonly DiamondContext _diamondContext;
+        private readonly SWP391_DiamondSystemContext _diamondContext;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public DiamondService(DiamondContext diamondContext, UnitOfWork unitOfWork, IMapper mapper)
+        public DiamondService(SWP391_DiamondSystemContext diamondContext, UnitOfWork unitOfWork, IMapper mapper)
         {
             _diamondContext = diamondContext;
             _unitOfWork = unitOfWork;

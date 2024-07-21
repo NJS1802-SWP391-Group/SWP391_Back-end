@@ -8,7 +8,6 @@ using SWP391_Project.Common.Responses;
 using SWP391_Project.Services;
 using API.Auth;
 using Domain.Exceptions;
-using SWP391_Project.Domain.DiavanEntities;
 
 namespace SWP391_Project.API.Auth;
 

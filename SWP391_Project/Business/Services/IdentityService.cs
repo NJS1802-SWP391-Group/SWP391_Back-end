@@ -8,8 +8,8 @@ using SWP391_Project.Settings;
 using SWP391_Project.Common.Requests;
 using SWP391_Project.Dtos.Auth;
 using Data.Repositories;
-using SWP391_Project.Domain.DiavanEntities;
 using Business.Constants;
+using Data.DiavanModels;
 
 namespace SWP391_Project.Services
 {
@@ -79,9 +79,9 @@ namespace SWP391_Project.Services
 
                 var customer = new Customer
                 {
-                    AccountId = account.AccountId,
+                    
                     Address = req.Address,
-                    CCCD = req.CCCD,
+                    Cccd = req.CCCD,
                     Dob = req.Dob,
                     Email = req.Email,
                     FirstName = req.FirstName,
@@ -94,7 +94,6 @@ namespace SWP391_Project.Services
 
                 var cusRes = await _unitOfWork.CustomerRepository.SaveAsync();
 
-                account.CustomerId = customer.CustomerId;
                 var rs = await _unitOfWork.UserRepository.UpdateAsync(account);
 
                 if (rs > 0)
@@ -112,7 +111,7 @@ namespace SWP391_Project.Services
 
         public LoginResult LoginAsCustomer(string userName, string password)
         {
-            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName && u.RoleName == "Customer" && u.CustomerId != null).FirstOrDefault();
+            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName && u.RoleName == "Customer" && u.Status != "False").FirstOrDefault();
 
             if (user is null)
             {
@@ -137,7 +136,7 @@ namespace SWP391_Project.Services
 
             return new LoginResult
             {
-                CustomerId = user.CustomerId,
+                CustomerId = user.AccountId,
                 RoleName = user.RoleName,
                 Authenticated = true,
                 Token = CreateJwtToken(user),
@@ -146,7 +145,7 @@ namespace SWP391_Project.Services
 
         public LoginResult LoginAsSystem(string userName, string password)
         {
-            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName && u.RoleName != "Customer" && u.CustomerId == null).FirstOrDefault();
+            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName && u.RoleName != "Customer" && u.AccountId == null).FirstOrDefault();
 
             if (user is null)
             {
@@ -171,7 +170,7 @@ namespace SWP391_Project.Services
 
             return new LoginResult
             {
-                CustomerId = user.CustomerId,
+                CustomerId = user.AccountId,
                 RoleName = user.RoleName,
                 Authenticated = true,
                 Token = CreateJwtToken(user),

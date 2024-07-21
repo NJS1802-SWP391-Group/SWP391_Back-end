@@ -6,7 +6,6 @@ using SWP391_Project.Common;
 using SWP391_Project.Services;
 using System.Net;
 using SWP391_Project.Dtos;
-using SWP391_Project.Domain.DiavanEntities;
 using Business.Services;
 
 namespace API.Controllers

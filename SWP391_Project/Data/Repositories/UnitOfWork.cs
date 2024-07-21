@@ -1,8 +1,8 @@
-﻿using Data.Repositories.DiamondRepo;
+﻿using Data.DiamondModels;
+using Data.DiavanModels;
+using Data.Repositories.DiamondRepo;
 using Data.Repositories.DiavanRepo;
 using Microsoft.EntityFrameworkCore.Storage;
-using SWP391_Project.Data.Databases.DiamondSystem;
-using SWP391_Project.Data.Databases.DiavanSystem;
 using SWP391_Project.Data.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,9 +14,9 @@ namespace Data.Repositories
 {
     public class UnitOfWork: IDisposable
     {
-        private DiamondContext _diamondContext;
+        private SWP391_DiamondSystemContext  _diamondContext;
         private DiamondCheckRepository _diamondCheckRepository;
-        private AppDbContext _context;
+        private SWP391_DiavanSystemContext _context;
         private BlogRepository _blogRepository;
         private CustomerRepository _customerRepository;
         private DiamondRepository _diamondRepository;
@@ -31,13 +31,13 @@ namespace Data.Repositories
 
         public UnitOfWork() 
         {
-            _context = new AppDbContext();
+            _context = new SWP391_DiavanSystemContext();
         }
-        public UnitOfWork(AppDbContext context) {
+        public UnitOfWork(SWP391_DiavanSystemContext context) {
             _context = context;
         }
 
-        public UnitOfWork(DiamondContext diamondContext, AppDbContext context, BlogRepository blogRepository, CustomerRepository customerRepository, DiamondRepository diamondRepository, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, 
+        public UnitOfWork(SWP391_DiamondSystemContext diamondContext, SWP391_DiavanSystemContext context, BlogRepository blogRepository, CustomerRepository customerRepository, DiamondRepository diamondRepository, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, 
             ResultRepository resultRepository, ServiceDetailRepository serviceDetailRepository, ServiceRepository serviceRepository, UserRepository userRepository, ResultImageRepository resultImageRepository, DiamondCheckRepository diamondCheckRepository)
         {
             _diamondContext = diamondContext;

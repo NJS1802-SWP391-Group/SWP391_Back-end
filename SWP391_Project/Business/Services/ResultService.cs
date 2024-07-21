@@ -5,11 +5,10 @@ using Common.DTOs;
 using Common.Enums;
 using Common.Requests;
 using Common.Responses;
+using Data.DiavanModels;
 using Data.Helpers;
 using Data.Repositories;
-using Domain.DiavanEntities;
 using SWP391_Project.Common.Requests;
-using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.DTOs;
 using System;
 using System.Collections.Generic;
@@ -135,7 +134,7 @@ namespace Business.Services
                     return new ServiceResult(404, "Cannot find order detail");
                 }
 
-                if (orDetail.ResultId != null)
+                if (orDetail.OrderId != null)
                 {
                     return new ServiceResult(400, "Fail");
                 }
@@ -165,7 +164,7 @@ namespace Business.Services
                 
                 if (rs != null)
                 {
-                    orDetail.ResultId = rs.ResultId;
+                    orDetail.OrderId = rs.ResultId;
                     var rsUpdate = await _unitOfWork.OrderDetailRepository.UpdateAsync(orDetail);
 
                     if (rs.IsDiamond && req.ClarityImages.Any() &&req.ProportionImages.Any())
@@ -176,7 +175,7 @@ namespace Business.Services
                             var resultImage = new ResultImage
                             {
                                 ImageGuid = Guid.NewGuid(),
-                                ResultID = rs.ResultId,
+                                ResultId = rs.ResultId,
                                 ImageType = "Proportions",
                                 Status = "Active"
                             };
@@ -198,7 +197,7 @@ namespace Business.Services
                             var resultImage = new ResultImage
                             {
                                 ImageGuid = Guid.NewGuid(),
-                                ResultID = rs.ResultId,
+                                ResultId = rs.ResultId,
                                 ImageType = "Clarity Characteristics",
                                 Status = "Active"
                             };
@@ -240,7 +239,7 @@ namespace Business.Services
                 var result = await _unitOfWork.ResultRepository.GetByIdAsync(id);
                 if (result != null)
                 {
-                    var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(result.OrderDetailId);
+                    var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(result.ResultId);
                     var updateObj = _mapper.Map(req, result);
                     if(!updateObj.IsDiamond)
                     {
@@ -293,7 +292,7 @@ namespace Business.Services
                             var resultImage = new ResultImage
                             {
                                 ImageGuid = Guid.NewGuid(),
-                                ResultID = id,
+                                ResultId = id,
                                 ImageType = "Proportions",
                                 Status = "Active"
                             };
@@ -315,7 +314,7 @@ namespace Business.Services
                             var resultImage = new ResultImage
                             {
                                 ImageGuid = Guid.NewGuid(),
-                                ResultID = id,
+                                ResultId = id,
                                 ImageType = "Clarity Characteristics",
                                 Status = "Active"
                             };

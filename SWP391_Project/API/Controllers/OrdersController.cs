@@ -29,8 +29,7 @@ namespace API.Controllers
         {
             var result = await _orderService.CountOrders();
             return StatusCode(result.Status, result.Data == null ? result.Message : result.Data);
-        }       
-        
+        }
         [AllowAnonymous]
         [HttpGet("All")]
         public async Task<IActionResult> GetAllOrder()

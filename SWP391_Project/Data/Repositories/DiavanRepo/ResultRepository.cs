@@ -1,7 +1,6 @@
-﻿using Data.Repositories.Generic;
+﻿using Data.DiavanModels;
+using Data.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
-using SWP391_Project.Data.Databases.DiavanSystem;
-using SWP391_Project.Domain.DiavanEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +20,8 @@ namespace Data.Repositories.DiavanRepo
 
         public async Task<Result> GetByOrderDetailIdAsync(int id)
         {
-            return await _dbSet.Where(_ => _.OrderDetailId == id).FirstOrDefaultAsync();
+            return await _dbSet.Where(_ => _.AssigningOrderDetails == null).FirstOrDefaultAsync();
+            // ham can sua
         }  
     }
 }

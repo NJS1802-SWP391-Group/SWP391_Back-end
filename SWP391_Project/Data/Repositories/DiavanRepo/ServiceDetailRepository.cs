@@ -1,7 +1,6 @@
-﻿using Data.Repositories.Generic;
+﻿using Data.DiavanModels;
+using Data.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
-using SWP391_Project.Data.Databases.DiavanSystem;
-using SWP391_Project.Domain.DiavanEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace Data.Repositories.DiavanRepo
 
         public async Task<(ServiceDetail, double price)> GetDetailByServiceIdAndLengthAsync(int serviceID, double length)
         {
-            var details = await _dbSet.Where(_ => _.ServiceID == serviceID && _.Status.ToLower().Trim() == "active").ToListAsync();
+            var details = await _dbSet.Where(_ => _.ServiceId == serviceID && _.Status.ToLower().Trim() == "active").ToListAsync();
             foreach (var detail in details)
             {
                 if (length > detail.MinRange && length <= detail.MaxRange)
@@ -29,8 +28,8 @@ namespace Data.Repositories.DiavanRepo
                     return (detail, detail.Price);
                 }
             }
-            var rs = details.Where(_ => _.MaxRange == 0 && _.ExtraPricePerMM > 0).FirstOrDefault();
-            var price = rs.Price + (length - rs.MinRange) * rs.ExtraPricePerMM;
+            var rs = details.Where(_ => _.MaxRange == 0 && _.ExtraPricePerMm > 0).FirstOrDefault();
+            var price = rs.Price + (length - rs.MinRange) * rs.ExtraPricePerMm;
             return (rs, price);
         }
     }

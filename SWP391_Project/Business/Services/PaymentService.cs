@@ -120,7 +120,7 @@ namespace Business.Services
                     if (order.StatusPayment == OrderStatusEnum.Cancelled.ToString()) throw new Exception("order is canceled");
                 }
                 var amount = (order.TotalPay * 100).ToString();
-                var vnp_TxnRef = $"{userId}{order.OrderID}{DateTime.Now.ToString("HHmmss")}";
+                var vnp_TxnRef = $"{userId}{order.OrderId}{DateTime.Now.ToString("HHmmss")}";
                 var vnp_Amount = amount;
 
                 var vnpay = new VNPayHelper();

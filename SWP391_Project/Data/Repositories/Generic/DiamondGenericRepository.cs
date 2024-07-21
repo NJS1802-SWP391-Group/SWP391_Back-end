@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SWP391_Project.Data.Databases.DiamondSystem;
-using SWP391_Project.Data.Databases.DiavanSystem;
+﻿using Data.DiamondModels;
+using Microsoft.EntityFrameworkCore;
 using SWP391_Project.Data.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,16 +12,16 @@ namespace Data.Repositories.Generic
     public class DiamondGenericRepository<T> : IRepository<T> where T : class
     {
         protected readonly DbSet<T> _dbSet;
-        protected readonly DiamondContext _context;
+        protected readonly SWP391_DiamondSystemContext _context;
         public DiamondGenericRepository()
         {
-            _context = new DiamondContext();
+            _context = new SWP391_DiamondSystemContext();
             _dbSet = _context.Set<T>();
         }
 
         #region Separating asign entity and save operators
 
-        public DiamondGenericRepository(DiamondContext context)
+        public DiamondGenericRepository(SWP391_DiamondSystemContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();

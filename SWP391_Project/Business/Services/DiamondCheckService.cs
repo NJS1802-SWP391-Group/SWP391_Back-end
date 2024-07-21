@@ -3,7 +3,6 @@ using Business.Constants;
 using Common.Responses;
 using Data.Repositories;
 using Data.Repositories.DiamondRepo;
-using SWP391_Project.Domain.DiavanEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

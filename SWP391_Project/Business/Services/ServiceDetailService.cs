@@ -2,10 +2,10 @@
 using Business.Constants;
 using Common.Requests;
 using Common.Responses;
+using Data.DiavanModels;
 using Data.Repositories;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using SWP391_Project.Common.Requests;
-using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.DTOs;
 using System;
 using System.Collections.Generic;
@@ -97,15 +97,15 @@ namespace Business.Services
         {
             try
             {
-                var rs = await _unitOfWork.ServiceDetailRepository.CreateAsync(new ServiceDetail
+                var rs = await _unitOfWork.ServiceDetailRepository.CreateAsync(new ServiceDetail    
                 {
                     MinRange = req.MinRange,
                     MaxRange = req.MaxRange,
-                    ExtraPricePerMM = req.ExtraPricePerMM,
+                    ExtraPricePerMm = req.ExtraPricePerMM,
                     Price = req.Price,
                     Status = "Active",
                     Code = req.Code,
-                    ServiceID = req.ServiceID,
+                    ServiceId = req.ServiceID,
                 });
                 if (rs != null)
                 {
@@ -132,7 +132,7 @@ namespace Business.Services
                     service.MinRange = req.MinRange;
                     service.MaxRange = req.MaxRange;
                     service.Price = req.Price;
-                    service.ExtraPricePerMM = req.ExtraPricePerMM;
+                    service.ExtraPricePerMm = req.ExtraPricePerMM;
                     
                     var rs = await _unitOfWork.ServiceDetailRepository.UpdateAsync(service);
                     if (rs > 0)
@@ -195,7 +195,7 @@ namespace Business.Services
                 var rs = new GetServiceDetailPriceResponse
                 {
                     Price = price,
-                    ServiceDetailID = detail.ServiceDetailID,
+                    ServiceDetailID = detail.ServiceDetailId,
                 };
                 if (rs.Price <= 0)
                 {

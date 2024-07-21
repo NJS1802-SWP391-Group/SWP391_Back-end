@@ -2,7 +2,6 @@
 using Common.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SWP391_Project.Domain.DiavanEntities;
 
 namespace API.Controllers
 {

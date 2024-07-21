@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Business.Constants;
+using Data.DiavanModels;
 using Data.Repositories;
-using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Common.Requests;
 using SWP391_Project.DTOs;
 
