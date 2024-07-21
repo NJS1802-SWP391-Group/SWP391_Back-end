@@ -168,48 +168,51 @@ namespace Business.Services
                     orDetail.ResultId = rs.ResultId;
                     var rsUpdate = await _unitOfWork.OrderDetailRepository.UpdateAsync(orDetail);
 
-                    var proportionImageUrls = req.ProportionImages;
-                    foreach (var imageUrl in proportionImageUrls)
+                    if (rs.IsDiamond && req.ClarityImages.Any() &&req.ProportionImages.Any())
                     {
-                        var resultImage = new ResultImage
+                        var proportionImageUrls = req.ProportionImages;
+                        foreach (var imageUrl in proportionImageUrls)
                         {
-                            ImageGuid = Guid.NewGuid(),
-                            ResultID = rs.ResultId,
-                            ImageType = "Proportions",
-                            Status = "Active"
-                        };
-                        await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
-                        var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
-                        var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
-                        if (imageUploadResult.Status == 500)
-                        {
-                            return new ServiceResult(500, "Error uploading files to Firebase.");
+                            var resultImage = new ResultImage
+                            {
+                                ImageGuid = Guid.NewGuid(),
+                                ResultID = rs.ResultId,
+                                ImageType = "Proportions",
+                                Status = "Active"
+                            };
+                            await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
+                            var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
+                            var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
+                            if (imageUploadResult.Status == 500)
+                            {
+                                return new ServiceResult(500, "Error uploading files to Firebase.");
+                            }
+
+                            resultImage.ImageUrl = (string)imageUploadResult.Data;
+                            _unitOfWork.ResultImageRepository.Update(resultImage);
                         }
 
-                        resultImage.ImageUrl = (string)imageUploadResult.Data;
-                        _unitOfWork.ResultImageRepository.Update(resultImage);
-                    }
+                        var clarityImageUrls = req.ClarityImages;
+                        foreach (var imageUrl in clarityImageUrls)
+                        {
+                            var resultImage = new ResultImage
+                            {
+                                ImageGuid = Guid.NewGuid(),
+                                ResultID = rs.ResultId,
+                                ImageType = "Clarity Characteristics",
+                                Status = "Active"
+                            };
+                            await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
+                            var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
+                            var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
+                            if (imageUploadResult.Status == 500)
+                            {
+                                return new ServiceResult(500, "Error uploading files to Firebase.");
+                            }
 
-                    var clarityImageUrls = req.ClarityImages;
-                    foreach (var imageUrl in clarityImageUrls)
-                    {
-                        var resultImage = new ResultImage
-                        {
-                            ImageGuid = Guid.NewGuid(),
-                            ResultID = rs.ResultId,
-                            ImageType = "Clarity Characteristics",
-                            Status = "Active"
-                        };
-                        await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
-                        var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
-                        var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
-                        if (imageUploadResult.Status == 500)
-                        {
-                            return new ServiceResult(500, "Error uploading files to Firebase.");
+                            resultImage.ImageUrl = (string)imageUploadResult.Data;
+                            _unitOfWork.ResultImageRepository.Update(resultImage);
                         }
-
-                        resultImage.ImageUrl = (string)imageUploadResult.Data;
-                        _unitOfWork.ResultImageRepository.Update(resultImage);
                     }
 
                     if (rsUpdate < 1)
