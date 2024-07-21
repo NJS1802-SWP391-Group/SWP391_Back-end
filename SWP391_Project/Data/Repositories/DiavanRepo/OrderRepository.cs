@@ -19,7 +19,7 @@ namespace Data.Repositories.DiavanRepo
         }
         public async Task<Order> GetOrderByIdAsync(int id)
         {
-            var order = await _dbSet.Include(x=>x.OrderDetails).ThenInclude(x=>x.ServiceDetail).ThenInclude(x=>x.Service).Include(x=>x.Customer).FirstOrDefaultAsync(x=>x.OrderId==id);
+            var order = await _dbSet.Include(x=>x.OrderDetails).ThenInclude(x=>x.Service).Include(x=>x.Customer).FirstOrDefaultAsync(x=>x.OrderId==id);
             return order;
         }
         public async Task<List<Order>> GetAllOrder()
@@ -34,12 +34,12 @@ namespace Data.Repositories.DiavanRepo
         }
         public async Task<Order> GetOrderByCode(string code)
         {
-            var order = await _dbSet.Include(x => x.OrderDetails).ThenInclude(y => y.ServiceDetail).FirstOrDefaultAsync(x => x.Code == code);
+            var order = await _dbSet.Include(x => x.OrderDetails).ThenInclude(y => y.Service).FirstOrDefaultAsync(x => x.Code == code);
             return order;
         }
         public async Task<List<Order>> GetOrdersByCustomerId(int customerId)
         {
-            var orders = await _dbSet.Where(x=>x.CustomerId==customerId).Include(x=>x.Customer).Include(x=>x.OrderDetails).ThenInclude(y=>y.ServiceDetail).ToListAsync();
+            var orders = await _dbSet.Where(x=>x.CustomerId==customerId).Include(x=>x.Customer).Include(x=>x.OrderDetails).ThenInclude(y=>y.Service).ToListAsync();
             return orders;
         }
     }

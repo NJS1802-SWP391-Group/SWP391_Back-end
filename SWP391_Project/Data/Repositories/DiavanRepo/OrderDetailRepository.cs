@@ -31,7 +31,7 @@ namespace Data.Repositories.DiavanRepo
         public async Task<List<OrderDetail>> GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff(string statusAssigning, string statusReassigning)
         {
             // ham can sua
-            return await _dbSet.Include(_ => _.ServiceDetail).ThenInclude(_ => _.Service)
+            return await _dbSet.Include(_ => _.Service).ThenInclude(_ => _.ServiceDetails)
                 .Include(_ => _.Order)
                 .Where(_ => _.Status == statusAssigning || _.Status == statusReassigning).ToListAsync();
         }
@@ -39,7 +39,7 @@ namespace Data.Repositories.DiavanRepo
         public async Task<List<OrderDetail>> GetOrderDetailsByValuStaff(string status)
         {
            // ham can sua
-            return await _dbSet.Include(_ => _.ServiceDetail).ThenInclude(_ => _.Service).Where(_ => _.Status == status).ToListAsync();
+            return await _dbSet.Include(_ => _.Service).ThenInclude(_ => _.ServiceDetails).Where(_ => _.Status == status).ToListAsync();
         }
 
         public async Task<OrderDetail> GetByIdAndIsAssigning(int orderDetailId, string statusAssigning, string statusReassigning)
@@ -65,7 +65,7 @@ namespace Data.Repositories.DiavanRepo
         public async Task<List<OrderDetail>> GetCompletedOrderDetails(string statusCompleted, string statusFailed)
         {
             // Ham can sua
-            return await _dbSet.Include(_ => _.ServiceDetail).ThenInclude(_ => _.Service).Include(_ => _.Order)
+            return await _dbSet.Include(_ => _.Service).ThenInclude(_ => _.ServiceDetails).Include(_ => _.Order)
                                .Where(_ => _.Status.Equals(statusCompleted) || _.Status.Equals(statusFailed)).ToListAsync();
         }
         public async Task<int> GetTotalQuantity(int orderid)

@@ -57,8 +57,8 @@ namespace Business.Services
                         OrderCode = result.Order.Code,
                         OrderDetailCode = result.Code,
                         OrderDetailID = result.OrderDetailId,
-                        ServiceName = result.ServiceDetail.Service.Name,
-                        ServicePrice = result.ServiceDetail.Price,
+                        ServiceName = result.ServiceName,
+                        ServicePrice = result.Price,
                         Status = result.Status,
                         ValuatingStaffName = assigningOrDetail == null ? null : assigningOrDetail.ValuationStaff.UserName
                     });
@@ -86,7 +86,7 @@ namespace Business.Services
                     {
                         OrderCode = result.Order.Code,
                         OrderDetailCode = result.Code,
-                        ServiceName = result.ServiceDetail.Service.Name,
+                        ServiceName = result.ServiceName,
                         Status = result.Status,
                         OrderDetailId = result.OrderDetailId,
                         ResultId = (int)assigningOrDetail.ResultId,
@@ -116,7 +116,7 @@ namespace Business.Services
                     list.Add(new StaffOrderDetailsResponse
                     {
                         OrderDetailCode = result.Code,
-                        ServiceName = result.ServiceDetail.Service.Name,
+                        ServiceName = result.ServiceName,
                         Status = result.Status,
                         OrderDetailId = result.OrderDetailId,
                         ResultID = (int)assigningOrDetail.ResultId,
@@ -215,6 +215,7 @@ namespace Business.Services
                 detail.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price;
                 detail.Code = GenerateCode.OrderDetailCode(orderId);
                 detail.OrderId = orderId;
+                detail.ServiceName = (await _unitOfWork.ServiceRepository.GetByIdAsync(detail.ServiceId)).Name;
                 detail.Status = ValuationDetailStatusEnum.Pending.ToString();
                 await _unitOfWork.OrderDetailRepository.CreateAsync(detail);
                 if (order.Quantity == null || order.Quantity == 0) order.Quantity = 0;
@@ -266,7 +267,8 @@ namespace Business.Services
                 if (orderDetail == null) throw new Exception("Can not found OrderDetail");
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderDetail.OrderId);
                 if (order == null) throw new Exception("Can not found Order");
-                orderDetail.ServiceDetailId = orderDetailUpdate.ServiceId;
+                orderDetail.ServiceId = orderDetailUpdate.ServiceId;
+                orderDetail.ServiceName = (await _unitOfWork.ServiceRepository.GetByIdAsync(orderDetailUpdate.ServiceId)).Name;
                 orderDetail.EstimateLength = orderDetailUpdate.EstimateLength;
                 orderDetail.Price =(await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(orderDetailUpdate.ServiceId, orderDetailUpdate.EstimateLength)).price;
                 _unitOfWork.OrderDetailRepository.Update(orderDetail);

@@ -2,7 +2,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using Data.DiamondModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -19,13 +18,12 @@ namespace Data.DiavanModels
         {
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-   => optionsBuilder.UseSqlServer("data source=diavan-valuation.asia;initial catalog=SWP391_DiavanSystem;user id=sa;password=<YourStrong@Passw0rd>;trustservercertificate=true;multipleactiveresultsets=true;");
-
+=> optionsBuilder.UseSqlServer("data source=diavan-valuation.asia;initial catalog=SWP391_DiavanSystem;user id=sa;password=<YourStrong@Passw0rd>;trustservercertificate=true;multipleactiveresultsets=true;");
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<AssigningOrderDetail> AssigningOrderDetails { get; set; }
         public virtual DbSet<Blog> Blogs { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<Diamond> Diamonds { get; set; }
+        public virtual DbSet<SystemDiamond> Diamonds { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Result> Results { get; set; }
@@ -104,15 +102,17 @@ namespace Data.DiavanModels
 
                 entity.Property(e => e.LastName).IsRequired();
 
+                entity.Property(e => e.Password).IsRequired();
+
                 entity.Property(e => e.PhoneNumber).IsRequired();
 
                 entity.Property(e => e.Status).IsRequired();
             });
 
-            modelBuilder.Entity<Diamond>(entity =>
+            modelBuilder.Entity<SystemDiamond>(entity =>
             {
-                entity.ToTable("Diamond");
-
+                entity.ToTable("SystemDiamond");
+                entity.HasKey(e => e.DiamondId);
                 entity.Property(e => e.Status).IsRequired();
             });
 
@@ -140,17 +140,19 @@ namespace Data.DiavanModels
 
                 entity.Property(e => e.Code).IsRequired();
 
+                entity.Property(e => e.ServiceName).HasMaxLength(50);
+
                 entity.Property(e => e.Status).IsRequired();
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId);
 
-                entity.HasOne(d => d.ServiceDetail)
+                entity.HasOne(d => d.Service)
                     .WithMany(p => p.OrderDetails)
-                    .HasForeignKey(d => d.OrderId)
+                    .HasForeignKey(d => d.ServiceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderDetail_ServiceDetail");
+                    .HasConstraintName("FK_OrderDetail_Service");
             });
 
             modelBuilder.Entity<Result>(entity =>

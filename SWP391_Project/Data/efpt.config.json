@@ -6,7 +6,7 @@
    "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": null,
-   "OutputPath": "DiamondModels",
+   "OutputPath": "DiavanModels",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "Data",
    "Schemas": null,
@@ -15,15 +15,47 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "Name": "[dbo].[Account]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AssigningOrderDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Blog]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Customer]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Diamond]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[DiamondCheck]",
+         "Name": "[dbo].[Order]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[DiamondCheckValue]",
+         "Name": "[dbo].[OrderDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Result]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ResultImage]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Service]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ServiceDetail]",
          "ObjectType": 0
       }
    ],

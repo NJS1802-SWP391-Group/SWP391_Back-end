@@ -7,11 +7,6 @@ namespace Data.DiavanModels
 {
     public partial class ServiceDetail
     {
-        public ServiceDetail()
-        {
-            OrderDetails = new HashSet<OrderDetail>();
-        }
-
         public int ServiceDetailId { get; set; }
         public string Code { get; set; }
         public double MinRange { get; set; }
@@ -22,6 +17,5 @@ namespace Data.DiavanModels
         public int ServiceId { get; set; }
 
         public virtual Service Service { get; set; }
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
