@@ -52,9 +52,43 @@ namespace SWP391_Project.Services
             var user = _unitOfWork.UserRepository.GetAll().Where(x => x.UserName == userName).FirstOrDefault();
             if (user is null)
             {
-                throw new BadRequestException("Can not found User");
+                throw new BadRequestException("Cannot find User");
             }
             return _mapper.Map<AccountModel>(user);
+        }
+        public async Task<AccountModel> GetCustomerInToken(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                throw new BadRequestException("Authorization header is missing or invalid.");
+            }
+            // Decode the JWT token
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            // Check if the token is expired
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                throw new BadRequestException("Token has expired.");
+            }
+            string userName = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+
+            var user = _unitOfWork.CustomerRepository.GetAll().Where(x => x.Email == userName).FirstOrDefault();
+            if (user is null)
+            {
+                throw new BadRequestException("Cannot find User");
+            }
+
+            var rs = new AccountModel
+            {
+                AccountId = user.CustomerId,
+                Password = user.Password,
+                RoleName = "Customer",
+                Status = user.Status,
+                UserName = user.Email
+            };
+
+            return rs;
         }
 
         public async Task<IServiceResult> GetAll()
@@ -160,6 +194,27 @@ namespace SWP391_Project.Services
             try
             {
                 var result = _mapper.Map<AccountModel>(_unitOfWork.UserRepository.GetAll().Where(_ => _.UserName == username).FirstOrDefault());
+                return new ServiceResult(1, "Get user by user name", result);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(-1, ex.Message);
+            }
+        }
+
+        public async Task<IServiceResult> GetCustomerByUserName(string username)
+        {
+            try
+            {
+                var customer = _unitOfWork.CustomerRepository.GetAll().Where(_ => _.Email == username).FirstOrDefault();
+                var result = new AccountModel
+                {
+                    UserName = customer.Email,
+                    Password = customer.Password,
+                    Status = customer.Status,
+                    AccountId = customer.CustomerId,
+                    RoleName = "Customer"
+                };
                 return new ServiceResult(1, "Get user by user name", result);
             }
             catch (Exception ex)

@@ -31,13 +31,15 @@ namespace Data.Repositories.DiavanRepo
         public async Task<List<OrderDetail>> GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff(string statusAssigning, string statusReassigning)
         {
             // ham can sua
-            return await _dbSet.Include(_ => _.ServiceDetail).Include(_ => _.ServiceDetail).Include(_ => _.AssigningOrderDetails).Where(_ => _.Status == statusAssigning || _.Status == statusReassigning).ToListAsync();
+            return await _dbSet.Include(_ => _.ServiceDetail).ThenInclude(_ => _.Service)
+                .Include(_ => _.Order)
+                .Where(_ => _.Status == statusAssigning || _.Status == statusReassigning).ToListAsync();
         }
 
-        public async Task<List<OrderDetail>> GetOrderDetailsByValuStaff(int staffId, string status)
+        public async Task<List<OrderDetail>> GetOrderDetailsByValuStaff(string status)
         {
            // ham can sua
-            return await _dbSet.Include(_ => _.ServiceDetail).Include(_ => _.AssigningOrderDetails).Where(_ => _.OrderDetailId == staffId && _.Status == status).ToListAsync();
+            return await _dbSet.Include(_ => _.ServiceDetail).ThenInclude(_ => _.Service).Where(_ => _.Status == status).ToListAsync();
         }
 
         public async Task<OrderDetail> GetByIdAndIsAssigning(int orderDetailId, string statusAssigning, string statusReassigning)
@@ -49,7 +51,7 @@ namespace Data.Repositories.DiavanRepo
         public async Task<OrderDetail> GetByIdAndIsValuatingAndHasResult(int orderDetailId, string status)
         {
             // Ham can sua
-            var rs = await _dbSet.Where(_ => _.OrderDetailId == orderDetailId && _.Status == status && _.AssigningOrderDetails != null).FirstOrDefaultAsync();
+            var rs = await _dbSet.Where(_ => _.OrderDetailId == orderDetailId && _.Status == status).FirstOrDefaultAsync();
             return rs;
         }
 
@@ -63,7 +65,7 @@ namespace Data.Repositories.DiavanRepo
         public async Task<List<OrderDetail>> GetCompletedOrderDetails(string statusCompleted, string statusFailed)
         {
             // Ham can sua
-            return await _dbSet.Include(_ => _.ServiceDetail).Include(_ => _.Order).Include(_ => _.AssigningOrderDetails).ThenInclude(_ => _.ValuationStaff)
+            return await _dbSet.Include(_ => _.ServiceDetail).ThenInclude(_ => _.Service).Include(_ => _.Order)
                                .Where(_ => _.Status.Equals(statusCompleted) || _.Status.Equals(statusFailed)).ToListAsync();
         }
         public async Task<int> GetTotalQuantity(int orderid)

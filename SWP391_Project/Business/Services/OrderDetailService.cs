@@ -46,7 +46,24 @@ namespace Business.Services
             try
             {
                 var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsWithOrderAndServiceAndResultAndValuationStaff(ValuationDetailStatusEnum.Assigning.ToString(), ValuationDetailStatusEnum.ReAssigning.ToString());
-                var rs = _mapper.Map<List<OrderDetailGeneralResponse>>(results);
+                var list = new List<OrderDetailGeneralResponse>();
+                foreach(var result in results)
+                {
+                    var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActive(result.OrderDetailId);
+
+                    list.Add(new OrderDetailGeneralResponse
+                    {
+                        EstimateLength = result.EstimateLength,
+                        OrderCode = result.Order.Code,
+                        OrderDetailCode = result.Code,
+                        OrderDetailID = result.OrderDetailId,
+                        ServiceName = result.ServiceDetail.Service.Name,
+                        ServicePrice = result.ServiceDetail.Price,
+                        Status = result.Status,
+                        ValuatingStaffName = assigningOrDetail == null ? null : assigningOrDetail.ValuationStaff.UserName
+                    });
+                }
+                var rs = list;
                 return new ServiceResult(200, "Get order details", rs);
             }
             catch (Exception ex)
@@ -60,7 +77,24 @@ namespace Business.Services
             try
             {
                 var results = await _unitOfWork.OrderDetailRepository.GetCompletedOrderDetails(ValuationDetailStatusEnum.Completed.ToString(), ValuationDetailStatusEnum.Failed.ToString());
-                var rs = _mapper.Map<List<GetDoneOrderDetailsResponse>>(results);
+                var list = new List<GetDoneOrderDetailsResponse>();
+                foreach (var result in results)
+                {
+                    var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActive(result.OrderDetailId);
+
+                    list.Add(new GetDoneOrderDetailsResponse
+                    {
+                        OrderCode = result.Order.Code,
+                        OrderDetailCode = result.Code,
+                        ServiceName = result.ServiceDetail.Service.Name,
+                        Status = result.Status,
+                        OrderDetailId = result.OrderDetailId,
+                        ResultId = (int)assigningOrDetail.ResultId,
+                        ValuatingPrice = result.Price,
+                        ValuationStaffName = assigningOrDetail.ValuationStaff.UserName
+                    });
+                }
+                var rs = list;
                 return new ServiceResult(200, "Get done order details", rs);
             }
             catch (Exception ex)
@@ -73,8 +107,23 @@ namespace Business.Services
         {
             try
             {
-                var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsByValuStaff(staffId, ValuationDetailStatusEnum.Valuating.ToString());
-                var rs = _mapper.Map<List<StaffOrderDetailsResponse>>(results);
+                var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsByValuStaff(ValuationDetailStatusEnum.Valuating.ToString());
+                var list = new List<StaffOrderDetailsResponse>();
+                foreach (var result in results)
+                {
+                    var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByStaffIDAndActive(staffId);
+
+                    list.Add(new StaffOrderDetailsResponse
+                    {
+                        OrderDetailCode = result.Code,
+                        ServiceName = result.ServiceDetail.Service.Name,
+                        Status = result.Status,
+                        OrderDetailId = result.OrderDetailId,
+                        ResultID = (int)assigningOrDetail.ResultId,
+                        FinalPrice = (double)assigningOrDetail.Result.DiamondValue,
+                    });
+                }
+                var rs = list;
                 return new ServiceResult(200, "Get order details", rs);
             }
             catch (Exception ex)
@@ -88,8 +137,9 @@ namespace Business.Services
             try
             {
                 var orDetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsValuatingAndHasResult(orDetailId, ValuationDetailStatusEnum.Valuating.ToString());
-                
-                if (orDetail == null)
+                var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActive(orDetail.OrderDetailId);
+
+                if (orDetail == null || assigningOrDetail == null || assigningOrDetail.Result == null)
                 {
                     return new ServiceResult(404, "Cannot find order detail");
                 }
@@ -126,7 +176,7 @@ namespace Business.Services
 
                 var assigningOrderDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActive(orderDetail.OrderDetailId);
 
-                if (orderDetail.Status.Equals(ValuationDetailStatusEnum.Assigning.ToString()) && assigningOrderDetail != null)
+                if (orderDetail.Status.Equals(ValuationDetailStatusEnum.Valuating.ToString()) && assigningOrderDetail != null)
                 {
                     return new ServiceResult(500, "Order detail already assigned");
                 }
@@ -239,33 +289,35 @@ namespace Business.Services
             try
             {
                 var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString(), ValuationDetailStatusEnum.Failed.ToString());
-                if (orderdetail == null) 
-                { 
-                    throw new Exception("Cannot find order detail"); 
+                var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActive(orderdetail.OrderDetailId);
+
+                if (orderdetail == null || assigningOrDetail == null || assigningOrDetail.Result == null)
+                {
+                    return new ServiceResult(404, "Cannot find order detail");
                 }
                 // can sua
-                var result = await _unitOfWork.ResultRepository.GetByIdAsync(orderdetail.OrderId);
+                var result = await _unitOfWork.ResultRepository.GetByIdAsync((int)assigningOrDetail.ResultId);
 
                 if (result == null)
                 {
                     return new ServiceResult(400, "Fail to find result");
                 }
 
-                result.Status = ResultStatusEnum.Approved.ToString();
-                
-                var updateRs = await _unitOfWork.ResultRepository.UpdateAsync(result);
-                if (updateRs < 1)
-                {
-                    return new ServiceResult(400, "Failed");
-                }
-
                 if (!result.IsDiamond)
                 {
                     orderdetail.Status = ValuationDetailStatusEnum.Failed.ToString();
+                    result.Status = ResultStatusEnum.IsNotDiamond.ToString();
                 }
                 else
                 {
                     orderdetail.Status = ValuationDetailStatusEnum.Certificated.ToString();
+                    result.Status = ResultStatusEnum.Approved.ToString();
+                }
+
+                var updateRs = await _unitOfWork.ResultRepository.UpdateAsync(result);
+                if (updateRs < 1)
+                {
+                    return new ServiceResult(400, "Failed");
                 }
 
                 var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orderdetail);
@@ -308,10 +360,15 @@ namespace Business.Services
             try
             {
                 var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString(), ValuationDetailStatusEnum.Failed.ToString());
-                if (orderdetail == null) { throw new Exception("Cannot find order detail"); }
+                var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActive(orderdetail.OrderDetailId);
+
+                if (orderdetail == null || assigningOrDetail == null || assigningOrDetail.Result == null)
+                {
+                    return new ServiceResult(404, "Cannot find order detail");
+                }
                 orderdetail.Status = ValuationDetailStatusEnum.ReAssigning.ToString();
                 // can sua
-                var result = await _unitOfWork.ResultRepository.GetByIdAsync(orderdetail.OrderId);
+                var result = await _unitOfWork.ResultRepository.GetByIdAsync((int)assigningOrDetail.ResultId);
                 
                 if (result == null)
                 {
@@ -325,10 +382,10 @@ namespace Business.Services
                     return new ServiceResult(400, "Failed");
                 }
 
-                //orderdetail.Result = null;
-                //orderdetail.ResultId = null;           
+                assigningOrDetail.Status = "Inactive";       
                 var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orderdetail);
-                if (rs < 1)
+                var rsA = await _unitOfWork.AssigningOrderDetailRepository.UpdateAsync(assigningOrDetail);
+                if (rs < 1 || rsA < 1)
                 {
                     return new ServiceResult(400, "Failed");
                 }
