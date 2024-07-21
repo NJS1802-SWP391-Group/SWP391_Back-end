@@ -27,6 +27,7 @@ namespace Data.Repositories
         private ServiceRepository _serviceRepository;
         private UserRepository _userRepository;
         private ResultImageRepository _resultImageRepository;
+        private AssigningOrderDetailRepository _assigningOrderDetailRepository;
         private IDbContextTransaction _transaction;
 
         public UnitOfWork() 
@@ -38,7 +39,7 @@ namespace Data.Repositories
         }
 
         public UnitOfWork(SWP391_DiamondSystemContext diamondContext, SWP391_DiavanSystemContext context, BlogRepository blogRepository, CustomerRepository customerRepository, DiamondRepository diamondRepository, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, 
-            ResultRepository resultRepository, ServiceDetailRepository serviceDetailRepository, ServiceRepository serviceRepository, UserRepository userRepository, ResultImageRepository resultImageRepository, DiamondCheckRepository diamondCheckRepository)
+            ResultRepository resultRepository, ServiceDetailRepository serviceDetailRepository, ServiceRepository serviceRepository, UserRepository userRepository, ResultImageRepository resultImageRepository, DiamondCheckRepository diamondCheckRepository, AssigningOrderDetailRepository assigningOrderDetailRepository)
         {
             _diamondContext = diamondContext;
             _context = context;
@@ -53,7 +54,17 @@ namespace Data.Repositories
             _resultRepository = resultRepository;
             _resultImageRepository = resultImageRepository;
             _diamondCheckRepository = diamondCheckRepository;
+            _assigningOrderDetailRepository = assigningOrderDetailRepository;
         }
+
+        public AssigningOrderDetailRepository AssigningOrderDetailRepository
+        {
+            get
+            {
+                return _assigningOrderDetailRepository ??= new AssigningOrderDetailRepository();
+            }
+        }
+
         public DiamondCheckRepository DiamondCheckRepository
         {
             get

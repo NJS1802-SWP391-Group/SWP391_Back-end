@@ -11,7 +11,7 @@ namespace Data.DiavanModels
         public int ValuationStaffId { get; set; }
         public int? ResultId { get; set; }
         public string Status { get; set; }
-        public TimeSpan DayCreate { get; set; }
+        public DateTime DayCreate { get; set; }
         public int OrderDetailid { get; set; }
 
         public virtual OrderDetail OrderDetail { get; set; }

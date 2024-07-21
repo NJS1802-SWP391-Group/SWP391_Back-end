@@ -10,6 +10,7 @@ using SWP391_Project.Dtos.Auth;
 using Data.Repositories;
 using Business.Constants;
 using Data.DiavanModels;
+using Common.Requests;
 
 namespace SWP391_Project.Services
 {
@@ -28,58 +29,15 @@ namespace SWP391_Project.Services
         {
             try
             {
-                var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == req.Username).FirstOrDefault();
+                var user = _unitOfWork.CustomerRepository.GetAll().Where(u => u.Email == req.Email).FirstOrDefault();
                 if (user is not null)
                 {
-                    return new ServiceResult(500, "username or email already exists");
+                    return new ServiceResult(500, "Email already exists");
                 }
 
-                /*                var account = new Account
-                                {
-                                    UserName = req.Username,
-                                    Password = SecurityUtil.Hash(req.Password),
-                                    Status = "Active",
-                                    RoleName = "Customer"
-                                };
-
-                                var customer = new Customer
-                                {
-                                    AccountId = account.AccountId,
-                                    Account = account,
-                                    Address = req.Address,
-                                    CCCD = req.CCCD,
-                                    Dob = req.Dob,
-                                    Email = req.Email,
-                                    FirstName = req.FirstName,
-                                    LastName = req.LastName,
-                                    PhoneNumber = req.PhoneNumber,
-                                    Status = "Active"
-                                };
-
-                                _unitOfWork.CustomerRepository.PrepareCreate(customer);
-
-                                var cusRes = await _unitOfWork.CustomerRepository.SaveAsync();
-
-                                if (cusRes > 0)
-                                {
-                                    return new ServiceResult(200, "Sign up complete");
-
-                                }*/
-
-                var account = new Account
-                {
-                    UserName = req.Username,
-                    Password = SecurityUtil.Hash(req.Password),
-                    Status = "Active",
-                    RoleName = "Customer"
-                };
-
-                _unitOfWork.UserRepository.PrepareCreate(account);
-                var res = await _unitOfWork.UserRepository.SaveAsync();
-
                 var customer = new Customer
-                {
-                    
+                {                   
+                    Password = SecurityUtil.Hash(req.Password),
                     Address = req.Address,
                     Cccd = req.CCCD,
                     Dob = req.Dob,
@@ -94,9 +52,42 @@ namespace SWP391_Project.Services
 
                 var cusRes = await _unitOfWork.CustomerRepository.SaveAsync();
 
-                var rs = await _unitOfWork.UserRepository.UpdateAsync(account);
+                if (cusRes > 0)
+                {
+                    return new ServiceResult(202, "Sign up successfully");
+                }
 
-                if (rs > 0)
+                return new ServiceResult(500, "Sign up fail");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
+        }        
+        
+        public async Task<IServiceResult> SignupForSystem(SignupForSystemRequest req)
+        {
+            try
+            {
+                var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == req.UserName).FirstOrDefault();
+                if (user is not null)
+                {
+                    return new ServiceResult(500, "Email already exists");
+                }
+
+                var account = new Account
+                {
+                    UserName = req.UserName,
+                    Password = SecurityUtil.Hash(req.Password),
+                    RoleName = req.RoleName,
+                    Status = "Active"
+                };
+
+                _unitOfWork.UserRepository.PrepareCreate(account);
+
+                var cusRes = await _unitOfWork.UserRepository.SaveAsync();
+
+                if (cusRes > 0)
                 {
                     return new ServiceResult(202, "Sign up successfully");
                 }
@@ -109,9 +100,43 @@ namespace SWP391_Project.Services
             }
         }
 
-        public LoginResult LoginAsCustomer(string userName, string password)
+        public LoginResult LoginAsCustomer(string email, string password)
         {
-            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName && u.RoleName == "Customer" && u.Status != "False").FirstOrDefault();
+            var user = _unitOfWork.CustomerRepository.GetAll().Where(u => u.Email == email && u.Status != "Inactive").FirstOrDefault();
+
+            if (user is null)
+            {
+                return new LoginResult
+                {
+                    RoleName = null,
+                    Authenticated = false,
+                    Token = null,
+                };
+            }
+
+            var hash = SecurityUtil.Hash(password);
+            if (!user.Password.Equals(hash))
+            {
+                return new LoginResult
+                {
+                    RoleName = null,
+                    Authenticated = false,
+                    Token = null,
+                };
+            }
+
+            return new LoginResult
+            {
+                CustomerId = user.CustomerId,
+                RoleName = "Customer",
+                Authenticated = true,
+                Token = CreateJwtTokenForCustomer(user),
+            };
+        }
+
+        public LoginResult LoginAsSystem(string userName, string password)
+        {
+            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName && u.Status != "Inactive").FirstOrDefault();
 
             if (user is null)
             {
@@ -143,38 +168,32 @@ namespace SWP391_Project.Services
             };
         }
 
-        public LoginResult LoginAsSystem(string userName, string password)
+        private SecurityToken CreateJwtTokenForCustomer(Customer user)
         {
-            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.UserName == userName && u.RoleName != "Customer" && u.AccountId == null).FirstOrDefault();
-
-            if (user is null)
+            var utcNow = DateTime.UtcNow;
+            var authClaims = new List<Claim>
             {
-                return new LoginResult
-                {
-                    RoleName = null,
-                    Authenticated = false,
-                    Token = null,
-                };
-            }
-
-            var hash = SecurityUtil.Hash(password);
-            if (!user.Password.Equals(hash))
-            {
-                return new LoginResult
-                {
-                    RoleName = null,
-                    Authenticated = false,
-                    Token = null,
-                };
-            }
-
-            return new LoginResult
-            {
-                CustomerId = user.AccountId,
-                RoleName = user.RoleName,
-                Authenticated = true,
-                Token = CreateJwtToken(user),
+                new(JwtRegisteredClaimNames.NameId, user.CustomerId.ToString()),
+                new(JwtRegisteredClaimNames.Email, user.Email),
+                new(ClaimTypes.Role, "Customer"),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
+
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
+
+            var tokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(authClaims),
+                SigningCredentials =
+                    new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
+                Expires = utcNow.Add(TimeSpan.FromHours(1)),
+            };
+
+            var handler = new JwtSecurityTokenHandler();
+
+            var token = handler.CreateToken(tokenDescriptor);
+
+            return token;
         }
 
         private SecurityToken CreateJwtToken(Account user)

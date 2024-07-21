@@ -8,6 +8,6 @@ namespace Common.Enums
 {
     public enum ValuationDetailStatusEnum
     {
-        Assigning, Valuating, Completed, ReAssigning, Failed, Certificated, Pending
+        Assigning, Valuating, Completed, ReAssigning, Failed, Certificated, Pending, IsNotDiamond
     }
 }
