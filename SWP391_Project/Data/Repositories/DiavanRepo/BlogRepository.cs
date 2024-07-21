@@ -1,6 +1,5 @@
-﻿using Data.Repositories.Generic;
-using SWP391_Project.Data.Databases.DiavanSystem;
-using SWP391_Project.Domain.DiavanEntities;
+﻿using Data.DiavanModels;
+using Data.Repositories.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;

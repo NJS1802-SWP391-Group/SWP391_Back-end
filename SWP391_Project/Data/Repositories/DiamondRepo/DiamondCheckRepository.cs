@@ -1,6 +1,6 @@
-﻿using Data.Repositories.DiavanRepo;
+﻿using Data.DiamondModels;
+using Data.Repositories.DiavanRepo;
 using Data.Repositories.Generic;
-using Domain.DiamondEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -4,7 +4,6 @@ using Common.DTOs;
 using Data.Repositories;
 using Data.Repositories.DiavanRepo;
 using Domain.Exceptions;
-using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Dtos;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;

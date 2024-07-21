@@ -5,7 +5,6 @@ using Common.Responses;
 using Data.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Services;
 using System.Net.Mail;
 using System.Text;

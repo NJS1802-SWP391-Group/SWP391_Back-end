@@ -3,11 +3,11 @@ using Business.Constants;
 using Common.Enums;
 using Common.Requests;
 using Common.Responses;
+using Data.DiavanModels;
 using Data.Helpers;
 using Data.Repositories;
 using Microsoft.AspNetCore.Http;
 using OpenQA.Selenium.DevTools.V123.CSS;
-using SWP391_Project.Domain.DiavanEntities;
 using SWP391_Project.Domain.Helpers;
 using System;
 using System.Collections.Generic;
@@ -71,7 +71,7 @@ namespace Business.Services
                 obj.Status = OrderStatusEnum.Pending.ToString();
                 obj.Time = createOrderReq.Time;
                 var reqOrder = await _unitOfWork.OrderRepository.CreateAsync(obj);
-                var flag = await _unitOfWork.OrderRepository.GetOrderInforById(reqOrder.OrderID);
+                var flag = await _unitOfWork.OrderRepository.GetOrderInforById(reqOrder.OrderId);
                 var result = _mapper.Map<ViewOrderResponse>(reqOrder);
                 return new ServiceResult(200, "Successful", result);
             }
@@ -88,9 +88,9 @@ namespace Business.Services
                 _mapper.Map(UpdateOrder, order);
                 order.Time = DateTimeHelper.ParseDate(UpdateOrder.Time);
                 if (order.TotalPay == null || order.TotalPay == 0) order.TotalPay = 0;
-                foreach (var item in order.DetailValuations)
+                foreach (var item in order.OrderDetails)
                 {
-                    item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price;
+                    item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceDetailId, item.EstimateLength)).price;
                     if (item.Price <= 0) throw new Exception("Can not find Service");
                     item.OrderId = UpdateOrder.OrderID;
                     item.Code = GenerateCode.OrderDetailCode(UpdateOrder.OrderID);
@@ -98,7 +98,7 @@ namespace Business.Services
                     await _unitOfWork.OrderDetailRepository.CreateAsync(item);
                     order.TotalPay = order.TotalPay + item.Price;
                 }
-                order.Quantity = order.DetailValuations.Count();
+                order.Quantity = order.OrderDetails.Count();
                 order.Status = OrderStatusEnum.Received.ToString();
                 order.ReceiveDay = DateTime.Now;
                 _unitOfWork.OrderRepository.Update(order);
@@ -128,10 +128,10 @@ namespace Business.Services
                 }
                 //else 
                 //{ throw new Exception("Fail. This transaction has been settled"); }
-                foreach (var item in order.DetailValuations) { item.Status = ValuationDetailStatusEnum.Assigning.ToString();}
+                foreach (var item in order.OrderDetails) { item.Status = ValuationDetailStatusEnum.Assigning.ToString();}
                 order.Status = OrderStatusEnum.Processing.ToString();
                 var updateOrder = await _unitOfWork.OrderRepository.UpdateAsync(order);
-                var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
+                var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderId);
                 var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
                 return new ServiceResult(200, "Successful", result);
             }
@@ -190,28 +190,28 @@ namespace Business.Services
                 var obj = await _unitOfWork.OrderRepository.GetOrderInforById(orderId);
                 if(obj == null) { throw new Exception("Not Found Order"); }
                 if(obj.Customer == null) { throw new Exception("Not Found Customer"); }
-                var orderDetails = await _unitOfWork.OrderDetailRepository.GetDetailByOrderId(obj.OrderID);
+                var orderDetails = await _unitOfWork.OrderDetailRepository.GetDetailByOrderId(obj.OrderId);
                 if (!orderDetails.Any()) { throw new Exception("Not Found OrderDetail"); }
                 var list = new List<ViewOrderDetailModel>();
                 foreach (var item in orderDetails)
                 {
-                    if (item.Result == null) { throw new Exception("Do not find Result"); }
-                    if (item.Service == null) { throw new Exception("Do not find Service"); }
+                    if (item.AssigningOrderDetails == null) { throw new Exception("Do not find Result"); }
+                    if (item.ServiceDetail == null) { throw new Exception("Do not find Service"); }
                     list.Add(new ViewOrderDetailModel
                     {
                         Code = item.Code,
                         EstimateLength = item.EstimateLength,
                         OrderDetailId = item.OrderDetailId,
-                        Price = (double)item.Result.DiamondValue,
-                        ServiceName = item.Service.Name,
-                        ServicePrice = item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price,
+                        Price = 0,
+                        ServiceName = null,
+                        ServicePrice = item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceDetailId, item.EstimateLength)).price,
                         Status = item.Status,
-                });
+                    }) ;
                 }
                 if (obj == null) throw new Exception("User don't have any order");
                 var result = new GetOrderToSendMail
                 {
-                    OrderID = obj.OrderID,
+                    OrderID = obj.OrderId,
                     FirstName = obj.Customer.FirstName,
                     LastName = obj.Customer.LastName,
                     Code = obj.Code,

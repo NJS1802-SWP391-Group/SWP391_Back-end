@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SWP391_Project.Data.Databases.DiavanSystem;
+﻿using Data.DiamondModels;
+using Data.DiavanModels;
+using Microsoft.EntityFrameworkCore;
 using SWP391_Project.Data.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -7,24 +8,23 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using SWP391_Project.Data.Databases.DiavanSystem;
 
 namespace Data.Repositories.Generic
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        protected readonly AppDbContext _context;
+        protected readonly SWP391_DiavanSystemContext _context;
         protected readonly DbSet<T> _dbSet;
 
         public GenericRepository()
         {
-            _context = new AppDbContext();
+            _context = new SWP391_DiavanSystemContext();
             _dbSet = _context.Set<T>();
         }
 
         #region Separating asign entity and save operators
 
-        public GenericRepository(AppDbContext context)
+        public GenericRepository(SWP391_DiavanSystemContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();

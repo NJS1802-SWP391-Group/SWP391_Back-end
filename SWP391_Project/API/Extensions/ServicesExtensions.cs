@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SWP391_Project.Data.Databases.DiavanSystem;
-using SWP391_Project.Data.Databases.DiamondSystem;
 using SWP391_Project.Common.Mapper;
 using SWP391_Project.Services;
 using SWP391_Project.Settings;
@@ -11,15 +9,15 @@ using System.Globalization;
 using System.Text;
 using SWP391_Project.Data.Repositories.Interfaces;
 using Data.Repositories.Generic;
-using SWP391_Project.Data.Databases;
 using SWP391_Project.Middlewares;
 using Data.Repositories;
-using SWP391_Project.Domain.DiavanEntities;
 using Business.Services;
 using Business.Services.Email;
 using Common.Settings;
 using static Common.Settings.ConfigurationModel;
 using Business.Services.Firebase;
+using Data.DiamondModels;
+using Data.DiavanModels;
 
 namespace SWP391_Project.Extensions;
 
@@ -67,14 +65,14 @@ public static class ServicesExtensions
                 };
             });
 
-        services.AddDbContext<AppDbContext>(opt =>
+        services.AddDbContext<SWP391_DiavanSystemContext>(opt =>
         {
-            opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            opt.UseSqlServer("data source=diavan-valuation.asia;initial catalog=SWP391_DiavanSystem;user id=sa;password=<YourStrong@Passw0rd>;trustservercertificate=true;multipleactiveresultsets=true;");
         });
 
-        services.AddDbContext<DiamondContext>(options =>
+        services.AddDbContext<SWP391_DiamondSystemContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("DiamondConnection"));
+            options.UseSqlServer("data source=diavan-valuation.asia;initial catalog=SWP391_DiamondSystem;user id=sa;password=<YourStrong@Passw0rd>;trustservercertificate=true;multipleactiveresultsets=true;");
         });
 
         //services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
@@ -94,7 +92,6 @@ public static class ServicesExtensions
         CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-        services.AddScoped<Data.Databases.DatabaseInitialiser>();
         services.AddScoped<UnitOfWork>();
         services.AddScoped<UserService>();
         services.AddScoped<IdentityService>();

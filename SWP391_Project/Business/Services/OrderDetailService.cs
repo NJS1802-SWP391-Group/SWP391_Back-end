@@ -4,9 +4,9 @@ using Common.DTOs;
 using Common.Enums;
 using Common.Requests;
 using Common.Responses;
+using Data.DiavanModels;
 using Data.Helpers;
 using Data.Repositories;
-using SWP391_Project.Domain.DiavanEntities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -109,7 +109,7 @@ namespace Business.Services
                 return new ServiceResult(500, ex.Message);
             }
         }
-
+        // Ham can sua
         public async Task<IServiceResult>  AssignStaffToOrderDetail(AssignStaffReq req)
         {
             try
@@ -123,11 +123,11 @@ namespace Business.Services
                 {
                     return new ServiceResult(404, "Cannot find order detail");
                 }
-                if (orderDetail.Status.Equals(ValuationDetailStatusEnum.Assigning.ToString()) && orderDetail.ValuationStaffId != null)
+                if (orderDetail.Status.Equals(ValuationDetailStatusEnum.Assigning.ToString()) && orderDetail.AssigningOrderDetails != null)
                 {
                     return new ServiceResult(500, "Order detail already assigned");
                 }
-                orderDetail.ValuationStaffId = req.ValuationStaffID;
+                //orderDetail.AssigningOrderDetails = req.ValuationStaffID;
                 orderDetail.Status = ValuationDetailStatusEnum.Valuating.ToString();
                 var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orderDetail);
                 if (rs < 1)
@@ -185,7 +185,7 @@ namespace Business.Services
                     order.Quantity = await _unitOfWork.OrderDetailRepository.GetTotalQuantity(orderDetail.OrderId);
                     order.TotalPay = await _unitOfWork.OrderDetailRepository.GetTotalPrice(orderDetail.OrderId);
                     _unitOfWork.OrderRepository.Update(order);
-                    var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
+                    var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderId);
                     var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
                     return new ServiceResult(200, "Successful", result);
                 }
@@ -205,14 +205,14 @@ namespace Business.Services
                 if (orderDetail == null) throw new Exception("Can not found OrderDetail");
                 var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderDetail.OrderId);
                 if (order == null) throw new Exception("Can not found Order");
-                orderDetail.ServiceId = orderDetailUpdate.ServiceId;
+                orderDetail.ServiceDetailId = orderDetailUpdate.ServiceId;
                 orderDetail.EstimateLength = orderDetailUpdate.EstimateLength;
                 orderDetail.Price =(await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(orderDetailUpdate.ServiceId, orderDetailUpdate.EstimateLength)).price;
                 _unitOfWork.OrderDetailRepository.Update(orderDetail);
                 _unitOfWork.OrderRepository.Update(order);
                 order.Quantity = await _unitOfWork.OrderDetailRepository.GetTotalQuantity(orderDetail.OrderId);
                 order.TotalPay = await _unitOfWork.OrderDetailRepository.GetTotalPrice(orderDetail.OrderId);
-                var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderID);
+                var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(order.OrderId);
                 var result = _mapper.Map<ViewFullInfomaionOrder>(obj);
                 return new ServiceResult(200, "Successful", result);
 
@@ -232,8 +232,8 @@ namespace Business.Services
                 { 
                     throw new Exception("Cannot find order detail"); 
                 }
-
-                var result = await _unitOfWork.ResultRepository.GetByIdAsync(orderdetail.ResultId.Value);
+                // can sua
+                var result = await _unitOfWork.ResultRepository.GetByIdAsync(orderdetail.OrderId);
 
                 if (result == null)
                 {
@@ -299,8 +299,8 @@ namespace Business.Services
                 var orderdetail = await _unitOfWork.OrderDetailRepository.GetByIdAndIsCompletedAndHasResult(orderDetailId, ValuationDetailStatusEnum.Completed.ToString());
                 if (orderdetail == null) { throw new Exception("Cannot find order detail"); }
                 orderdetail.Status = ValuationDetailStatusEnum.ReAssigning.ToString();
-
-                var result = await _unitOfWork.ResultRepository.GetByIdAsync(orderdetail.ResultId.Value);
+                // can sua
+                var result = await _unitOfWork.ResultRepository.GetByIdAsync(orderdetail.OrderId);
                 
                 if (result == null)
                 {
@@ -314,8 +314,8 @@ namespace Business.Services
                     return new ServiceResult(400, "Failed");
                 }
 
-                orderdetail.Result = null;
-                orderdetail.ResultId = null;           
+                //orderdetail.Result = null;
+                //orderdetail.ResultId = null;           
                 var rs = await _unitOfWork.OrderDetailRepository.UpdateAsync(orderdetail);
                 if (rs < 1)
                 {

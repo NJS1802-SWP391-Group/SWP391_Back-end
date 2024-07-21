@@ -4,13 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using SWP391_Project.Data.Databases.DiamondSystem;
-using SWP391_Project.Data.Databases.DiavanSystem;
 using SWP391_Project.Extensions;
 using SWP391_Project.Helpers;
-using SWP391_Project.Data.Databases;
 using SWP391_Project.Middlewares;
 using Common.Settings;
+using Data.DiamondModels;
+using Data.DiavanModels;
 
 namespace SWP391_Project
 {
@@ -80,21 +79,19 @@ namespace SWP391_Project
             app.Lifetime.ApplicationStarted.Register(async () =>
             {
                 // Database Initialiser 
-                await app.Services.InitialiseDatabaseAsync();
             });
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 await using (var scope = app.Services.CreateAsyncScope())
                 {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                    await dbContext.Database.MigrateAsync();
+                    var dbContext = scope.ServiceProvider.GetRequiredService<SWP391_DiamondSystemContext>();
                 }
 
                 await using (var scope = app.Services.CreateAsyncScope())
                 {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<DiamondContext>();
-                    await dbContext.Database.MigrateAsync();
+                    var dbContext = scope.ServiceProvider.GetRequiredService<SWP391_DiavanSystemContext>();
+                   
                 }
 
                 app.UseSwagger();
