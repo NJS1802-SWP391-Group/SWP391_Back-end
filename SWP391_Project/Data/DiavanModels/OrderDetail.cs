@@ -15,12 +15,14 @@ namespace Data.DiavanModels
         public int OrderDetailId { get; set; }
         public string Code { get; set; }
         public double EstimateLength { get; set; }
-        public int ServiceDetailId { get; set; }
+        public int ServiceId { get; set; }
         public double Price { get; set; }
         public string Status { get; set; }
+        public string ServiceName { get; set; }
         public int OrderId { get; set; }
+
         public virtual Order Order { get; set; }
-        public virtual ServiceDetail ServiceDetail { get; set; }
+        public virtual Service Service { get; set; }
         public virtual ICollection<AssigningOrderDetail> AssigningOrderDetails { get; set; }
     }
 }

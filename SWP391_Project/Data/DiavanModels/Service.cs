@@ -9,6 +9,7 @@ namespace Data.DiavanModels
     {
         public Service()
         {
+            OrderDetails = new HashSet<OrderDetail>();
             ServiceDetails = new HashSet<ServiceDetail>();
         }
 
@@ -17,6 +18,7 @@ namespace Data.DiavanModels
         public string Description { get; set; }
         public string Status { get; set; }
 
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<ServiceDetail> ServiceDetails { get; set; }
     }
 }

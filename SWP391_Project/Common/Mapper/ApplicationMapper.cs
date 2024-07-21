@@ -45,17 +45,17 @@ namespace SWP391_Project.Common.Mapper
                  ForPath(x => x.Customer.LastName, opt => opt.MapFrom(x => x.LastName))
                 .ReverseMap();
             CreateMap<OrderDetail, ViewOrderDetailResult>()
-                .ForMember(x => x.ServiceName, opt => opt.MapFrom(x => x.ServiceDetail.Service.Name))
+                .ForMember(x => x.ServiceName, opt => opt.MapFrom(x => x.ServiceName))
                 .ReverseMap();
             CreateMap<OrderDetail, OrderDetailGeneralResponse>()
                 .ForMember(_ => _.OrderCode, opt => opt.MapFrom(_ => _.Order.Code))
                 .ForMember(_ => _.OrderDetailCode, opt => opt.MapFrom(_ => _.Code))
-                .ForMember(_ => _.ServiceName, opt => opt.MapFrom(_ => _.ServiceDetail.Service.Name))
+                .ForMember(_ => _.ServiceName, opt => opt.MapFrom(_ => _.ServiceName))
                 .ForMember(_ => _.ServicePrice, opt => opt.MapFrom(_ => _.Price))
                // .ForMember(_ => _.ValuatingStaffName, opt => opt.MapFrom(_ => _.AssigningOrderDetails..UserName))
                 .ReverseMap();
             CreateMap<OrderDetail, StaffOrderDetailsResponse>()
-                .ForMember(_ => _.ServiceName, opt => opt.MapFrom(_ => _.ServiceDetail.Service.Name))
+                .ForMember(_ => _.ServiceName, opt => opt.MapFrom(_ => _.ServiceName))
                 //.ForMember(_ => _.FinalPrice, opt => opt.MapFrom(_ => _.AssigningOrderDetails..DiamondValue))
                 .ForMember(_ => _.OrderDetailCode, opt => opt.MapFrom(_ => _.Code))
                 .ReverseMap();
@@ -80,8 +80,8 @@ namespace SWP391_Project.Common.Mapper
                  .ForMember(x=>x.DetailValuations,opt =>opt.MapFrom(x=>x.OrderDetails))
                  .ReverseMap();
             CreateMap<OrderDetail, ViewOrderDetail>()
-                .ForPath(x=>x.ServiceName,otp=>otp.MapFrom(x=>x.ServiceDetail.Service.Name))
-                .ForPath(x => x.Price, opt => opt.MapFrom(x => x.ServiceDetail.Price))
+                .ForPath(x=>x.ServiceName,otp=>otp.MapFrom(x=>x.ServiceName))
+                .ForPath(x => x.Price, opt => opt.MapFrom(x => x.Price))
                 .ReverseMap();
             CreateMap<SystemDiamond, Diamond>()
                 .ForMember(d => d.DiamondId, opt => opt.Ignore())

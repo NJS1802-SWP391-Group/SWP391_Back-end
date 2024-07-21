@@ -90,7 +90,7 @@ namespace Business.Services
                 if (order.TotalPay == null || order.TotalPay == 0) order.TotalPay = 0;
                 foreach (var item in order.OrderDetails)
                 {
-                    item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceDetailId, item.EstimateLength)).price;
+                    item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price;
                     if (item.Price <= 0) throw new Exception("Can not find Service");
                     item.OrderId = UpdateOrder.OrderID;
                     item.Code = GenerateCode.OrderDetailCode(UpdateOrder.OrderID);
@@ -196,7 +196,7 @@ namespace Business.Services
                 foreach (var item in orderDetails)
                 {
                     if (item.AssigningOrderDetails == null) { throw new Exception("Do not find Result"); }
-                    if (item.ServiceDetail == null) { throw new Exception("Do not find Service"); }
+                    if (item.Service == null) { throw new Exception("Do not find Service"); }
                     list.Add(new ViewOrderDetailModel
                     {
                         Code = item.Code,
@@ -204,7 +204,7 @@ namespace Business.Services
                         OrderDetailId = item.OrderDetailId,
                         Price = 0,
                         ServiceName = null,
-                        ServicePrice = item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceDetailId, item.EstimateLength)).price,
+                        ServicePrice = item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price,
                         Status = item.Status,
                     }) ;
                 }
