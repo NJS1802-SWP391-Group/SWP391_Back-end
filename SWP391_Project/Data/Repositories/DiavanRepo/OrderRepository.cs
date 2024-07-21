@@ -19,7 +19,7 @@ namespace Data.Repositories.DiavanRepo
         }
         public async Task<Order> GetOrderByIdAsync(int id)
         {
-            var order = await _dbSet.Include(x=>x.OrderDetails).ThenInclude(y=>y.ServiceDetail).Include(x=>x.Customer).FirstOrDefaultAsync(x=>x.OrderId==id);
+            var order = await _dbSet.Include(x=>x.OrderDetails).ThenInclude(x=>x.ServiceDetail).ThenInclude(x=>x.Service).Include(x=>x.Customer).FirstOrDefaultAsync(x=>x.OrderId==id);
             return order;
         }
         public async Task<List<Order>> GetAllOrder()
