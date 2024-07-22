@@ -11,7 +11,7 @@ namespace Common.Requests
     {
         public int OrderID { get; set; }
         public string Time { get; set; }
-        public string ConsultingStaffName { get; set; }
+        public int ConsultingStaffId  { get; set; }
         public List<OrderDetailCreate> DetailValuations { get; set; }
     }
     public class OrderDetailCreate

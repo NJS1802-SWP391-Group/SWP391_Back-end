@@ -92,6 +92,7 @@ namespace Business.Services
                 {
                     item.Price = (await _unitOfWork.ServiceDetailRepository.GetDetailByServiceIdAndLengthAsync(item.ServiceId, item.EstimateLength)).price;
                     if (item.Price <= 0) throw new Exception("Can not find Service");
+                    item.ServiceName = (await _unitOfWork.ServiceRepository.GetByIdAsync(item.ServiceId)).Name;
                     item.OrderId = UpdateOrder.OrderID;
                     item.Code = GenerateCode.OrderDetailCode(UpdateOrder.OrderID);
                     item.Status = ValuationDetailStatusEnum.Pending.ToString();
@@ -101,6 +102,7 @@ namespace Business.Services
                 order.Quantity = order.OrderDetails.Count();
                 order.Status = OrderStatusEnum.Received.ToString();
                 order.ReceiveDay = DateTime.Now;
+                order.ConsultingStaffId = UpdateOrder.ConsultingStaffId;
                 _unitOfWork.OrderRepository.Update(order);
                 await _unitOfWork.OrderRepository.SaveAsync();
                 var obj = await _unitOfWork.OrderRepository.GetOrderByIdAsync(UpdateOrder.OrderID);
