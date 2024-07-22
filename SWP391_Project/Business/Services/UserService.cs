@@ -214,7 +214,14 @@ namespace SWP391_Project.Services
                     Password = customer.Password,
                     Status = customer.Status,
                     CustomerId = customer.CustomerId,
-                    RoleName = "Customer"
+                    RoleName = "Customer",
+                    Email = customer.Email,
+                    Address = customer.Address,
+                    Cccd =customer.Cccd,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    PhoneNumber = customer.PhoneNumber,
+                    Dob = customer.Dob,
                 };
                 return new ServiceResult(1, "Get user by user name", result);
             }
