@@ -30,11 +30,14 @@ namespace Business.Services
     {
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        
-        public ServiceDetailService(UnitOfWork unitOfWork, IMapper mapper)
+        private readonly RedisManagerment _redisManager;
+
+
+        public ServiceDetailService(UnitOfWork unitOfWork, IMapper mapper, RedisManagerment redisManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _redisManager = redisManager;
         }
 
         public async Task<IServiceResult> GetAll()
@@ -109,6 +112,7 @@ namespace Business.Services
                 });
                 if (rs != null)
                 {
+                    _redisManager.DeleteData("ListServices");
                     return new ServiceResult(200, "Create successfully");
                 }
                 else
@@ -137,6 +141,7 @@ namespace Business.Services
                     var rs = await _unitOfWork.ServiceDetailRepository.UpdateAsync(service);
                     if (rs > 0)
                     {
+                        _redisManager.DeleteData("ListServices");
                         return new ServiceResult(200, "Update successfully");
                     }
                     else
@@ -166,6 +171,7 @@ namespace Business.Services
                     var rs = await _unitOfWork.ServiceDetailRepository.UpdateAsync(service);
                     if (rs > 0)
                     {
+                        _redisManager.DeleteData("ListServices");
                         return new ServiceResult(200, "Change status successfully");
                     }
                     else

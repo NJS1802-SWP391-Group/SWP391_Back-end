@@ -38,18 +38,18 @@ namespace Business.Services
                 string productListJson = _redisManager.GetData(cacheKey);
                 if (productListJson == null || productListJson == "[]")
                 {
-                    var productList = _unitOfWork.ServiceRepository.GetAll();
+                    var productList =await _unitOfWork.ServiceRepository.GetAllServices();
+                    var result = _mapper.Map<List<ServiceModel>>(productList);
                     if (productList != null)
                     {
-                        productListJson = JsonConvert.SerializeObject(productList);
+                        productListJson = JsonConvert.SerializeObject(result);
                         _redisManager.SetData(cacheKey, productListJson);
                     }
-                    var result = _mapper.Map<List<ServiceModel>>(productList);
                     return new ServiceResult(200, "Get all active services from database", result);              
                 }
                 else
                 {
-                    var result = _mapper.Map<List<ServiceModel>>(JsonConvert.DeserializeObject<List<ServiceModel>>(productListJson));
+                    var result =JsonConvert.DeserializeObject<List<ServiceModel>>(productListJson);
                     return new ServiceResult(200, "Get all active services from Redis", result);
                 }
 

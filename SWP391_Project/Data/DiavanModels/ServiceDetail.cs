@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Data.DiavanModels
 {
@@ -15,7 +16,6 @@ namespace Data.DiavanModels
         public double ExtraPricePerMm { get; set; }
         public string Status { get; set; }
         public int ServiceId { get; set; }
-
         public virtual Service Service { get; set; }
     }
 }
