@@ -23,6 +23,8 @@ namespace SWP391_Project
 
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
+            builder.Services.AddScoped<RedisManagerment>();
+
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
               //  options.JsonSerializerOptions.Converters.Add(new DateTimeHelper("yyyy-MM-ddTHH:mm:ss"));
