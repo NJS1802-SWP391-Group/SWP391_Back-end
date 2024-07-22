@@ -42,5 +42,16 @@ namespace Data.Repositories.DiavanRepo
             var orders = await _dbSet.Where(x=>x.CustomerId==customerId).Include(x=>x.Customer).Include(x=>x.OrderDetails).ThenInclude(y=>y.Service).ToListAsync();
             return orders;
         }
+        public async Task<List<AdminData>> OrdersDashboard()
+        {
+            var list = await _dbSet.Where(x=>x.StatusPayment=="successful").GroupBy(x => x.Time.Date).Select(x => new AdminData{Date = x.Key, Value = x.Count()}).ToListAsync();
+            return list;
+        }
+        public async Task<List<AdminData>> OrdersPriceDashboard()
+        {
+            var list = await _dbSet.Where(x=>x.StatusPayment=="successful").GroupBy(x => x.Time.Date).Select(x => new AdminData {Date = x.Key, Value = x.Sum(x=> (x.TotalPay == null ? 0:x.TotalPay)).Value}).ToListAsync();
+            return list;
+        }
+
     }
 }
