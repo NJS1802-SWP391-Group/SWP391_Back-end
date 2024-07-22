@@ -64,7 +64,7 @@ namespace Business.Services
         {
             try
             {
-                var services = ((List<ServiceModel>)(await GetAll()).Data).Where(x=>x.Status=="active");              
+                var services = ((List<ServiceModel>)(await GetAll()).Data).Where(x=>x.Status.ToLower()=="active");              
                 if (services.Any())
                 {
                     return new ServiceResult(200, "Get all active services", services);
@@ -84,7 +84,7 @@ namespace Business.Services
         {
             try
             {
-                var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
+                var service = ((List<ServiceModel>)(await GetAll()).Data).FirstOrDefault(x => x.ServiceID ==id);
                 var rs = _mapper.Map<ServiceModel>(service);
                 if (service is null)
                 {
@@ -113,6 +113,7 @@ namespace Business.Services
                 });
                 if (rs!=null)
                 {
+                    _redisManager.DeleteData("ListServices");
                     return new ServiceResult(200, "Create successfully",rs);
                 }
                 else
@@ -138,6 +139,7 @@ namespace Business.Services
                     var rs = await _unitOfWork.ServiceRepository.UpdateAsync(service);
                     if (rs > 0)
                     {
+                        _redisManager.DeleteData("ListServices");
                         return new ServiceResult(200, "Update successfully");
                     }
                     else
@@ -167,6 +169,7 @@ namespace Business.Services
                     var rs = await _unitOfWork.ServiceRepository.UpdateAsync(service);
                     if (rs > 0)
                     {
+                        _redisManager.DeleteData("ListServices");
                         return new ServiceResult(200, "Change status successfully");
                     }
                     else
