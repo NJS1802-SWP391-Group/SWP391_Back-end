@@ -2,6 +2,7 @@
 using Business.Constants;
 using Data.DiavanModels;
 using Data.Repositories;
+using Newtonsoft.Json;
 using SWP391_Project.Common.Requests;
 using SWP391_Project.DTOs;
 
@@ -21,36 +22,52 @@ namespace Business.Services
     {
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
-        public ServiceService(UnitOfWork unitOfWork, IMapper mapper)
+        private readonly RedisManagerment _redisManager;
+        public ServiceService(UnitOfWork unitOfWork, IMapper mapper, RedisManagerment redisManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _redisManager = redisManager;
         }
 
         public async Task<IServiceResult> GetAll()
         {
             try
             {
-                var services = _unitOfWork.ServiceRepository.GetAll();
-                var rs = _mapper.Map<List<ServiceModel>>(services);
-                return new ServiceResult(200, "Get all active services", rs);
+                string cacheKey = "ListServices";
+                string productListJson = _redisManager.GetData(cacheKey);
+                if (productListJson == null || productListJson == "[]")
+                {
+                    var productList = _unitOfWork.ServiceRepository.GetAll();
+                    if (productList != null)
+                    {
+                        productListJson = JsonConvert.SerializeObject(productList);
+                        _redisManager.SetData(cacheKey, productListJson);
+                    }
+                    var result = _mapper.Map<List<ServiceModel>>(productList);
+                    return new ServiceResult(200, "Get all active services from database", result);              
+                }
+                else
+                {
+                    var result = _mapper.Map<List<ServiceModel>>(JsonConvert.DeserializeObject<List<ServiceModel>>(productListJson));
+                    return new ServiceResult(200, "Get all active services from Redis", result);
+                }
+
             }
             catch (Exception ex)
-            {
-                return new ServiceResult(500, ex.Message);
-            }
+               {
+                    return new ServiceResult(500, ex.Message);
+                }
         }
 
         public async Task<IServiceResult> GetAllActive()
         {
             try
             {
-                var services = await _unitOfWork.ServiceRepository.GetAllActiveAsync();
-                var rs = _mapper.Map<List<ServiceModel>>(services);
-                if (rs.Any())
+                var services = ((List<ServiceModel>)(await GetAll()).Data).Where(x=>x.Status=="active");              
+                if (services.Any())
                 {
-                    return new ServiceResult(200, "Get all active services", rs);
+                    return new ServiceResult(200, "Get all active services", services);
                 }
                 else
                 {

@@ -170,8 +170,8 @@ public class AuthController : ControllerBase
         // If token is valid, return success response
         return Ok(ApiResult<CheckTokenResponse>.Succeed(new CheckTokenResponse
         {
-            User = user.Data,
-            Customer = customer
+            User = null,
+            Customer = user.Data
         }));
     }
 }

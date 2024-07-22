@@ -23,7 +23,7 @@ public class RedisManagerment
 
     public void SetData(string key, string value)
     {
-        _cache.StringSet(key, value, TimeSpan.FromMinutes(30));
+        _cache.StringSet(key, value, TimeSpan.FromDays(1));
     }
 
 

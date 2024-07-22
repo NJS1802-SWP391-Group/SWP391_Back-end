@@ -81,11 +81,12 @@ namespace SWP391_Project.Services
 
             var rs = new AccountModel
             {
-                AccountId = user.CustomerId,
+                CustomerId = user.CustomerId,
                 Password = user.Password,
                 RoleName = "Customer",
                 Status = user.Status,
-                UserName = user.Email
+                UserName = user.Email,
+                AccountId =0,
             };
 
             return rs;
@@ -212,7 +213,7 @@ namespace SWP391_Project.Services
                     UserName = customer.Email,
                     Password = customer.Password,
                     Status = customer.Status,
-                    AccountId = customer.CustomerId,
+                    CustomerId = customer.CustomerId,
                     RoleName = "Customer"
                 };
                 return new ServiceResult(1, "Get user by user name", result);
