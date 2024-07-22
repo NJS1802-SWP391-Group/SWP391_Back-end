@@ -44,7 +44,7 @@ namespace Data.Repositories.DiavanRepo
         }
         public async Task<List<AdminData>> OrdersDashboard()
         {
-            var list = await _dbSet.Where(x=>x.StatusPayment=="successful").GroupBy(x => x.Time.Date).Select(x => new AdminData{Date = x.Key, Value = x.Count()}).ToListAsync();
+            var list = await _dbSet.GroupBy(x => x.Time.Date).Select(x => new AdminData{Date = x.Key, Value = x.Count()}).ToListAsync();
             return list;
         }
         public async Task<List<AdminData>> OrdersPriceDashboard()
