@@ -30,7 +30,7 @@ namespace Business.Services
     {
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
+        
         public ServiceDetailService(UnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
