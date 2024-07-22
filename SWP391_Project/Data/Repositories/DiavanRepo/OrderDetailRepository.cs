@@ -13,7 +13,7 @@ namespace Data.Repositories.DiavanRepo
     public class OrderDetailRepository : GenericRepository<OrderDetail>
     {
         public OrderDetailRepository() { }
-        public async Task<bool> UpdateListDetail(List<OrderDetail> orderDetails,int OrderId){
+        public async Task<bool> UpdateListDetail(List<OrderDetail> orderDetails, int OrderId) {
             var result = true;
             var list = await this.GetDetailByOrderId(OrderId);
             foreach (var item in list)
@@ -38,7 +38,7 @@ namespace Data.Repositories.DiavanRepo
 
         public async Task<List<OrderDetail>> GetOrderDetailsByValuStaff(string status)
         {
-           // ham can sua
+            // ham can sua
             return await _dbSet.Include(_ => _.Service).ThenInclude(_ => _.ServiceDetails).Where(_ => _.Status == status).ToListAsync();
         }
 
@@ -70,12 +70,18 @@ namespace Data.Repositories.DiavanRepo
         }
         public async Task<int> GetTotalQuantity(int orderid)
         {
-            var rs = (await _dbSet.Where(x=>x.OrderId == orderid).ToListAsync()).Count;
+            var rs = (await _dbSet.Where(x => x.OrderId == orderid).ToListAsync()).Count;
             return rs;
         }
         public async Task<double> GetTotalPrice(int orderid)
         {
             var rs = await _dbSet.Where(x => x.OrderId == orderid).SumAsync(x => x.Price);
+            return rs;
+        }
+
+        public async Task<List<OrderDetail>> GetOrderDetailIsNotPending(string statusPending)
+        {
+            var rs = await _dbSet.Include(_ => _.Service).Where(x => !x.Status.Equals(statusPending)).ToListAsync();
             return rs;
         }
     }

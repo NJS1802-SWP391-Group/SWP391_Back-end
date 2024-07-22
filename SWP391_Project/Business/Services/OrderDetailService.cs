@@ -307,7 +307,7 @@ namespace Business.Services
 
                 if (!result.IsDiamond)
                 {
-                    orderdetail.Status = ValuationDetailStatusEnum.Failed.ToString();
+                    orderdetail.Status = "Not Diamond";
                     result.Status = ResultStatusEnum.IsNotDiamond.ToString();
                 }
                 else
