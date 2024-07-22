@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Constants;
+using Common.Enums;
 using Common.Responses;
 using Data.DiavanModels;
 using Data.Repositories;
@@ -15,6 +16,7 @@ namespace Business.Services
     {
         Task<IServiceResult> OrderDashboard();
         Task<IServiceResult> OrderDashboardPayment();
+        Task<IServiceResult> GetNumberOfServiceUsed();
     }
     public class DashboardService:IDashboardService
     {
@@ -109,6 +111,55 @@ namespace Business.Services
 
             result.Total = sum;
             return new ServiceResult(200, "Get order dashboard", result);
+        }
+
+        public async Task<IServiceResult> GetNumberOfServiceUsed()
+        {
+            try
+            {
+                var listOrderDetail = await _unitOfWork.OrderDetailRepository.GetOrderDetailIsNotPending(ValuationDetailStatusEnum.Pending.ToString());
+                var listServiceInfo = listOrderDetail.GroupBy(_ => _.Service)
+                                                    .Select(_ => new
+                                                    {
+                                                        ServiceID = _.Key.ServiceId,
+                                                        ServiceName = _.Key.Name,
+                                                        Quantity = _.Count()
+                                                    })
+                                                    .ToList();
+
+                var rs = new List<ServiceInfoResponse>();
+                var allService = _unitOfWork.ServiceRepository.GetAll();
+
+                foreach (var service in allService)
+                {
+                    var serviceInfo = listServiceInfo.FirstOrDefault(si => si.ServiceID == service.ServiceId);
+                    if (serviceInfo != null)
+                    {
+                        rs.Add(new ServiceInfoResponse
+                        {
+                            ServiceID = service.ServiceId,
+                            ServiceName = service.Name,
+                            Quantity = serviceInfo.Quantity
+                        });
+                    }
+                    else
+                    {
+                        rs.Add(new ServiceInfoResponse
+                        {
+                            ServiceID = service.ServiceId,
+                            ServiceName = service.Name,
+                            Quantity = 0
+                        });
+                    }
+                }
+
+                return new ServiceResult(200, "List service info", rs);
+
+            }
+            catch(Exception ex)
+            {
+                return new ServiceResult(500, ex.Message);
+            }
         }
     }
 }

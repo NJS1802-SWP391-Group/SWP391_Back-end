@@ -26,6 +26,14 @@ namespace API.Controllers
         {
             var result = await _adminService.OrderDashboardPayment();
             return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
+        }        
+        
+        [AllowAnonymous]
+        [HttpGet("Service/Quantity")]
+        public async Task<IActionResult> GetNumberOfServiceUsed()
+        {
+            var result = await _adminService.GetNumberOfServiceUsed();
+            return StatusCode((int)result.Status, result.Data == null ? result.Message : result.Data);
         }
     }
 }
