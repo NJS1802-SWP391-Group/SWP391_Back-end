@@ -18,9 +18,9 @@ namespace Data.Repositories.DiavanRepo
             return await _dbSet.Include(_ => _.Result).Include(_ => _.ValuationStaff).Include(_ => _.OrderDetail).Where(_ => _.OrderDetailid == id && _.Status.Equals("Active")).FirstOrDefaultAsync();
         }        
         
-        public async Task<AssigningOrderDetail> GetByStaffIDAndActive(int id)
+        public async Task<List<AssigningOrderDetail>> GetByStaffIDAndActive(int id, string statusValuating)
         {
-            return await _dbSet.Include(_ => _.Result).Include(_ => _.ValuationStaff).Include(_ => _.OrderDetail).Where(_ => _.ValuationStaffId == id && _.Status.Equals("Active")).FirstOrDefaultAsync();
+            return await _dbSet.Include(_ => _.Result).Include(_ => _.ValuationStaff).Include(_ => _.OrderDetail).ThenInclude(_ => _.Service).Where(_ => _.ValuationStaffId == id && _.Status.Equals("Active") && _.OrderDetail.Status.Equals(statusValuating)).ToListAsync();
         }
     }
 }
