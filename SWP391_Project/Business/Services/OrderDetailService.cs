@@ -80,7 +80,7 @@ namespace Business.Services
                 var list = new List<GetDoneOrderDetailsResponse>();
                 foreach (var result in results)
                 {
-                    var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActive(result.OrderDetailId);
+                    var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByOrderDetailIDAndActiveAndCompleted(result.OrderDetailId, ResultStatusEnum.Pending.ToString());
 
                     list.Add(new GetDoneOrderDetailsResponse
                     {
@@ -90,7 +90,7 @@ namespace Business.Services
                         Status = result.Status,
                         OrderDetailId = result.OrderDetailId,
                         ResultId = (int)assigningOrDetail.ResultId,
-                        ValuatingPrice = result.Price,
+                        ValuatingPrice = (double)assigningOrDetail.Result.DiamondValue,
                         ValuationStaffName = assigningOrDetail.ValuationStaff.UserName
                     });
                 }

@@ -82,6 +82,15 @@ namespace Business.Services
             {
                 var result = await _unitOfWork.ResultRepository.GetByIdAsync(id);
                 var rs = _mapper.Map<GetResultByIdResponse>(result);
+
+                var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByResultIDAndActive(id);
+                if (assigningOrDetail == null)
+                {
+                    return new ServiceResult(404, "Cannot find result");
+                }
+
+                rs.OrderDetailId = assigningOrDetail.OrderDetailid;
+
                 var imageLists = await _unitOfWork.ResultImageRepository.GetByResultIdAsync(id);
                 var rsImages = _mapper.Map<List<ResultImages>>(imageLists);
                 rs.ResultImages = rsImages;
