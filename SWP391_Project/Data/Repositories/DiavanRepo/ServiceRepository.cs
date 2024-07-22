@@ -17,5 +17,9 @@ namespace Data.Repositories.DiavanRepo
         {
             return await _dbSet.Where(_ => _.Status.ToLower().Trim() == "active").ToListAsync();
         }
+        public async Task<List<Service>> GetAllServices()
+        {
+            return await _dbSet.Include(x=>x.ServiceDetails).ToListAsync();
+        }
     }
 }

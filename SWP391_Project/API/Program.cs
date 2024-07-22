@@ -22,7 +22,7 @@ namespace SWP391_Project
             builder.Services.AddInfrastructure(builder.Configuration);
 
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
-
+         
             builder.Services.AddScoped<RedisManagerment>();
 
             builder.Services.AddControllers().AddJsonOptions(options =>
