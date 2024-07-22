@@ -107,20 +107,20 @@ namespace Business.Services
         {
             try
             {
-                var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsByValuStaff(ValuationDetailStatusEnum.Valuating.ToString());
+                var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByStaffIDAndActive(staffId, ValuationDetailStatusEnum.Valuating.ToString());
+                //var listOrDetailID = assigningOrDetail.Select(_ => _.OrderDetail).Where(_ => _.Status.Equals(ValuationDetailStatusEnum.Valuating.ToString())).ToList();
+                //var results = await _unitOfWork.OrderDetailRepository.GetOrderDetailsByValuStaff(ValuationDetailStatusEnum.Valuating.ToString());
                 var list = new List<StaffOrderDetailsResponse>();
-                foreach (var result in results)
+                foreach (var result in assigningOrDetail)
                 {
-                    var assigningOrDetail = await _unitOfWork.AssigningOrderDetailRepository.GetByStaffIDAndActive(staffId);
-
                     list.Add(new StaffOrderDetailsResponse
                     {
-                        OrderDetailCode = result.Code,
-                        ServiceName = result.ServiceName,
-                        Status = result.Status,
-                        OrderDetailId = result.OrderDetailId,
-                        ResultID = (int)assigningOrDetail.ResultId,
-                        FinalPrice = (double)assigningOrDetail.Result.DiamondValue,
+                        OrderDetailCode = result.OrderDetail.Code,
+                        ServiceName = result.OrderDetail.Service.Name,
+                        Status = result.OrderDetail.Status,
+                        OrderDetailId = result.OrderDetail.OrderDetailId,
+                        ResultID = result.Result == null ? 0 : result.Result.ResultId,
+                        FinalPrice = result.Result == null ? 0 : (double)result.Result.DiamondValue,
                     });
                 }
                 var rs = list;

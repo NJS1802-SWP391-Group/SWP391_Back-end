@@ -8,7 +8,7 @@ namespace Data.DiavanModels
     public partial class ResultImage
     {
         public int ResultImageId { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         public Guid ImageGuid { get; set; }
         public string ImageType { get; set; }
         public int? ResultId { get; set; }

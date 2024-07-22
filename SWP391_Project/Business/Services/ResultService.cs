@@ -166,59 +166,60 @@ namespace Business.Services
                 if (rs != null)
                 {
                     assigningOrDetail.ResultId = rs.ResultId;
-                    var rsUpdate = await _unitOfWork.OrderDetailRepository.UpdateAsync(orDetail);
                     var update = await _unitOfWork.AssigningOrderDetailRepository.UpdateAsync(assigningOrDetail);
 
-                    if (rs.IsDiamond && req.ClarityImages.Any() &&req.ProportionImages.Any())
+                    if (rs.IsDiamond)
                     {
-                        var proportionImageUrls = req.ProportionImages;
-                        foreach (var imageUrl in proportionImageUrls)
+                        if (req.ClarityImages.Any() && req.ProportionImages.Any())
                         {
-                            var resultImage = new Data.DiavanModels.ResultImage
+                            var proportionImageUrls = req.ProportionImages;
+                            foreach (var imageUrl in proportionImageUrls)
                             {
-                                ImageGuid = Guid.NewGuid(),
-                                ResultId = rs.ResultId,
-                                ImageType = "Proportions",
-                                Status = "Active"
-                            };
-                            await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
-                            var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
-                            var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
-                            if (imageUploadResult.Status == 500)
-                            {
-                                return new ServiceResult(500, "Error uploading files to Firebase.");
+                                var resultImage = new Data.DiavanModels.ResultImage
+                                {
+                                    ImageGuid = Guid.NewGuid(),
+                                    ResultId = rs.ResultId,
+                                    ImageType = "Proportions",
+                                    Status = "Active"
+                                };
+                                await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
+                                var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
+                                var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
+                                if (imageUploadResult.Status == 500)
+                                {
+                                    return new ServiceResult(500, "Error uploading files to Firebase.");
+                                }
+
+                                resultImage.ImageUrl = (string)imageUploadResult.Data;
+                                _unitOfWork.ResultImageRepository.Update(resultImage);
                             }
 
-                            resultImage.ImageUrl = (string)imageUploadResult.Data;
-                            _unitOfWork.ResultImageRepository.Update(resultImage);
-                        }
+                            var clarityImageUrls = req.ClarityImages;
+                            foreach (var imageUrl in clarityImageUrls)
+                            {
+                                var resultImage = new ResultImage
+                                {
+                                    ImageGuid = Guid.NewGuid(),
+                                    ResultId = rs.ResultId,
+                                    ImageType = "Clarity Characteristics",
+                                    Status = "Active"
+                                };
+                                await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
+                                var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
+                                var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
+                                if (imageUploadResult.Status == 500)
+                                {
+                                    return new ServiceResult(500, "Error uploading files to Firebase.");
+                                }
 
-                        var clarityImageUrls = req.ClarityImages;
-                        foreach (var imageUrl in clarityImageUrls)
-                        {
-                            var resultImage = new ResultImage
-                            {
-                                ImageGuid = Guid.NewGuid(),
-                                ResultId = rs.ResultId,
-                                ImageType = "Clarity Characteristics",
-                                Status = "Active"
-                            };
-                            await _unitOfWork.ResultImageRepository.CreateAsync(resultImage);
-                            var imagePath = FirebasePathName.RESULT + $"{resultImage.ImageGuid}";
-                            var imageUploadResult = await _firebaseService.UploadFileToFirebase(imageUrl, imagePath);
-                            if (imageUploadResult.Status == 500)
-                            {
-                                return new ServiceResult(500, "Error uploading files to Firebase.");
+                                resultImage.ImageUrl = (string)imageUploadResult.Data;
+                                _unitOfWork.ResultImageRepository.Update(resultImage);
                             }
-
-                            resultImage.ImageUrl = (string)imageUploadResult.Data;
-                            _unitOfWork.ResultImageRepository.Update(resultImage);
                         }
-                    }
-
-                    if (rsUpdate < 1)
-                    {
-                        return new ServiceResult(500, "Create failed");
+                        else
+                        {
+                            return new ServiceResult(400, "Must have images");
+                        }
                     }
 
                     return new ServiceResult(200, "Create successfully");
