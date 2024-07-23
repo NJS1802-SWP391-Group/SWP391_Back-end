@@ -32,5 +32,10 @@ namespace Data.Repositories.DiavanRepo
         {
             return await _dbSet.Include(_ => _.Result).Include(_ => _.ValuationStaff).Include(_ => _.OrderDetail).ThenInclude(_ => _.Service).Where(_ => _.ResultId == id && _.Status.Equals("Active")).FirstOrDefaultAsync();
         }
+
+        public async Task<AssigningOrderDetail> GetByOrderDetailIDAndActiveAndHasResult(int id, string status)
+        {
+            return await _dbSet.Include(_ => _.Result).Include(_ => _.ValuationStaff).Include(_ => _.OrderDetail).Where(_ => _.OrderDetailid == id && _.Status.Equals("Active") && _.OrderDetail.Status.Equals(status)).FirstOrDefaultAsync();
+        }
     }
 }
