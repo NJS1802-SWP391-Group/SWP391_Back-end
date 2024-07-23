@@ -95,10 +95,10 @@ color: black;
             ""
           >
             <div style=""text-align: center; padding: 10px 10px "">
-                <img alt="""" src=""https://scontent.xx.fbcdn.net/v/t1.15752-9/441924933_974480357477832_8469075819425755363_n.png?stp=dst-png_p206x206&_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGZC1zDQLT8WB4LD3WNzYYEjWsTHp6-zjuNaxMenr7OO1J5NG2Kig2e8Zzrlwfv_ysTloLyyYtLmy_zgGqLU0Ee&_nc_ohc=JO852HsoP1gQ7kNvgEE2Hrk&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QHy3APhmVQWBciW02SZ5JXt-h_6VWcp5FVM1Eo1iTnQig&oe=669146F6""
-                        width=""60px""  height=""60px""/>
+                <img alt="""" src=""https://scontent.fsgn7-2.fna.fbcdn.net/v/t1.15752-9/451381074_465498699759075_2417122540921550571_n.png?_nc_cat=102&ccb=1-7&_nc_sid=9f807c&_nc_ohc=ri5SgsAn4fAQ7kNvgG_AJ3k&_nc_ht=scontent.fsgn7-2.fna&oh=03_Q7cD1QFFulUiZlgKiiuo8O-fgBPZaSY7Q8GtrU3LwZYMjpTdAg&oe=66C73D14""
+                        width=""150px""  height=""100px""/>
             </div>
-            <h1 style=""text-align: center;"">Diavan</h1>
+            <h1 style=""text-align: center; margin: 40px 0;"">Diavan</h1>
           </div>
 
           <br />
@@ -116,7 +116,7 @@ color: black;
               </span>
               . Vui lòng đến Diavan để làm các thủ tục nhận lại sản phẩm. Nếu sau 30 ngày mà quý khách vẫn chưa đến làm thủ tục nhận lại, Diavan sẽ tiến hành niêm phong đơn định giá theo quy định của công ty.
             </div>
-            <div style="" margin: 10px 0 "">
+            <div style="" margin: 10px 0; padding: 0 5%; "">
               <p style="" font-weight: bold "">
                 Thông tin đơn nhận định giá
               </p>
