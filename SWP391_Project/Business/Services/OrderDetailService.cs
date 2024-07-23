@@ -334,7 +334,7 @@ namespace Business.Services
 
                 foreach ( var detail in detailList )
                 {
-                    if (detail.Status != ValuationDetailStatusEnum.Failed.ToString() && detail.Status != ValuationDetailStatusEnum.Certificated.ToString())
+                    if (detail.Status != "Not Diamond" && detail.Status != ValuationDetailStatusEnum.Certificated.ToString())
                     {
                         checkFlag = false;
                     }
