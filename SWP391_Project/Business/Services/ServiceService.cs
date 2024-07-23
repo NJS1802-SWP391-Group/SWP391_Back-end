@@ -64,7 +64,14 @@ namespace Business.Services
         {
             try
             {
-                var services = ((List<ServiceModel>)(await GetAll()).Data).Where(x=>x.Status.ToLower()=="active");              
+                var services = ((List<ServiceModel>)(await GetAll()).Data).Where(x=>x.Status.ToLower()=="active")
+                    .Select(x=> new ServiceModel{
+                     ServiceDetails = x.ServiceDetails.Where(y=>y.Status.ToLower()=="active").ToList(),
+                     ServiceID = x.ServiceID,
+                     Name = x.Name,
+                     Status = x.Status,
+                     Description = x.Description,
+                    });              
                 if (services.Any())
                 {
                     return new ServiceResult(200, "Get all active services", services);
