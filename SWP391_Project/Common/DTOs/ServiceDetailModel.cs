@@ -11,5 +11,6 @@ namespace SWP391_Project.DTOs
         public double Price { get; set; }
         public double ExtraPricePerMM { get; set; }
         public string Status { get; set; }
+        public int ServiceID { get; set; }
     }
 }
