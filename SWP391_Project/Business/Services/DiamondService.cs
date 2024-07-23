@@ -47,10 +47,22 @@ namespace Business.Services
         {
             try
             {
-                var diamondList = await _diamondContext.Set<Diamond>().Where(_ => _.UpdateDate.Value.Day == DateTime.Now.Day).ToListAsync();
-                var map = _mapper.Map<List<SystemDiamond>>(diamondList);
+                var diamondList = await _diamondContext.Set<Diamond>()
+                    .Where(_ => _.UpdateDate.Value.Day == DateTime.Now.Day)
+                    .ToListAsync();
+
+                var existingDiamondsIds = _unitOfWork.DiamondRepository.GetAll()
+                    .Where(d => diamondList.Select(x => x.DiamondId).Contains(d.DiamondId))
+                    .Select(d => d.DiamondId)
+                    .ToList();
+
+                var diamondsToMigrate = diamondList.Where(d => !existingDiamondsIds.Contains(d.DiamondId)).ToList();
+
+                var map = _mapper.Map<List<SystemDiamond>>(diamondsToMigrate);
+
                 await _unitOfWork.DiamondRepository.CreateRangeAsync(map);
-                return new ServiceResult(200, "Create success");
+
+                return new ServiceResult(200, $"Create success {diamondsToMigrate.Count} diamonds!");
             }
             catch (Exception ex)
             {

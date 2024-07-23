@@ -11,6 +11,7 @@ using Data.Repositories;
 using Business.Constants;
 using Data.DiavanModels;
 using Common.Requests;
+using System.Text.RegularExpressions;
 
 namespace SWP391_Project.Services
 {
@@ -29,6 +30,52 @@ namespace SWP391_Project.Services
         {
             try
             {
+                string emailPattern = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
+
+                if (!Regex.IsMatch(req.Email, emailPattern))
+                {
+                    return new ServiceResult(500, "Incorrect format of Email");
+                }
+
+                if (req.Dob >= DateTime.Now)
+                {
+                    return new ServiceResult(500, "Incorrect format of Dob");
+                }
+
+                string phonePattern = @"^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$";
+
+                if (!Regex.IsMatch(req.PhoneNumber, phonePattern))
+                {
+                    return new ServiceResult(500, "Incorrect format of Phone number");
+                }
+
+                if (!(req.CCCD.Length == 12) && !long.TryParse(req.CCCD, out _))
+                {
+                    return new ServiceResult(500, "Incorrect format of CCCD");
+                }
+
+                if (string.IsNullOrWhiteSpace(req.LastName) && !Regex.IsMatch(req.LastName, @"^[a-zA-Z]+$"))
+                {
+                    return new ServiceResult(500, "Incorrect format of Last Name");
+                }
+
+                string[] words = req.LastName.Split(' ');
+                if (!words.All(w => char.IsUpper(w[0])))
+                {
+                    return new ServiceResult(500, "Incorrect format of Last Name");
+                }
+
+                if (string.IsNullOrWhiteSpace(req.FirstName) && !Regex.IsMatch(req.FirstName, @"^[a-zA-Z]+$"))
+                {
+                    return new ServiceResult(500, "Incorrect format of First Name");
+                }
+
+                string[] words1 = req.FirstName.Split(' ');
+                if (!words1.All(w => char.IsUpper(w[0])))
+                {
+                    return new ServiceResult(500, "Incorrect format of First Name");
+                }
+
                 var user = _unitOfWork.CustomerRepository.GetAll().Where(u => u.Email == req.Email).FirstOrDefault();
                 if (user is not null)
                 {
