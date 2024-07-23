@@ -49,6 +49,10 @@ namespace API.Controllers
         [HttpPost("Create-Service-Detail")]
         public async Task<IActionResult> CreateService([FromBody] CreateServiceDetailReq req)
         {
+            if (req.MinRange < 0 || req.MaxRange < 0)
+            {
+                return StatusCode(500, "Invalid range");
+            }
             if (req.MinRange >= req.MaxRange && req.MaxRange != 0)
             {
                 return StatusCode(500, "Invalid range");
@@ -57,7 +61,7 @@ namespace API.Controllers
             {
                 return StatusCode(500, "Invalid price");
             }
-            if (req.MaxRange != 0 && req.ExtraPricePerMM > 0)
+            if (req.MaxRange != 0 && req.ExtraPricePerMM != 0)
             {
                 return StatusCode(500, "Invalid extra price");
             }
