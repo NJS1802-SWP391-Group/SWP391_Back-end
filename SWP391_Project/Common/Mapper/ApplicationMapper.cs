@@ -82,8 +82,6 @@ namespace SWP391_Project.Common.Mapper
                  .ForMember(x=>x.DetailValuations,opt =>opt.MapFrom(x=>x.OrderDetails))
                  .ReverseMap();
             CreateMap<OrderDetail, ViewOrderDetail>()
-                .ForPath(x=>x.ServiceName,otp=>otp.MapFrom(x=>x.ServiceName))
-                .ForPath(x => x.Price, opt => opt.MapFrom(x => x.Price))
                 .ReverseMap();
             CreateMap<SystemDiamond, Diamond>()
                 .ForMember(d => d.DiamondId, opt => opt.Ignore())

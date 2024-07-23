@@ -8,7 +8,7 @@ namespace Common.Responses
 {
     public class GetOrderToSendMail
     {
-        public int OrderID { get; set; }
+        public int OrderId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Code { get; set; }
@@ -20,7 +20,7 @@ namespace Common.Responses
         public string Payment { get; set; }
         public string StatusPayment { get; set; }
         public DateTime CompleteDate { get; set; }
-        public List<ViewOrderDetailModel> DetailValuations { set; get; }
+        public ICollection<ViewOrderDetailModel> DetailValuations { set; get; }
     }
 
     public class ViewOrderDetailModel
