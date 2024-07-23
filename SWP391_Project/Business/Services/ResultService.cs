@@ -113,18 +113,26 @@ namespace Business.Services
         {
             try
             {
-                var result = await _unitOfWork.ResultRepository.GetByOrderDetailIdAsync(id);
-                var rs = _mapper.Map<ResultModel>(result);
-                var imageUrls = await _unitOfWork.ResultImageRepository.GetByResultIdAsync(result.ResultId);
-                rs.ImageUrls = imageUrls.Select(_ => _.ImageUrl).ToList();
+                var result = await _unitOfWork.AssigningOrderDetailRepository
+                    .GetByOrderDetailIDAndActiveAndHasResult(id, ValuationDetailStatusEnum.Certificated.ToString());
                 if (result is null)
                 {
                     return new ServiceResult(404, "Cannot find result");
                 }
-                else
+                if (result.Result is null)
                 {
-                    return new ServiceResult(200, "Get result by id", rs);
+                    return new ServiceResult(404, "Cannot find result");
                 }
+                var rs = _mapper.Map<GetResultByIdResponse>(result.Result);
+                rs.OrderDetailId = id;
+                var imageLists = await _unitOfWork.ResultImageRepository.GetByResultIdAsync(result.Result.ResultId);
+                if (!imageLists.Any())
+                {
+                    return new ServiceResult(404, "Cannot find result images");
+                }
+                var rsImages = _mapper.Map<List<ResultImages>>(imageLists);
+                rs.ResultImages = rsImages;
+                return new ServiceResult(200, "Get result by id", rs);
             }
             catch (Exception ex)
             {
